@@ -647,3 +647,244 @@
         font-size: 0.8rem;
     }
 }
+
+/* ==================== MAIN CONTENT STYLES ==================== */
+.main-content {
+    min-height: calc(100vh - 500px);
+    padding: 60px 20px;
+    background: #f8f9fa;
+}
+
+.content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Main Wrapper - 2 Column Layout */
+.main-wrapper {
+    display: grid;
+    grid-template-columns: 20% 1fr;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* Sidebar */
+.sidebar {
+    position: sticky;
+    top: 20px;
+}
+
+.officials-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Official Cards */
+.official-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.official-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-image {
+    width: 100%;
+    overflow: hidden;
+    background: #e2e8f0;
+}
+
+.card-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.card-content {
+    padding: 15px;
+}
+
+.card-content h3 {
+    font-size: 0.95rem;
+    color: #003366;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.card-content .designation {
+    font-size: 0.85rem;
+    color: #718096;
+    margin: 0;
+}
+
+.content-section h2 {
+    font-size: 2rem;
+    color: #003366;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.content-section > p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #4a5568;
+    margin-bottom: 40px;
+    text-align: justify;
+}
+
+/* Content Grid */
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.content-card {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.content-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-card h3 {
+    font-size: 1.3rem;
+    color: #003366;
+    margin-bottom: 15px;
+    border-bottom: 3px solid #f26522;
+    padding-bottom: 10px;
+}
+
+.content-card p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #555;
+    text-align: justify;
+}
+
+/* Full Width Section */
+.full-width-section {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.full-width-section h2 {
+    font-size: 1.8rem;
+    color: #003366;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.full-width-section p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+/* Responsive Main Content */
+@media screen and (max-width: 768px) {
+    .main-content {
+        padding: 40px 15px;
+    }
+
+    .main-wrapper {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .sidebar {
+        position: static;
+    }
+
+    .officials-section {
+        flex-direction: row;
+        gap: 15px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+
+    .official-card {
+        flex: 0 0 calc(33.333% - 10px);
+        min-width: 120px;
+    }
+
+    .card-content h3 {
+        font-size: 0.85rem;
+    }
+
+    .card-content .designation {
+        font-size: 0.75rem;
+    }
+
+    .content-section h2 {
+        font-size: 1.6rem;
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .content-card {
+        padding: 20px;
+    }
+
+    .full-width-section {
+        padding: 25px;
+    }
+
+    .full-width-section h2 {
+        font-size: 1.4rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .main-content {
+        padding: 30px 10px;
+    }
+
+    .officials-section {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .official-card {
+        flex: 1 1 auto;
+    }
+
+    .content-section h2 {
+        font-size: 1.3rem;
+    }
+
+    .content-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .content-card p,
+    .full-width-section p {
+        font-size: 0.95rem;
+        text-align: left;
+    }
+
+    .content-section > p {
+        font-size: 1rem;
+        text-align: left;
+    }
+}

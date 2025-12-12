@@ -459,16 +459,31 @@ body {
 /* Slick Slider Custom Arrows */
 .slick-prev,
 .slick-next {
-    width: 120px;
-    height: 120px;
+    width: 50px;
+    height: 50px;
     z-index: 100;
+    background: rgba(100, 100, 100, 0.75);
     border-radius: 50%;
     transition: all 0.3s ease;
     border: none;
     top: 50%;
     transform: translateY(-50%);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+.slick-prev:hover,
+.slick-next:hover {
+    background: rgba(80, 80, 80, 0.9);
+}
+
+.slick-prev:active,
+.slick-next:active {
+    transform: translateY(-50%) scale(0.95);
+}
 
 .slick-prev {
     left: 20px;
@@ -480,9 +495,45 @@ body {
 
 .slick-prev:before,
 .slick-next:before {
-    font-size: 35px;
+    font-size: 24px;
     opacity: 1;
     color: white;
+}
+
+/* Hero Slider Custom Navigation */
+.hero-nav {
+    width: 50px;
+    height: 50px;
+    z-index: 100;
+    background: rgba(100, 100, 100, 0.75);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.hero-nav:hover {
+    background: rgba(80, 80, 80, 0.9);
+}
+
+.hero-nav:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.hero-prev {
+    left: 20px;
+}
+
+.hero-next {
+    right: 20px;
 }
 
 /* Slick Dots */
@@ -640,12 +691,193 @@ body {
     }
 }
 
+/* ==================== IMAGE CAROUSEL STYLES ==================== */
+.image-carousel-section {
+    padding: 20px 20px;
+    background: #f8f9fa;
+}
+
+.carousel-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.carousel-slider {
+    display: flex;
+}
+
+.carousel-slide {
+    position: relative;
+    height: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 0 12.5px;
+}
+
+.carousel-slide:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.slide-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+}
+
+.slide-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+}
+
+.slide-overlay {
+    position: relative;
+    z-index: 10;
+    padding: 25px;
+    color: white;
+    text-align: center;
+    width: 100%;
+}
+
+.slide-overlay h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.slide-overlay p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.slide-overlay .subtitle {
+    font-size: 0.9rem;
+    color: #fff;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.carousel-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.carousel-btn:hover {
+    background: #1d4ed8;
+}
+
+/* Carousel Navigation Buttons */
+.carousel-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.carousel-slider {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel-nav {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(100, 100, 100, 0.75);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    z-index: 25;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.carousel-nav:hover {
+    background: rgba(80, 80, 80, 0.9);
+}
+
+.carousel-nav:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.carousel-prev {
+    left: 20px;
+}
+
+.carousel-next {
+    right: 20px;
+}
+
+/* Responsive Image Carousel */
+@media screen and (max-width: 1024px) {
+    .carousel-slide {
+        margin: 0 7.5px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .image-carousel-section {
+        padding: 40px 20px;
+    }
+
+    .carousel-slide {
+        margin: 0;
+    }
+
+    .carousel-slide {
+        height: 250px;
+    }
+
+    .slide-overlay h3 {
+        font-size: 1.3rem;
+    }
+
+    .slide-overlay p {
+        font-size: 0.9rem;
+    }
+
+    .carousel-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+}
+
 /* ==================== FOOTER STYLES ==================== */
 #footer {
     background: #4a5568;
     color: #fff;
-    padding: 50px 20px 20px;
-    margin-top: 60px;
+    padding: 20px 20px 20px;
+    margin-top: 30px;
 }
 
 .footer-container {
@@ -762,7 +994,7 @@ body {
 /* ==================== MAIN CONTENT STYLES ==================== */
 .main-content {
     min-height: calc(100vh - 500px);
-    padding: 60px 20px;
+    padding: 60px 20px 20px 20px;
     background: #f8f9fa;
     margin-top: 180px;
 }

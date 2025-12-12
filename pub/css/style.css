@@ -5,6 +5,11 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     scroll-behavior: smooth;
 }
+
+body {
+    background: #f8f9fa;
+}
+
 /* ==================== TICKER STYLES ==================== */
 .text-ticker {
     background: #003366;
@@ -431,7 +436,7 @@
 .hero-slider {
     width: 100%;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .slider-container {
@@ -454,36 +459,35 @@
 /* Slick Slider Custom Arrows */
 .slick-prev,
 .slick-next {
-    width: 50px;
-    height: 50px;
+    width: 120px;
+    height: 120px;
     z-index: 100;
-    background: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
     transition: all 0.3s ease;
+    border: none;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
-.slick-prev:hover,
-.slick-next:hover {
-    background: rgba(242, 101, 34, 0.9);
-}
 
 .slick-prev {
-    left: 30px;
+    left: 20px;
 }
 
 .slick-next {
-    right: 30px;
+    right: 20px;
 }
 
 .slick-prev:before,
 .slick-next:before {
-    font-size: 30px;
+    font-size: 35px;
     opacity: 1;
+    color: white;
 }
 
 /* Slick Dots */
 .slick-dots {
-    bottom: 25px;
+    display: none;
 }
 
 .slick-dots li button:before {
@@ -505,27 +509,134 @@
 
     .slick-prev,
     .slick-next {
-        width: 40px;
-        height: 40px;
+        width: 55px;
+        height: 55px;
     }
 
     .slick-prev {
-        left: 10px;
+        left: 15px;
     }
 
     .slick-next {
-        right: 10px;
+        right: 15px;
     }
 
     .slick-prev:before,
     .slick-next:before {
-        font-size: 20px;
+        font-size: 28px;
     }
 }
 
 @media screen and (max-width: 480px) {
     .slide img {
         height: 300px;
+    }
+}
+
+/* ==================== SERVICE CARDS OVERLAY STYLES ==================== */
+.service-cards-overlay {
+    position: absolute;
+    bottom: -200px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 50;
+    padding: 0 20px;
+}
+
+.cards-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.service-card {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.card-icon {
+    width: 80px;
+    height: 80px;
+    background: #2563eb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 40px;
+    color: white;
+    transition: background 0.3s ease;
+}
+
+.service-card:hover .card-icon {
+    background: #1d4ed8;
+}
+
+.service-card h3 {
+    font-size: 1.1rem;
+    color: #000;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.service-card p {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Responsive Service Cards */
+@media screen and (max-width: 1024px) {
+    .cards-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .service-cards-overlay {
+        bottom: -220px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .service-cards-overlay {
+        position: static;
+        padding: 40px 20px;
+        margin-bottom: 20px;
+    }
+
+    .cards-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .service-card {
+        padding: 20px;
+    }
+
+    .card-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 35px;
+    }
+
+    .service-card h3 {
+        font-size: 1rem;
+    }
+
+    .service-card p {
+        font-size: 0.85rem;
     }
 }
 
@@ -653,6 +764,7 @@
     min-height: calc(100vh - 500px);
     padding: 60px 20px;
     background: #f8f9fa;
+    margin-top: 180px;
 }
 
 .content-container {
@@ -802,6 +914,7 @@
 @media screen and (max-width: 768px) {
     .main-content {
         padding: 40px 15px;
+        margin-top: 0;
     }
 
     .main-wrapper {

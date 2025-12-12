@@ -49,17 +49,25 @@ async function initialize() {
 
     // Set active class based on current URL (for page navigation)
     const currentPath = window.location.pathname;
-    document.querySelectorAll('.navbar-list li a').forEach(link => {
-        if (link.getAttribute('href') === currentPath && currentPath !== '#') {
-            link.parentElement.classList.add('active');
+    const currentPathWithoutSlash = currentPath.endsWith('/') ? currentPath.slice(0, -1) : currentPath;
+    
+    // Don't set active state on coming-soon page
+    if (!currentPathWithoutSlash.includes('coming-soon')) {
+        document.querySelectorAll('.navbar-list li a').forEach(link => {
+            const href = link.getAttribute('href');
+            const hrefWithoutSlash = href.endsWith('/') ? href.slice(0, -1) : href;
+            
+            if (href !== '#' && (hrefWithoutSlash === currentPathWithoutSlash || hrefWithoutSlash === '/' && currentPathWithoutSlash === '')) {
+                link.parentElement.classList.add('active');
 
-            // Find parent menu item and add active class
-            const parentLi = link.parentElement.closest('ul').closest('li');
-            if (parentLi) {
-                parentLi.classList.add('active');
+                // Find parent menu item and add active class
+                const parentLi = link.parentElement.closest('ul')?.closest('li');
+                if (parentLi) {
+                    parentLi.classList.add('active');
+                }
             }
-        }
-    });
+        });
+    }
 
     // Close menu when clicking outside
     document.addEventListener('click', function(e) {

@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: jktdc-landing-page
+    env: static
+    buildCommand: echo "No build required"
+    staticPublishPath: .
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+      - path: /pub/js/*
+        name: Content-Type
+        value: application/javascript
+      - path: /pub/css/*
+        name: Content-Type
+        value: text/css

@@ -1200,10 +1200,10 @@ body {
 }
 
 .column-header {
-  background: #f26522;
+  background: #3e8aba;
   color: white;
   padding: 20px;
-  border-bottom: 3px solid #d94e1a;
+  border-bottom: 3px solid #2e6a8f;
 }
 
 .column-header h2 {
@@ -1217,8 +1217,21 @@ body {
 .scrollable-content {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 20px;
   padding-bottom: 0;
+  scroll-behavior: smooth;
+}
+
+#notifications-scroll::-webkit-scrollbar,
+#events-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+#notifications-scroll,
+#events-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Notification Items */
@@ -1314,7 +1327,7 @@ body {
 }
 
 .view-all-link {
-  color: #f26522;
+  color: #3e8aba;
   font-weight: 600;
   text-decoration: none;
   font-size: 1rem;
@@ -1322,7 +1335,7 @@ body {
 }
 
 .view-all-link:hover {
-  color: #d94e1a;
+  color: #f26522;
   text-decoration: underline;
 }
 

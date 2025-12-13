@@ -510,7 +510,7 @@ body {
   }
 
   .navbar-list > li.active > ul {
-    display: block;
+    display: block !important;
   }
 
   .navbar.active .menu-button::before {

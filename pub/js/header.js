@@ -11,6 +11,20 @@ function handleFlexibleMenu() {
     if (!navbar || !navbarList) return;
 
     function calculateVisibleItems() {
+        // Only run flexible menu on desktop (screens above 768px)
+        if (window.innerWidth <= 768) {
+            // Remove hidden-item class on mobile to show all items
+            const items = Array.from(navbarList.querySelectorAll(':scope > li.hidden-item'));
+            items.forEach(item => item.classList.remove('hidden-item'));
+            
+            // Remove more-menu on mobile
+            const moreMenu = navbarList.querySelector('li.more-menu');
+            if (moreMenu) {
+                moreMenu.remove();
+            }
+            return;
+        }
+
         const navbarWidth = navbar.offsetWidth;
         // Select ONLY direct children of navbar-list (top-level items only)
         const items = Array.from(navbarList.querySelectorAll(':scope > li:not(.more-menu)'));
@@ -130,32 +144,36 @@ async function initialize() {
             });
         }
 
-        // Handle submenu clicks on mobile
-        document.querySelectorAll('.navbar-list > li').forEach(menuItem => {
-            const menuLink = menuItem.querySelector(':scope > a');
-            const submenu = menuItem.querySelector(':scope > ul');
+        // Handle submenu clicks on mobile using event delegation
+        document.addEventListener('click', function(e) {
+            // Check if click is on a menu link with a submenu
+            const navbarList = document.querySelector('.navbar-list');
+            if (!navbarList || !navbarList.contains(e.target)) return;
             
-            if (menuLink && submenu) {
-                menuLink.addEventListener('click', function(e) {
-                    // Only handle dropdown behavior on mobile
-                    if (window.innerWidth <= 768) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        // Toggle active class
-                        const wasActive = menuItem.classList.contains('active');
-                        
-                        // Close all other submenus
-                        document.querySelectorAll('.navbar-list > li').forEach(item => {
-                            if (item !== menuItem) {
-                                item.classList.remove('active');
-                            }
-                        });
-                        
-                        // Toggle current submenu
-                        menuItem.classList.toggle('active');
+            // Find the closest <a> tag that is a direct child of an <li>
+            let link = e.target.closest('a');
+            if (!link) return;
+            
+            let menuItem = link.closest('.navbar-list > li');
+            if (!menuItem) return;
+            
+            const submenu = menuItem.querySelector(':scope > ul');
+            if (!submenu) return;
+            
+            // Only handle on mobile
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Close all other submenus
+                document.querySelectorAll('.navbar-list > li.active').forEach(item => {
+                    if (item !== menuItem) {
+                        item.classList.remove('active');
                     }
                 });
+                
+                // Toggle current submenu
+                menuItem.classList.toggle('active');
             }
         });
 

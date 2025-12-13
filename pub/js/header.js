@@ -62,29 +62,10 @@ function handleFlexibleMenu() {
                 moreMenu = document.createElement('li');
                 moreMenu.className = 'more-menu';
                 moreMenu.innerHTML = `
-                    <a href="#" onclick="event.preventDefault()">»</a>
+                    <a href="#">»</a>
                     <ul class="more-menu-dropdown"></ul>
                 `;
                 navbarList.appendChild(moreMenu);
-                
-                // Add mouseenter listener to adjust more-menu positioning
-                moreMenu.addEventListener('mouseenter', function() {
-                    const dropdown = this.querySelector('.more-menu-dropdown');
-                    if (dropdown) {
-                        dropdown.classList.remove('align-left', 'align-right');
-                        dropdown.style.visibility = 'hidden';
-                        dropdown.style.display = 'block';
-                        const rect = dropdown.getBoundingClientRect();
-                        dropdown.style.visibility = '';
-                        dropdown.style.display = '';
-                        
-                        if (rect.right > window.innerWidth) {
-                            dropdown.classList.add('align-left');
-                        } else {
-                            dropdown.classList.add('align-right');
-                        }
-                    }
-                });
             }
             
             const dropdown = moreMenu.querySelector('.more-menu-dropdown');
@@ -92,6 +73,20 @@ function handleFlexibleMenu() {
                 const link = item.querySelector(':scope > a');
                 return `<li><a href="${link.href}">${link.textContent}</a></li>`;
             }).join('');
+            
+            // Adjust position for the more menu
+            dropdown.classList.remove('align-left', 'align-right');
+            dropdown.style.visibility = 'hidden';
+            dropdown.style.display = 'block';
+            const rect = dropdown.getBoundingClientRect();
+            dropdown.style.visibility = '';
+            dropdown.style.display = '';
+            
+            if (rect.right > window.innerWidth) {
+                dropdown.classList.add('align-left');
+            } else {
+                dropdown.classList.add('align-right');
+            }
         } else if (moreMenu) {
             moreMenu.remove();
         }
@@ -167,9 +162,25 @@ async function initialize() {
             });
         }
 
-        // Handle submenu clicks on mobile using event delegation
+        // Handle more-menu toggle using event delegation
         document.addEventListener('click', function(e) {
-            // Check if click is on a menu link with a submenu
+            // Check if click is on more-menu button
+            const moreMenuLink = e.target.closest('.navbar-list > li.more-menu > a');
+            if (moreMenuLink) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const moreMenu = moreMenuLink.closest('.navbar-list > li.more-menu');
+                moreMenu.classList.toggle('active');
+                return;
+            }
+            
+            // Check if click is inside more-menu dropdown (don't close on dropdown item clicks)
+            if (e.target.closest('.more-menu-dropdown')) {
+                return;
+            }
+            
+            // Handle submenu clicks on mobile
             const navbarList = document.querySelector('.navbar-list');
             if (!navbarList || !navbarList.contains(e.target)) return;
             
@@ -178,7 +189,7 @@ async function initialize() {
             if (!link) return;
             
             let menuItem = link.closest('.navbar-list > li');
-            if (!menuItem) return;
+            if (!menuItem || menuItem.classList.contains('more-menu')) return;
             
             const submenu = menuItem.querySelector(':scope > ul');
             if (!submenu) return;
@@ -225,6 +236,14 @@ async function initialize() {
         // Close menu when clicking outside
         document.addEventListener('click', function(e) {
             const navbar = document.querySelector('.navbar');
+            const moreMenu = document.querySelector('.navbar-list > li.more-menu');
+            
+            // Close more-menu if clicking outside of it
+            if (moreMenu && !moreMenu.contains(e.target)) {
+                moreMenu.classList.remove('active');
+            }
+            
+            // Close hamburger menu if clicking outside navbar
             if (navbar && !navbar.contains(e.target)) {
                 navbar.classList.remove('active');
                 document.body.style.overflow = '';

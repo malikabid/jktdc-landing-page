@@ -207,6 +207,10 @@ body {
   display: block;
 }
 
+.navbar-list > li.more-menu.active .more-menu-dropdown {
+  display: block;
+}
+
 .more-menu-dropdown li {
   width: 100%;
 }

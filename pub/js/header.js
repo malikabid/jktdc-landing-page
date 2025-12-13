@@ -66,6 +66,25 @@ function handleFlexibleMenu() {
                     <ul class="more-menu-dropdown"></ul>
                 `;
                 navbarList.appendChild(moreMenu);
+                
+                // Add mouseenter listener to adjust more-menu positioning
+                moreMenu.addEventListener('mouseenter', function() {
+                    const dropdown = this.querySelector('.more-menu-dropdown');
+                    if (dropdown) {
+                        dropdown.classList.remove('align-left', 'align-right');
+                        dropdown.style.visibility = 'hidden';
+                        dropdown.style.display = 'block';
+                        const rect = dropdown.getBoundingClientRect();
+                        dropdown.style.visibility = '';
+                        dropdown.style.display = '';
+                        
+                        if (rect.right > window.innerWidth) {
+                            dropdown.classList.add('align-left');
+                        } else {
+                            dropdown.classList.add('align-right');
+                        }
+                    }
+                });
             }
             
             const dropdown = moreMenu.querySelector('.more-menu-dropdown');

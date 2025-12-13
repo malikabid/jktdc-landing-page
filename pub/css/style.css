@@ -678,12 +678,12 @@ body {
 /* ==================== SERVICE CARDS OVERLAY STYLES ==================== */
 .service-cards-overlay {
   position: relative;
-  top: -110px;
+  /* top: -110px; */
   left: 0;
   right: 0;
   width: 100%;
   z-index: 50;
-  padding: 0 20px;
+  padding: 30px 20px;
 }
 
 .cards-container {
@@ -1094,6 +1094,10 @@ body {
   min-height: calc(100vh - 500px);
   padding: 0 20px 20px 20px;
   background: #f8f9fa;
+}
+
+.main-content.home-page {
+  margin-top: -110px;
 }
 
 .content-container {

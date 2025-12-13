@@ -792,6 +792,10 @@ body {
   display: flex;
 }
 
+.carousel-slider .slick-slide {
+  margin: 10px !important;
+}
+
 .carousel-slide {
   position: relative;
   height: 400px;
@@ -941,7 +945,12 @@ body {
   }
 
   .carousel-slide {
-    margin: 0;
+    margin: 0 !important;
+  }
+
+
+  .carousel-slider .slick-list {
+    margin: 0 !important;
   }
 
   .carousel-slide {

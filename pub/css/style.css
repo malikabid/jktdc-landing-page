@@ -194,13 +194,13 @@ body {
 }
 
 .more-menu-dropdown.align-left {
-  left: auto;
-  right: 0;
+  right: auto;
+  left: 0;
 }
 
 .more-menu-dropdown.align-right {
-  left: 0;
-  right: auto;
+  left: auto;
+  right: 0;
 }
 
 .navbar-list > li.more-menu:hover .more-menu-dropdown {

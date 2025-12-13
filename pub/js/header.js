@@ -109,15 +109,19 @@ async function initialize() {
                     // Remove existing position class
                     submenu.classList.remove('align-left', 'align-right');
                     
-                    // Force a reflow to get accurate position
+                    // Force a reflow to get accurate position while keeping it invisible
+                    submenu.style.visibility = 'hidden';
                     submenu.style.display = 'block';
                     const rect = submenu.getBoundingClientRect();
+                    submenu.style.visibility = '';
                     submenu.style.display = '';
                     
                     // Check if submenu goes beyond right edge of viewport
                     if (rect.right > window.innerWidth) {
+                        // Align to the left to keep it on screen
                         submenu.classList.add('align-left');
                     } else {
+                        // Default alignment to the right
                         submenu.classList.add('align-right');
                     }
                 }

@@ -58,30 +58,44 @@ body {
 
 .header-container {
   margin: 0 auto;
-  padding: 0.5rem;
+  padding: 5px 0.5rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   max-width: 1200px;
+  gap: 1rem;
 }
 
-.logo-and-title {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.logo-left,
+.logo-right {
+  flex-shrink: 0;
 }
 
 .logo {
   width: 140px;
   height: auto;
-  margin-right: 15px;
   border-radius: 50%;
 }
 
 .title {
+  flex-grow: 1;
   font-size: clamp(1rem, 2.5vw, 1.25rem);
   text-decoration: none;
   text-align: center;
+}
+
+.title-text {
+  font-size: 3rem;
+  letter-spacing: 2px;
+  font-weight: 600;
+  margin: 0.3rem 0;
+}
+
+.sub-title-text {
+  font-size: 1.75rem;
+  letter-spacing: 1.5px;
+  font-weight: 400;
+  margin: 0.2rem 0;
 }
 
 .contact-info {
@@ -380,26 +394,27 @@ body {
     flex-direction: row;
     padding: 0.5rem 0.75rem;
     align-items: center;
-  }
-
-  .logo-and-title {
-    justify-content: flex-start;
-    flex-direction: row;
-    align-items: center;
     gap: 0.5rem;
-    width: 22%;
   }
 
-  .logo {
-    width: 60px;
-    height: 60px;
-    margin-right: 0;
+  .logo-left,
+  .logo-right {
     flex-shrink: 0;
   }
 
+  .jk-logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .tourism-logo {
+    width: 60px;
+    height: 60px;
+  }
+
   .title {
-    text-align: left;
-    flex: 0 1 auto;
+    text-align: center;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1094,9 +1109,10 @@ body {
   min-height: calc(100vh - 500px);
   padding: 0 20px 20px 20px;
   background: #f8f9fa;
+  margin-top: 30px;
 }
 
-.main-content.home-page {
+.main-content.service-cards {
   margin-top: -110px;
 }
 

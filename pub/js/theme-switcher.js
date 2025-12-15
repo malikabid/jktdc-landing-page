@@ -4,16 +4,24 @@ document.addEventListener('DOMContentLoaded', function() {
   const urlParams = new URLSearchParams(window.location.search);
   const theme = urlParams.get('theme');
   
-  // Default theme is 'blue', can be changed to 'eggplant' via URL parameter
-  const validThemes = ['blue', 'eggplant'];
+  console.log('URL theme parameter:', theme);
+  
+  // Default theme is 'blue', can be changed to 'eggplant' or 'purple' via URL parameter
+  const validThemes = ['blue', 'eggplant', 'purple'];
   const selectedTheme = validThemes.includes(theme) ? theme : 'blue';
+  
+  console.log('Selected theme:', selectedTheme);
   
   // Apply theme to document
   if (selectedTheme === 'eggplant') {
     document.documentElement.setAttribute('data-theme', 'eggplant');
+  } else if (selectedTheme === 'purple') {
+    document.documentElement.setAttribute('data-theme', 'purple');
   } else {
     document.documentElement.removeAttribute('data-theme');
   }
+  
+  console.log('Applied data-theme attribute:', document.documentElement.getAttribute('data-theme'));
   
   // Store theme preference in sessionStorage
   sessionStorage.setItem('theme', selectedTheme);
@@ -26,6 +34,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function switchTheme(themeName) {
   if (themeName === 'eggplant') {
     document.documentElement.setAttribute('data-theme', 'eggplant');
+  } else if (themeName === 'purple') {
+    document.documentElement.setAttribute('data-theme', 'purple');
   } else {
     document.documentElement.removeAttribute('data-theme');
   }

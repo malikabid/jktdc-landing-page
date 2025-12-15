@@ -5,7 +5,7 @@ const THEMES = {
   purple: 'purple'
 };
 
-const DEFAULT_THEME = 'blue';
+const DEFAULT_THEME = 'purple';
 
 // Apply theme to document
 function applyTheme(themeName) {

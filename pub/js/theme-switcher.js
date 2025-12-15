@@ -1,46 +1,33 @@
-// Theme switcher based on URL parameter
-document.addEventListener('DOMContentLoaded', function() {
-  // Get URL parameters
-  const urlParams = new URLSearchParams(window.location.search);
-  const theme = urlParams.get('theme');
-  
-  console.log('URL theme parameter:', theme);
-  
-  // Default theme is 'blue', can be changed to 'eggplant' or 'purple' via URL parameter
-  const validThemes = ['blue', 'eggplant', 'purple'];
-  const selectedTheme = validThemes.includes(theme) ? theme : 'blue';
-  
-  console.log('Selected theme:', selectedTheme);
-  
-  // Apply theme to document
-  if (selectedTheme === 'eggplant') {
-    document.documentElement.setAttribute('data-theme', 'eggplant');
-  } else if (selectedTheme === 'purple') {
-    document.documentElement.setAttribute('data-theme', 'purple');
-  } else {
-    document.documentElement.removeAttribute('data-theme');
-  }
-  
-  console.log('Applied data-theme attribute:', document.documentElement.getAttribute('data-theme'));
-  
-  // Store theme preference in sessionStorage
-  sessionStorage.setItem('theme', selectedTheme);
-  
-  // Log theme for debugging
-  console.log('Active theme:', selectedTheme);
-});
+// Theme configuration
+const THEMES = {
+  blue: null,
+  eggplant: 'eggplant',
+  purple: 'purple'
+};
 
-// Function to switch theme programmatically (can be called from other scripts)
-function switchTheme(themeName) {
-  if (themeName === 'eggplant') {
-    document.documentElement.setAttribute('data-theme', 'eggplant');
-  } else if (themeName === 'purple') {
-    document.documentElement.setAttribute('data-theme', 'purple');
+const DEFAULT_THEME = 'blue';
+
+// Apply theme to document
+function applyTheme(themeName) {
+  const themeValue = THEMES[themeName];
+  
+  if (themeValue) {
+    document.documentElement.setAttribute('data-theme', themeValue);
   } else {
     document.documentElement.removeAttribute('data-theme');
   }
+  
   sessionStorage.setItem('theme', themeName);
 }
 
+// Initialize theme from URL parameter
+document.addEventListener('DOMContentLoaded', function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const theme = urlParams.get('theme');
+  const selectedTheme = THEMES.hasOwnProperty(theme) ? theme : DEFAULT_THEME;
+  
+  applyTheme(selectedTheme);
+});
+
 // Make function available globally
-window.switchTheme = switchTheme;
+window.switchTheme = applyTheme;

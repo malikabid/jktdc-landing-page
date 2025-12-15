@@ -1,19 +1,20 @@
 /* ==================== THEME VARIABLES ==================== */
 
-/* Default Theme (Blue) */
 :root {
+  /* Colors */
   --primary-color: #3e8aba;
   --secondary-color: #f26522;
   --accent-color: #003366;
   --navbar-bg: #505050;
   --navbar-hover: #f26522;
+
+  /* Common */
   --text-light: #fff;
   --text-dark: #333;
   --background: #f8f9fa;
   --border-color: #e3e2e1;
 }
 
-/* Eggplant Theme */
 html[data-theme="eggplant"],
 :root[data-theme="eggplant"] {
   --primary-color: #614051;
@@ -21,13 +22,8 @@ html[data-theme="eggplant"],
   --accent-color: #3d2734;
   --navbar-bg: #4a3344;
   --navbar-hover: #8b5a6f;
-  --text-light: #fff;
-  --text-dark: #333;
-  --background: #f8f9fa;
-  --border-color: #e3e2e1;
 }
 
-/* Purple Theme */
 html[data-theme="purple"],
 :root[data-theme="purple"] {
   --primary-color: #613af5;
@@ -35,91 +31,4 @@ html[data-theme="purple"],
   --accent-color: #4c1d95;
   --navbar-bg: #5b21b6;
   --navbar-hover: #8b5cf6;
-  --text-light: #fff;
-  --text-dark: #333;
-  --background: #f8f9fa;
-  --border-color: #e3e2e1;
-}
-
-/* Apply theme colors using CSS variables */
-.text-ticker {
-  background: var(--accent-color);
-  border-bottom: 2px solid var(--secondary-color);
-}
-
-.ticker-content i {
-  color: var(--secondary-color);
-}
-
-#header {
-  background: var(--primary-color);
-}
-
-.navbar {
-  background-color: var(--navbar-bg);
-}
-
-.menu-button {
-  background: var(--navbar-bg);
-}
-
-.navbar-list > li > ul {
-  border-top: 3px solid var(--secondary-color);
-}
-
-.navbar-list > li > ul > li:hover > a,
-.navbar-list > li > ul > li.active > a {
-  color: var(--secondary-color);
-  border-left-color: var(--secondary-color);
-}
-
-.navbar-list > li:hover,
-.navbar-list > li.active {
-  background-color: var(--navbar-hover);
-}
-
-.navbar-list > li > ul > li > ul {
-  border-top: 3px solid var(--secondary-color);
-}
-
-.navbar-list > li > ul > li > ul > li:hover > a,
-.navbar-list > li > ul > li > ul > li.active > a {
-  color: var(--secondary-color);
-  border-left-color: var(--secondary-color);
-}
-
-.navbar-list > li.active,
-.navbar-list > li.active > a {
-  color: var(--secondary-color);
-}
-
-.navbar-list > li.active {
-  background-color: var(--navbar-hover);
-}
-
-/* Mobile responsive */
-@media screen and (max-width: 768px) {
-  .navbar-list {
-    background: var(--navbar-bg);
-  }
-
-  .navbar-list > li:hover > a {
-    background-color: var(--navbar-hover);
-  }
-}
-
-/* Service Cards */
-.service-card:hover .card-icon {
-  color: var(--secondary-color);
-}
-
-/* Officials Section */
-.officials-section h2 {
-  color: var(--accent-color);
-}
-
-/* Other components with theme colors */
-.notification-item .icon,
-.announcement-item .icon {
-  color: var(--secondary-color);
 }

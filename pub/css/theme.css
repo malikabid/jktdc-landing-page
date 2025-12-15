@@ -26,9 +26,9 @@ html[data-theme="eggplant"],
 
 html[data-theme="purple"],
 :root[data-theme="purple"] {
-  --primary-color: #4c1d95;
-  --secondary-color: #8b5cf6;
-  --accent-color: #2e1065;
-  --navbar-bg: #6b21a8;
-  --navbar-hover: #7c3aed;
+  --primary-color: #6b21a8;
+  --secondary-color: #a855f7;
+  --accent-color: #4c1d95;
+  --navbar-bg: #7c3aed;
+  --navbar-hover: #9333ea;
 }

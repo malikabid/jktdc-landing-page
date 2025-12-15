@@ -66,18 +66,24 @@
         font-size: 12px;
       }
 
-      /* Increase padding in org chart boxes */
+      /* Style org chart boxes with theme colors */
       #curve_chart .google-visualization-orgchart-node {
         padding: 30px 25px !important;
+        background-color: var(--primary-color) !important;
+        color: var(--accent-color) !important;
+        border: 2px solid var(--primary-color) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
       }
 
-      /* Increase height of vertical connector lines */
+      /* Connector lines with theme color */
       #curve_chart path {
+        stroke: var(--primary-color) !important;
         stroke-width: 2px;
       }
 
       #curve_chart g > line {
-        stroke: var(--primary-color);
+        stroke: var(--primary-color) !important;
         stroke-width: 2px;
       }
 
@@ -125,6 +131,15 @@
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
+        // Get theme colors from CSS variables
+        const rootStyles = getComputedStyle(document.documentElement);
+        const primaryColor = rootStyles
+          .getPropertyValue("--primary-color")
+          .trim();
+        const secondaryColor = rootStyles
+          .getPropertyValue("--secondary-color")
+          .trim();
+
         var data = google.visualization.arrayToDataTable(
           [
             ["DIRECTOR<br/>TOURISM<br/>KASHMIR", "", "Director"],
@@ -184,7 +199,6 @@
         var options = {
           allowHtml: true,
           size: "medium",
-          //   nodeClass: "org-node",
         };
 
         var tree = new google.visualization.OrgChart(

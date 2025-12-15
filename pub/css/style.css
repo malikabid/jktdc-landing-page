@@ -1131,7 +1131,7 @@ body {
 
 /* ==================== MAIN CONTENT STYLES ==================== */
 .main-content {
-  min-height: calc(100vh - 500px);
+  /* min-height: calc(100vh - 500px); */
   padding: 0 20px 20px 20px;
   background: #f8f9fa;
   margin-top: 0;

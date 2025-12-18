@@ -1,0 +1,55 @@
+name: Update Asset Versions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "pub/css/**"
+      - "pub/js/**"
+  workflow_dispatch:
+
+jobs:
+  update-versions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update version numbers
+        run: |
+          # Get short commit hash
+          VERSION=$(git rev-parse --short=7 HEAD)
+          echo "Updating versions to: $VERSION"
+
+          # Update HTML files
+          for file in index.html coming-soon.html organizational-chart.html; do
+            if [ -f "$file" ]; then
+              # Update CSS versions
+              sed -i "s|pub/css/\([^\"']*\.css\)?v=[^\"']*|pub/css/\1?v=$VERSION|g" "$file"
+              # Update JS versions
+              sed -i "s|pub/js/\([^\"']*\.js\)?v=[^\"']*|pub/js/\1?v=$VERSION|g" "$file"
+              echo "Updated $file"
+            fi
+          done
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add index.html coming-soon.html organizational-chart.html
+          git commit -m "chore: update asset versions [skip ci]"
+          git push

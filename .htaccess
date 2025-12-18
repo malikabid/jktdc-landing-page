@@ -1,3 +1,10 @@
+# Redirect all traffic to coming-soon page
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/coming-soon/
+RewriteCond %{REQUEST_URI} !^/pub/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ /coming-soon/ [R=302,L]
+
 # Set correct MIME types for JavaScript and CSS files
 AddType application/javascript .js
 AddType text/css .css

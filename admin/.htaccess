@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Restricted Admin Area"
+AuthUserFile /home/nw9v11i4x4i5/public_html/admin/.htpasswd
+Require valid-user

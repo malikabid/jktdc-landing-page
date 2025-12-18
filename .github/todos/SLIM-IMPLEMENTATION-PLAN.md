@@ -140,23 +140,8 @@ This document provides a detailed, actionable roadmap for building the JKTDC adm
 
 ## Phase 2: Database & Models (Days 3-4)
 
-### Step 2.1: Database Design
-**Time: 2 hours**
-
-- [ ] Create database schema file `database/schema.sql`
-- [ ] Include tables:
-  - `users`
-  - `roles`
-  - `sessions`
-  - `slider_content`
-  - `officials`
-  - `notifications`
-  - `events`
-  - `site_settings`
-  - `audit_log`
-
-### Step 2.2: Database Setup
-**Time: 1 hour**
+### Step 2.1: Database Setup
+**Time: 30 minutes**
 
 - [ ] Create database:
   ```bash
@@ -164,14 +149,68 @@ This document provides a detailed, actionable roadmap for building the JKTDC adm
   CREATE DATABASE jktdc_admin CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
   ```
 
-- [ ] Import schema:
+- [ ] Install Phinx (migration tool):
   ```bash
-  mysql -u root -p jktdc_admin < database/schema.sql
+  composer require robmorgan/phinx
   ```
 
-- [ ] Create migration system (optional but recommended)
+- [ ] Initialize Phinx:
+  ```bash
+  vendor/bin/phinx init
+  ```
 
-### Step 2.3: Create Eloquent Models
+- [ ] Configure `phinx.php` with database credentials
+
+### Step 2.2: Create Migrations
+**Time: 2 hours**
+
+- [ ] Create migration files:
+  ```bash
+  vendor/bin/phinx create CreateUsersTable
+  vendor/bin/phinx create CreateRolesTable
+  vendor/bin/phinx create CreateSessionsTable
+  vendor/bin/phinx create CreateSliderContentTable
+  vendor/bin/phinx create CreateOfficialsTable
+  vendor/bin/phinx create CreateNotificationsTable
+  vendor/bin/phinx create CreateEventsTable
+  vendor/bin/phinx create CreateSiteSettingsTable
+  vendor/bin/phinx create CreateAuditLogTable
+  ```
+
+- [ ] Write migration logic for each table (define columns, indexes, foreign keys)
+
+### Step 2.3: Run Migrations
+**Time: 15 minutes**
+
+- [ ] Execute migrations to create all tables:
+  ```bash
+  vendor/bin/phinx migrate
+  ```
+
+- [ ] Verify tables were created:
+  ```bash
+  mysql -u root -p jktdc_admin -e "SHOW TABLES;"
+  ```
+
+### Step 2.4: Create Seeders
+**Time: 1 hour**
+
+- [ ] Create seeder for default roles:
+  ```bash
+  vendor/bin/phinx seed:create RolesSeeder
+  ```
+
+- [ ] Create seeder for first admin user:
+  ```bash
+  vendor/bin/phinx seed:create AdminUserSeeder
+  ```
+
+- [ ] Run seeders:
+  ```bash
+  vendor/bin/phinx seed:run
+  ```
+
+### Step 2.5: Create Eloquent Models
 **Time: 2 hours**
 
 - [ ] Create `src/Models/User.php`
@@ -183,14 +222,16 @@ This document provides a detailed, actionable roadmap for building the JKTDC adm
 - [ ] Create `src/Models/SiteSetting.php`
 - [ ] Create `src/Models/AuditLog.php`
 
-### Step 2.4: Seed Initial Data
-**Time: 1 hour**
+- [ ] Test models with test queries
 
-- [ ] Create seeder for default roles
-- [ ] Create first admin user (via script)
-- [ ] Test database connection
+**Deliverable:** Functional database with migrations, seeders, and models
 
-**Deliverable:** Functional database with models and test data
+**Benefits of Migrations:**
+- ✅ Schema changes tracked in version control
+- ✅ Easy to rollback: `vendor/bin/phinx rollback`
+- ✅ Team members just run: `vendor/bin/phinx migrate`
+- ✅ Production deployment: Same migration command
+- ✅ No manual SQL imports needed
 
 ---
 

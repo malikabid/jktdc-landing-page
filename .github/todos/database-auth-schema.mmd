@@ -1,0 +1,71 @@
+erDiagram
+    ROLES ||--o{ USERS : "has"
+    USERS ||--o{ USERS : "created_by"
+    USERS ||--o{ SESSIONS : "has"
+    USERS ||--o{ AUDIT_LOG : "performs"
+    
+    ROLES {
+        int id PK
+        varchar name UK "Super Admin, Content Manager, etc"
+        text description
+        json permissions "Granular permissions structure"
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    USERS {
+        int id PK
+        varchar username UK "Unique username"
+        varchar email UK "Unique email"
+        varchar password_hash "Bcrypt hashed password"
+        int role_id FK "References roles.id"
+        enum status "active, inactive, locked"
+        int failed_login_attempts "Track failed logins"
+        timestamp locked_until "Account lockout timestamp"
+        boolean must_change_password "Force password change"
+        timestamp created_at
+        timestamp updated_at
+        timestamp last_login
+        int created_by FK "References users.id (self)"
+    }
+    
+    SESSIONS {
+        varchar id PK "Session ID"
+        int user_id FK "References users.id"
+        varchar token UK "Secure session token"
+        varchar ip_address "Client IP address"
+        text user_agent "Browser user agent"
+        varchar remember_token UK "Remember me token"
+        timestamp last_activity "Last activity timestamp"
+        timestamp expires_at "Session expiration"
+        timestamp created_at
+    }
+    
+    PASSWORD_RESETS {
+        int id PK
+        varchar email "User email for reset"
+        varchar token UK "One-time reset token"
+        timestamp expires_at "Token expiration (1 hour)"
+        timestamp created_at
+    }
+    
+    LOGIN_ATTEMPTS {
+        int id PK
+        varchar identifier "Username or email"
+        varchar ip_address "Client IP"
+        boolean success "Login success flag"
+        timestamp attempted_at "Attempt timestamp"
+    }
+    
+    AUDIT_LOG {
+        int id PK
+        int user_id FK "References users.id"
+        varchar action "CREATE, UPDATE, DELETE, LOGIN, LOGOUT"
+        varchar table_name "Affected table"
+        int record_id "Affected record ID"
+        json old_value "Previous value"
+        json new_value "New value"
+        varchar ip_address "Client IP"
+        text user_agent "Browser user agent"
+        timestamp created_at
+    }

@@ -14,10 +14,23 @@ When you push changes to the `main` branch, GitHub Actions automatically:
 
 Log into your GoDaddy account and find your FTP credentials:
 
-- **FTP Server**: Usually `ftp.yourdomain.com` or an IP address
+**Finding FTP Details in GoDaddy:**
+1. Log into GoDaddy account
+2. Go to **My Products** → **Web Hosting** → **Manage**
+3. Find **FTP** section or go to **Settings** → **FTP/SFTP**
+4. Note down the details
+
+**What you need:**
+- **FTP Server**: Usually `ftp.yourdomain.com` or an IP address like `123.45.67.89`
+  - Often shown as "Server" or "Hostname" in GoDaddy
+  - Do NOT include `ftp://` prefix
 - **FTP Username**: Your cPanel/hosting username
+  - May look like: `username@yourdomain.com` or just `username`
 - **FTP Password**: Your cPanel/hosting password
-- **Server Directory**: The path to your public folder (e.g., `/public_html` or `/httpdocs`)
+  - If you don't know it, reset it in GoDaddy cPanel
+- **Server Directory**: The path to your public folder
+  - Usually `/public_html/` or `/httpdocs/`
+  - Must start with `/` and end with `/`
 
 ### 2. Add GitHub Secrets
 
@@ -34,10 +47,15 @@ Add your FTP credentials as encrypted secrets in your GitHub repository:
 | `FTP_PASSWORD` | `your-secure-password` | Your FTP password |
 | `FTP_SERVER_DIR` | `/public_html/` | Remote directory (must end with `/`) |
 
-**Important**: 
+**Important Formatting Rules**: 
+- `FTP_SERVER`: NO `ftp://` prefix, NO trailing `/`, NO spaces
+  - ✅ Correct: `ftp.yourdomain.com` or `123.45.67.89`
+  - ❌ Wrong: `ftp://ftp.yourdomain.com/` or `ftp.yourdomain.com/`
+- `FTP_SERVER_DIR`: MUST start with `/` and end with `/`
+  - ✅ Correct: `/public_html/` or `/httpdocs/`
+  - ❌ Wrong: `public_html` or `/public_html`
 - Never commit FTP credentials to your code
-- Use the exact secret names shown above
-- `FTP_SERVER_DIR` must end with a trailing slash `/`
+- Use the exact secret names shown above (case-sensitive)
 
 ### 3. Test the Deployment
 
@@ -109,10 +127,18 @@ Watch the deployment progress:
 
 ### Common Issues
 
-**Issue**: Deployment fails with "Could not connect to server"
-- **Solution**: Verify `FTP_SERVER` is correct (check for `ftp://` prefix - don't include it)
-- **Solution**: Check if your GoDaddy hosting has FTP enabled
-- **Solution**: Try using the IP address instead of domain name
+**Issue**: `Error: getaddrinfo ENOTFOUND` or "Could not connect to server"
+- **Solution**: Your `FTP_SERVER` value is incorrect or has formatting issues
+- **Solution**: Remove any protocol prefixes - use `ftp.yourdomain.com` NOT `ftp://ftp.yourdomain.com`
+- **Solution**: Remove any trailing slashes from the server address
+- **Solution**: Check for extra spaces or special characters
+- **Solution**: Try using the IP address instead of hostname (find in GoDaddy cPanel)
+
+**How to fix:**
+1. Go to GitHub → Settings → Secrets → Actions
+2. Delete the `FTP_SERVER` secret
+3. Add it again with just the hostname (e.g., `ftp.yourdomain.com` or `123.45.67.89`)
+4. Ensure no spaces, no `ftp://`, no trailing `/`
 
 **Issue**: "Permission denied" or "550 error"
 - **Solution**: Verify `FTP_USERNAME` and `FTP_PASSWORD` are correct

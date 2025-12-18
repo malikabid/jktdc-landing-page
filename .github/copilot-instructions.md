@@ -79,12 +79,14 @@ pub/
 
 ## Deployment
 
-Hosted on Render with configuration in [render.yaml](render.yaml):
+**Automated deployment to GoDaddy** via FTP documented in [DEPLOYMENT.md](DEPLOYMENT.md):
 
-- Static site environment
-- Cache-Control headers: `public, max-age=0, must-revalidate`
-- No build step required
-- Deploy by pushing to repository
+- GitHub Actions automatically deploys on push to `main` branch
+- FTP credentials stored as GitHub Secrets (never in code)
+- Only changed files uploaded for faster deployments
+- Workflow: [.github/workflows/deploy-to-godaddy.yml](.github/workflows/deploy-to-godaddy.yml)
+
+**Legacy Render hosting**: Configuration exists in [render.yaml](render.yaml) if needed for alternative deployment
 
 ## Code Conventions
 

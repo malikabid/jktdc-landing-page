@@ -8,9 +8,9 @@ services:
       - path: /*
         name: Cache-Control
         value: public, max-age=0, must-revalidate
-      - path: /pub/js/*
-        name: Content-Type
-        value: application/javascript
-      - path: /pub/css/*
+      - path: /pub/css/*.css
         name: Content-Type
         value: text/css
+      - path: /pub/js/*.js
+        name: Content-Type
+        value: application/javascript; charset=utf-8

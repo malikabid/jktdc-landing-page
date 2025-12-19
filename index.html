@@ -20,6 +20,16 @@
 </head>
 
 <body>
+  <!-- Check if site is live, otherwise redirect to coming-soon -->
+  <script>
+    (function() {
+      const isLive = localStorage.getItem('siteIsLive');
+      if (isLive !== 'true') {
+        window.location.href = '/coming-soon/';
+      }
+    })();
+  </script>
+  
   <!-- Include header -->
   <!-- <script src="pub/js/header.js"></script> -->
   <div id="header-placeholder"></div>

@@ -887,10 +887,14 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .carousel-btn:hover {
   background: var(--secondary-color);
+  color: white;
+  text-decoration: none;
 }
 
 /* Carousel Navigation Buttons */

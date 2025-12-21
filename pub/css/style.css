@@ -1065,7 +1065,7 @@ body {
   background: var(--secondary-color);
 }
 
-/* Visitor Counter */
+/* Visitor Counter (replaced with external widget) */
 .visitor-counter {
   padding: 8px 0 0 0;
 }
@@ -1073,15 +1073,12 @@ body {
 .visitor-counter p {
   font-size: 0.95rem;
   margin: 0;
-  display: flex;
-  gap: 8px;
-  align-items: baseline;
+  display: block;
 }
 
-.visitor-counter #visitor-count {
-  font-weight: 700;
-  color: var(--secondary-color);
-  margin-left: 4px;
+.visitor-counter a {
+  color: var(--text-light);
+  text-decoration: underline;
 }
 
 /* Footer Bottom */

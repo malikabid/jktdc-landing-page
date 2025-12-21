@@ -887,10 +887,14 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .carousel-btn:hover {
   background: var(--secondary-color);
+  color: white;
+  text-decoration: none;
 }
 
 /* Carousel Navigation Buttons */
@@ -1059,6 +1063,87 @@ body {
 
 .subscribe-form button:hover {
   background: var(--secondary-color);
+}
+
+/* Visitor Counter (hitwebcounter image) */
+.visitor-counter {
+  /* padding: 12px; */
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  /* justify-content: center; */
+  min-height: 72px; /* ensure enough space for the image */
+  /* background: rgba(255,255,255,0.03); */
+  border-radius: 8px;
+}
+
+.visitor-counter p {
+  font-size: 0.95rem;
+  margin: 0 0 6px 0;
+  color: var(--text-light);
+}
+
+/* Ensure the injected SVG or counter image looks crisp and centered */
+.visitor-counter img,
+.visitor-counter svg#besucherzaehler2 {
+  display: block;
+  max-width: 240px;
+  height: auto;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.visitor-counter a {
+  color: var(--text-light);
+  text-decoration: none;
+}
+
+/* Smaller screens */
+@media screen and (max-width: 480px) {
+  .visitor-counter {
+    min-height: 60px;
+    padding: 8px;
+  }
+
+  .visitor-counter img,
+  .visitor-counter svg#besucherzaehler2 {
+    max-width: 110px;
+    padding: 4px 6px;
+  }
+}
+
+/* Error / fallback message inserted by whomania script */
+.visitor-counter #error_5b8f61924510d4b1c684c42c2e1b4d9f8a4feb20 {
+  color: var(--secondary-color);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 6px 10px;
+  border-radius: 4px;
+
+  /* noscript fallback */
+  .visitor-counter noscript {
+    display: inline-block;
+    color: var(--text-light);
+    background: rgba(0, 0, 0, 0.1);
+    padding: 6px 10px;
+    border-radius: 4px;
+  }
+
+  /* Visitor Counter (hitwebcounter image) */
+  .visitor-counter {
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: center; */
+    min-height: 56px;
+  }
+
+  .visitor-counter img {
+    max-width: 140px;
+    height: auto;
+    display: block;
+    border: 0;
+  }
+
+  border-radius: 4px;
 }
 
 /* Footer Bottom */

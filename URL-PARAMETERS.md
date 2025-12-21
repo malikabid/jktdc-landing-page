@@ -60,6 +60,28 @@ https://yoursite.com/?showServiceCards=false    # Service cards hidden
 https://yoursite.com/?showServiceCards=true     # Service cards visible
 ```
 
+---
+
+### 3. Skip Coming Soon (`skipComingSoon`)
+
+Bypass the server redirect to the `coming-soon` page so you can access the main site directly.
+
+**Parameter:** `skipComingSoon`
+
+**Values:**
+- `true` — When present in the query string (e.g. `?skipComingSoon=true`), the server will not redirect and the requested page will load normally.
+
+**Cookie support:** The admin "Go Live" flow sets a cookie named `skipComingSoon=1` so subsequent requests are not redirected. The cookie-based bypass is recognized by the server as well.
+
+**Examples:**
+```
+https://yoursite.com/?skipComingSoon=true                # Load main site once without cookie
+https://yoursite.com/?theme=eggplant&skipComingSoon=true # Combine with other params
+```
+
+**Notes:**
+- The query-string parameter is best for single-use bypassing. The cookie is used by site administrators (Go Live) to persist the bypass across requests.
+- Use the "Continue to site" button on the coming-soon page to set a temporary cookie (30 days).
 **Service Cards Content:**
 When enabled, displays 4 cards:
 1. **About Kashmir** - History, culture, and natural beauty

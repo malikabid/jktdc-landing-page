@@ -8,6 +8,13 @@
 
   async function updateCount() {
     try {
+      // Try to ensure the counter exists (create with value 0). If it already exists the call may fail — that's fine.
+      try {
+        await fetch('https://api.countapi.xyz/create?namespace=malikabid&key=jktdc-visits&value=0');
+      } catch (e) {
+        // ignore create errors (usually means the counter already exists)
+      }
+
       // 'hit' increments the counter and returns the updated value
       const res = await fetch('https://api.countapi.xyz/hit/malikabid/jktdc-visits');
       if (!res.ok) throw new Error('Network error');

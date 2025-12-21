@@ -1068,17 +1068,47 @@ body {
 /* Visitor Counter (replaced with external widget) */
 .visitor-counter {
   padding: 8px 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px; /* ensure enough space for the injected SVG */
 }
 
 .visitor-counter p {
   font-size: 0.95rem;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* The widget injects an inline SVG with id #besucherzaehler2 */
+.visitor-counter svg#besucherzaehler2 {
   display: block;
+  height: 45px;
+  width: auto;
 }
 
 .visitor-counter a {
   color: var(--text-light);
   text-decoration: underline;
+}
+
+/* Error / fallback message inserted by whomania script */
+.visitor-counter #error_5b8f61924510d4b1c684c42c2e1b4d9f8a4feb20 {
+  color: var(--secondary-color);
+  background: rgba(255,255,255,0.03);
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+
+/* noscript fallback */
+.visitor-counter noscript {
+  display: inline-block;
+  color: var(--text-light);
+  background: rgba(0,0,0,0.1);
+  padding: 6px 10px;
+  border-radius: 4px;
 }
 
 /* Footer Bottom */

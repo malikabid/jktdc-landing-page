@@ -1065,6 +1065,25 @@ body {
   background: var(--secondary-color);
 }
 
+/* Visitor Counter */
+.visitor-counter {
+  padding: 8px 0 0 0;
+}
+
+.visitor-counter p {
+  font-size: 0.95rem;
+  margin: 0;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.visitor-counter #visitor-count {
+  font-weight: 700;
+  color: var(--secondary-color);
+  margin-left: 4px;
+}
+
 /* Footer Bottom */
 .footer-bottom {
   border-top: 1px solid #718096;

@@ -3,9 +3,9 @@
   'use strict';
 
   // Configuration
-  // SHA-256 hash of 'jktdc2025' - To generate hash for new password:
+  // SHA-256 hash of 'dotk2025' - To generate hash for new password:
   // Open browser console and run: crypto.subtle.digest('SHA-256', new TextEncoder().encode('your-password')).then(h => console.log(Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2, '0')).join('')))
-  const PASSWORD_HASH = 'af3d9e3c0908bfd1638e1f11220e469ff045ead9475907cd2ec17ca4a896b644';
+  const PASSWORD_HASH = 'c5996bdccefa26f1bda51d908c042316e1042d8b412557ec88f0f68c2d0bdc6f';
   const LIVE_FLAG = 'siteIsLive';
 
   // Hash function using SHA-256

@@ -1097,7 +1097,7 @@ body {
 /* Error / fallback message inserted by whomania script */
 .visitor-counter #error_5b8f61924510d4b1c684c42c2e1b4d9f8a4feb20 {
   color: var(--secondary-color);
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
   padding: 6px 10px;
   border-radius: 4px;
 }
@@ -1106,8 +1106,19 @@ body {
 .visitor-counter noscript {
   display: inline-block;
   color: var(--text-light);
-  background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
   padding: 6px 10px;
+  border-radius: 4px;
+}
+
+/* iframe fallback styling */
+.visitor-counter iframe {
+  border: 0;
+  background: transparent;
+  width: 140px;
+  height: 56px;
+}
+
   border-radius: 4px;
 }
 

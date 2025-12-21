@@ -57,25 +57,13 @@
 
     <div class="footer-column visitor-counter-column">
       <h3>Visitor Counter</h3>
-      <div class="visitor-counter">
-        <!-- Updated visitor counter widget -->
-        <p style="margin: 0">
-          <script
-            type="text/javascript"
-            src="https://www.counters-free.net/count/j4lg"
-          ></script>
-          <br />
-          <a
-            href="https://www.counters-free.net/"
-            target="_blank"
-            rel="noopener noreferrer"
-            >free Counters</a
-          >
-          <script
-            type="text/javascript"
-            src="https://whomania.com/ctr?id=5b8f61924510d4b1c684c42c2e1b4d9f8a4feb20"
-          ></script>
-        </p>
+      <div class="visitor-counter" id="visitor-counter-embed">
+        <!-- Embedded iframe will be inserted here to host the external counter widget -->
+        <noscript>
+          <p style="margin: 0; color: var(--text-light)">
+            Visitors: [enable JavaScript to view counter]
+          </p>
+        </noscript>
       </div>
     </div>
 

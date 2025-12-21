@@ -1070,10 +1070,10 @@ body {
   padding: 12px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center; */
+  /* justify-content: center; */
   min-height: 72px; /* ensure enough space for the image */
-  background: rgba(255,255,255,0.03);
+  /* background: rgba(255,255,255,0.03); */
   border-radius: 8px;
 }
 
@@ -1134,8 +1134,8 @@ body {
 /* Visitor Counter (hitwebcounter image) */
 .visitor-counter {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center; */
+  /* justify-content: center; */
   min-height: 56px;
 }
 

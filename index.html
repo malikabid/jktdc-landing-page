@@ -23,8 +23,10 @@
   <!-- Check if site is live, otherwise redirect to coming-soon -->
   <script>
     (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const skipComingSoon = urlParams.get('skipComingSoon') === 'true';
       const isLive = localStorage.getItem('siteIsLive');
-      if (isLive !== 'true') {
+      if (!skipComingSoon && isLive !== 'true') {
         window.location.href = '/coming-soon/';
       }
     })();

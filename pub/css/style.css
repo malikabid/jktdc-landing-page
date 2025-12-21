@@ -1092,7 +1092,7 @@ body {
   background: #fff;
   padding: 6px 8px;
   border-radius: 6px;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
 }
 
 .visitor-counter a {
@@ -1120,31 +1120,30 @@ body {
   background: rgba(255, 255, 255, 0.03);
   padding: 6px 10px;
   border-radius: 4px;
-}
 
-/* noscript fallback */
-.visitor-counter noscript {
-  display: inline-block;
-  color: var(--text-light);
-  background: rgba(0, 0, 0, 0.1);
-  padding: 6px 10px;
-  border-radius: 4px;
-}
+  /* noscript fallback */
+  .visitor-counter noscript {
+    display: inline-block;
+    color: var(--text-light);
+    background: rgba(0, 0, 0, 0.1);
+    padding: 6px 10px;
+    border-radius: 4px;
+  }
 
-/* Visitor Counter (hitwebcounter image) */
-.visitor-counter {
-  display: flex;
-  /* align-items: center; */
-  /* justify-content: center; */
-  min-height: 56px;
-}
+  /* Visitor Counter (hitwebcounter image) */
+  .visitor-counter {
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: center; */
+    min-height: 56px;
+  }
 
-.visitor-counter img {
-  max-width: 140px;
-  height: auto;
-  display: block;
-  border: 0;
-}
+  .visitor-counter img {
+    max-width: 140px;
+    height: auto;
+    display: block;
+    border: 0;
+  }
 
   border-radius: 4px;
 }

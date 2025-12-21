@@ -1067,7 +1067,7 @@ body {
 
 /* Visitor Counter (hitwebcounter image) */
 .visitor-counter {
-  padding: 12px;
+  /* padding: 12px; */
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -1087,12 +1087,10 @@ body {
 .visitor-counter img,
 .visitor-counter svg#besucherzaehler2 {
   display: block;
-  max-width: 140px;
+  max-width: 240px;
   height: auto;
-  background: #fff;
   padding: 6px 8px;
   border-radius: 6px;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
 }
 
 .visitor-counter a {

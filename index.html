@@ -170,6 +170,13 @@
                     <h3>Asia's longest and highest Ski Drag Lift</h3>
                     <p>Ski Drag Kift at Kongdori, Gulmarg executed by JKCCC and shall be put to commercial operation
                       during the winter season 2025-26</p>
+                    <div class="video-thumbnail" data-video-url="https://www.youtube.com/embed/QYnHwzMTwqo">
+                      <img src="https://img.youtube.com/vi/QYnHwzMTwqo/hqdefault.jpg" alt="Ski Drag Lift Video" />
+                      <div class="play-overlay">
+                        <i class="fas fa-play-circle"></i>
+                      </div>
+                      <div class="video-label">Watch Video</div>
+                    </div>
                   </div>
                 </div>
 
@@ -319,6 +326,16 @@
   <div id="footer-placeholder"></div>
   <!-- Add the following line to include the notification popup -->
 
+  <!-- Video Modal -->
+  <div id="videoModal" class="video-modal">
+    <div class="video-modal-content">
+      <span class="video-modal-close">&times;</span>
+      <div class="video-container">
+        <iframe id="videoPlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
   <script src="pub/js/theme-switcher.js?v=1.0.0"></script>
@@ -326,6 +343,7 @@
   <script src="pub/js/slider.js?v=1.0.0"></script>
   <script src="pub/js/notifications-scroll.js?v=1.0.0"></script>
   <script src="pub/js/service-cards-loader.js?v=1.0.0"></script>
+  <script src="pub/js/video-modal.js?v=1.0.0"></script>
 </body>
 
 </html>

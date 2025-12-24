@@ -61,6 +61,39 @@ Version is now a 7-character Git commit hash, ensuring uniqueness for every chan
 
 ## Workflows
 
+### Git Hooks (Local Development - Optional)
+**Automatic versioning on every commit!**
+
+Run the setup script once to install a pre-commit hook:
+
+```bash
+bash setup-git-hooks.sh
+```
+
+**What it does:**
+- Automatically detects CSS/JS changes in your commits
+- Runs `update-versions.sh` before commit completes
+- Adds updated HTML files to the same commit
+- Zero manual work needed!
+
+**Usage:**
+```bash
+# Just commit normally!
+git add pub/css/style.css
+git commit -m "feat: update header styles"
+# Hook automatically runs and updates versions ✨
+
+git push
+# GitHub Actions provides safety net if hook missed anything
+```
+
+**To remove the hook:**
+```bash
+rm .git/hooks/pre-commit
+```
+
+**Note:** Git hooks are local to your machine. Other team members need to run `setup-git-hooks.sh` separately. GitHub Actions always runs as a backup!
+
 ### GitHub Actions (Recommended)
 1. Make changes to CSS/JS files
 2. Commit: `git add . && git commit -m "feat: update styles"`
@@ -92,9 +125,19 @@ bash update-versions.sh
 ✅ **Automatic Cache-Busting**: Every change gets a unique version  
 ✅ **Git-Based**: Versions tied to commits for easy tracking  
 ✅ **Zero Build Tools**: Pure bash script, no npm/webpack required  
-✅ **CI/CD Compatible**: Works seamlessly with GitHub Actions + Render
+✅ **CI/CD Compatible**: Works seamlessly with GitHub Actions + Render  
+✅ **Local Git Hooks**: Optional pre-commit hook for instant local updates  
+✅ **Multi-Layer Safety**: Git hooks + GitHub Actions ensure nothing is missed
 
-## Configuration
+## Conf Hooks Setup
+The setup script creates a pre-commit hook at `.git/hooks/pre-commit` that:
+- Runs only when CSS/JS files are staged
+- Updates version numbers using `update-versions.sh`
+- Automatically adds updated HTML files to the commit
+
+To customize the hook behavior, edit `.git/hooks/pre-commit` directly.
+
+### Gitiguration
 
 ### GitHub Actions Setup
 The workflow file is at `.github/workflows/update-versions.yml` and triggers on:
@@ -108,7 +151,16 @@ To change which files are versioned, edit `update-versions.sh`:
 # Add more HTML files
 HTML_FILES=(
   "index.html"
-  "coming-soon.html"
+  "coming-sGit hook not running  
+**Solution**: Run `bash setup-git-hooks.sh` to install the hook, or check if `.git/hooks/pre-commit` exists and is executable
+
+**Issue**: Hook runs but versions not updating  
+**Solution**: Ensure `update-versions.sh` is executable: `chmod +x update-versions.sh`
+
+**Issue**: Hook causes commit to fail  
+**Solution**: Temporarily disable by renaming: `mv .git/hooks/pre-commit .git/hooks/pre-commit.disabled`
+
+**Issue**: oon.html"
   "organizational-chart.html"
   "new-page.html"  # Add here
 )

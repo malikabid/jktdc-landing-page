@@ -4,3 +4,4 @@ VERSIONING.md
 admin/*
 generate-favicon.html
 Godaddy_Hosting_Invoice.pdf
+cleanup-branches.sh

@@ -15,8 +15,8 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
-  <link rel="stylesheet" href="pub/css/theme.css?v=08a4f80" />
-  <link rel="stylesheet" href="pub/css/style.css?v=08a4f80" />
+  <link rel="stylesheet" href="pub/css/theme.css?v=764e0ba" />
+  <link rel="stylesheet" href="pub/css/style.css?v=764e0ba" />
 </head>
 
 <body>
@@ -249,7 +249,7 @@
                 </div>
               </div>
               <div class="notification-action">
-                <a href="#" class="view-all-link">View All Events</a>
+                <a href="/events.html" class="view-all-link">View All Events</a>
               </div>
             </div>
           </div>
@@ -338,12 +338,20 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-  <script src="pub/js/theme-switcher.js?v=08a4f80"></script>
-  <script src="pub/js/header.js?v=08a4f80"></script>
-  <script src="pub/js/slider.js?v=08a4f80"></script>
-  <script src="pub/js/notifications-scroll.js?v=08a4f80"></script>
-  <script src="pub/js/service-cards-loader.js?v=08a4f80"></script>
-  <script src="pub/js/video-modal.js?v=08a4f80"></script>
+  <script src="pub/js/theme-switcher.js?v=764e0ba"></script>
+  <script src="pub/js/header.js?v=764e0ba"></script>
+  <script src="pub/js/slider.js?v=764e0ba"></script>
+  <script src="pub/js/notifications-scroll.js?v=764e0ba"></script>
+  <script src="pub/js/service-cards-loader.js?v=764e0ba"></script>
+  <script src="pub/js/events-manager.js?v=764e0ba"></script>
+  <script src="pub/js/video-modal.js?v=764e0ba"></script>
+  
+  <script>
+    // Initialize homepage events when DOM is ready
+    document.addEventListener('DOMContentLoaded', async function() {
+      await window.eventsManager.initializeHomepage();
+    });
+  </script>
 </body>
 
 </html>

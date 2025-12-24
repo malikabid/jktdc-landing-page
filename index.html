@@ -249,7 +249,7 @@
                 </div>
               </div>
               <div class="notification-action">
-                <a href="/events.html" class="view-all-link">View All Events</a>
+                <a href="/events.html" class="view-all-link" id="view-all-events-link">View All Events</a>
               </div>
             </div>
           </div>
@@ -350,6 +350,16 @@
     // Initialize homepage events when DOM is ready
     document.addEventListener('DOMContentLoaded', async function() {
       await window.eventsManager.initializeHomepage();
+      
+      // Preserve skipComingSoon parameter in View All Events link
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('skipComingSoon') === 'true') {
+        const viewAllLink = document.getElementById('view-all-events-link');
+        if (viewAllLink) {
+          const currentHref = viewAllLink.getAttribute('href');
+          viewAllLink.setAttribute('href', currentHref + '?skipComingSoon=true');
+        }
+      }
     });
   </script>
 </body>

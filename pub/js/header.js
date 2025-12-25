@@ -106,8 +106,8 @@ function handleFlexibleMenu() {
 }
 
 async function initialize() {
-    await loadComponent('/header.html', 'header-placeholder');
-    await loadComponent('/footer.html', 'footer-placeholder');
+    await loadComponent('/pub/pages/header.html', 'header-placeholder');
+    await loadComponent('/pub/pages/footer.html', 'footer-placeholder');
 
     // Wait for DOM to be ready
     setTimeout(() => {

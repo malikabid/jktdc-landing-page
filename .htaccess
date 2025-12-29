@@ -6,6 +6,11 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(coming-soon|events|organizational-chart|header|footer)\.html$ /pub/pages/$1.html [L]
 
+# Rewrite rules for district pages (serve from pub/pages/districts)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(srinagar|anantnag|baramulla|budgam|bandipora|ganderbal|kupwara|kulgam|pulwama|shopian)\.html$ /pub/pages/districts/$1.html [L]
+
 #RewriteCond %{REQUEST_URI} !^/coming-soon/
 #RewriteCond %{REQUEST_URI} !^/pub/
 #RewriteCond %{REQUEST_FILENAME} !-f

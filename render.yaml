@@ -1,16 +1,61 @@
+# Exported from Render on 2025-12-29T07:24:58Z
+version: "1"
 services:
-  - type: web
-    name: jktdc-landing-page
-    env: static
-    buildCommand: echo "No build required"
-    staticPublishPath: .
-    headers:
-      - path: /*
-        name: Cache-Control
-        value: public, max-age=0, must-revalidate
-      - path: /pub/css/*.css
-        name: Content-Type
-        value: text/css
-      - path: /pub/js/*.js
-        name: Content-Type
-        value: application/javascript; charset=utf-8
+- type: web
+  name: kashmirtourism
+  runtime: static
+  repo: https://github.com/malikabid/jktdc-landing-page
+  branch: staging
+  buildCommand: echo "No build required"
+  staticPublishPath: .
+  routes:
+  - type: rewrite
+    source: /srinagar.html
+    destination: /pub/pages/districts/srinagar.html
+  - type: rewrite
+    source: /anantnag.html
+    destination: /pub/pages/districts/anantnag.html
+  - type: rewrite
+    source: /baramulla.html
+    destination: /pub/pages/districts/baramulla.html
+  - type: rewrite
+    source: /budgam.html
+    destination: /pub/pages/districts/budgam.html
+  - type: rewrite
+    source: /bandipora.html
+    destination: /pub/pages/districts/bandipora.html
+  - type: rewrite
+    source: /ganderbal.html
+    destination: /pub/pages/districts/ganderbal.html
+  - type: rewrite
+    source: /kupwara.html
+    destination: /pub/pages/districts/kupwara.html
+  - type: rewrite
+    source: /kulgam.html
+    destination: /pub/pages/districts/kulgam.html
+  - type: rewrite
+    source: /pulwama.html
+    destination: /pub/pages/districts/pulwama.html
+  - type: rewrite
+    source: /shopian.html
+    destination: /pub/pages/districts/shopian.html
+  - type: rewrite
+    source: /coming-soon.html
+    destination: /pub/pages/coming-soon.html
+  - type: rewrite
+    source: /events.html
+    destination: /pub/pages/events.html
+  - type: rewrite
+    source: /organizational-chart.html
+    destination: /pub/pages/organizational-chart.html
+  headers:
+  - path: /*
+    name: Cache-Control
+    value: public, max-age=0, must-revalidate
+  - path: /pub/css/*.css
+    name: Content-Type
+    value: text/css
+  - path: /pub/js/*.js
+    name: Content-Type
+    value: application/javascript; charset=utf-8
+  autoDeployTrigger: commit

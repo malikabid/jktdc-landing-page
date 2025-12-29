@@ -8,7 +8,7 @@ Static website for Jammu & Kashmir Tourism Development Corporation (JKTDC), feat
 
 ### Component-Based Structure
 
-- **Reusable HTML Components**: Header ([header.html](../header.html)) and footer ([footer.html](../footer.html)) are loaded dynamically into placeholder divs using the `loadComponent()` function in [pub/js/header.js](../pub/js/header.js)
+- **Reusable HTML Components**: Header ([pub/pages/header.html](../pub/pages/header.html)) and footer ([pub/pages/footer.html](../pub/pages/footer.html)) are loaded dynamically into placeholder divs using the `loadComponent()` function in [pub/js/header.js](../pub/js/header.js)
 - **Service Cards Module**: Optional content loaded from [pub/html/service-cards.html](../pub/html/service-cards.html) when `?showServiceCards=true` URL parameter is set
 - **Pattern**: Always use `fetch()` + `.innerHTML` for loading HTML fragments, not server-side includes or build tools
 
@@ -46,9 +46,9 @@ See [URL-PARAMETERS.md](../URL-PARAMETERS.md) for comprehensive documentation. W
 ## File Organization
 
 ```
-/                      # HTML pages (index, coming-soon, organizational-chart)
-header.html/footer.html # Component partials loaded dynamically
+/                      # HTML pages (index.html in root only)
 pub/
+  pages/               # HTML pages (coming-soon, organizational-chart, events, header, footer)
   css/                 # style.css (main styles), theme.css (color variables)
   js/                  # Feature modules (header, theme-switcher, service-cards-loader, slider)
   html/                # HTML fragments (service-cards.html)

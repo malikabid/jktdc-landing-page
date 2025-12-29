@@ -25,13 +25,24 @@ jobs:
           VERSION=$(git rev-parse --short=7 HEAD)
           echo "Updating versions to: $VERSION"
 
-          # Update HTML files
-          for file in index.html coming-soon.html organizational-chart.html; do
+          # Update HTML files in root
+          for file in index.html; do
             if [ -f "$file" ]; then
               # Update CSS versions
               sed -i "s|pub/css/\([^\"']*\.css\)?v=[^\"']*|pub/css/\1?v=$VERSION|g" "$file"
               # Update JS versions
               sed -i "s|pub/js/\([^\"']*\.js\)?v=[^\"']*|pub/js/\1?v=$VERSION|g" "$file"
+              echo "Updated $file"
+            fi
+          done
+
+          # Update HTML files in pub/pages
+          for file in pub/pages/coming-soon.html pub/pages/organizational-chart.html pub/pages/events.html; do
+            if [ -f "$file" ]; then
+              # Update CSS versions
+              sed -i "s|/pub/css/\([^\"']*\.css\)?v=[^\"']*|/pub/css/\1?v=$VERSION|g" "$file"
+              # Update JS versions
+              sed -i "s|/pub/js/\([^\"']*\.js\)?v=[^\"']*|/pub/js/\1?v=$VERSION|g" "$file"
               echo "Updated $file"
             fi
           done
@@ -50,6 +61,6 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add index.html coming-soon.html organizational-chart.html
+          git add index.html pub/pages/coming-soon.html pub/pages/organizational-chart.html pub/pages/events.html
           git commit -m "chore: update asset versions [skip ci]"
           git push

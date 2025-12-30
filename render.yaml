@@ -40,6 +40,45 @@ services:
     source: /shopian.html
     destination: /pub/pages/districts/shopian.html
   - type: rewrite
+    source: /hazratbal-shrine.html
+    destination: /pub/pages/pilgrimage/hazratbal-shrine.html
+  - type: rewrite
+    source: /shankaracharya-temple.html
+    destination: /pub/pages/pilgrimage/shankaracharya-temple.html
+  - type: rewrite
+    source: /kheer-bhawani-temple.html
+    destination: /pub/pages/pilgrimage/kheer-bhawani-temple.html
+  - type: rewrite
+    source: /charar-e-sharief.html
+    destination: /pub/pages/pilgrimage/charar-e-sharief.html
+  - type: rewrite
+    source: /martand-sun-temple.html
+    destination: /pub/pages/pilgrimage/martand-sun-temple.html
+  - type: rewrite
+    source: /amarnath-cave.html
+    destination: /pub/pages/pilgrimage/amarnath-cave.html
+  - type: rewrite
+    source: /jama-masjid-srinagar.html
+    destination: /pub/pages/pilgrimage/jama-masjid-srinagar.html
+  - type: rewrite
+    source: /dastgeer-sahib.html
+    destination: /pub/pages/pilgrimage/dastgeer-sahib.html
+  - type: rewrite
+    source: /makhdoom-sahib.html
+    destination: /pub/pages/pilgrimage/makhdoom-sahib.html
+  - type: rewrite
+    source: /aishmuqam-shrine.html
+    destination: /pub/pages/pilgrimage/aishmuqam-shrine.html
+  - type: rewrite
+    source: /khanqah-e-moula.html
+    destination: /pub/pages/pilgrimage/khanqah-e-moula.html
+  - type: rewrite
+    source: /baba-reshi-shrine.html
+    destination: /pub/pages/pilgrimage/baba-reshi-shrine.html
+  - type: rewrite
+    source: /ziyarat-naqshband-sahib.html
+    destination: /pub/pages/pilgrimage/ziyarat-naqshband-sahib.html
+  - type: rewrite
     source: /coming-soon.html
     destination: /pub/pages/coming-soon.html
   - type: rewrite

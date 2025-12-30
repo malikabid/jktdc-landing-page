@@ -147,8 +147,36 @@
 
 .place-card-content p {
   color: #666;
-  line-height: 1.6;
+  line-height: 1.8;
   font-size: 0.95rem;
+}
+
+/* Card icon styles for religious practice/feature cards */
+.card-icon {
+  margin-top: 20px;
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Info list styles */
+.info-list {
+  margin: 20px 0;
+  padding-left: 30px;
+  line-height: 1.8;
+}
+
+.info-list li {
+  margin-bottom: 10px;
+  color: #555;
+  line-height: 1.8;
+}
+
+/* District info section paragraphs */
+.district-info-section p {
+  line-height: 1.8;
+  color: #555;
 }
 
 /* ==================== RESPONSIVE STYLES ==================== */

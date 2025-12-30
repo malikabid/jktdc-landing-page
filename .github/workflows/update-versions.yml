@@ -2,7 +2,7 @@ name: Update Asset Versions
 
 on:
   push:
-    branches: [main]
+    branches: [main, staging]
     paths:
       - "pub/css/**"
       - "pub/js/**"

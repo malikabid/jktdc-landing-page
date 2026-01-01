@@ -288,12 +288,12 @@ body {
   font-weight: 400;
   font-size: 1.0625rem;
   white-space: nowrap;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .navbar-list > li:hover > a {
-  background-color: var(--navbar-hover);
-  color: white;
+  background-color: #fff;
+  color: var(--navbar-bg);
 }
 
 /* Mega Menu Dropdown styling */
@@ -366,11 +366,11 @@ body {
 
 /* Active State */
 .navbar-list > li.active {
-  background-color: var(--navbar-hover);
+  background-color: #fff;
 }
 
 .navbar-list > li.active > a {
-  color: var(--text-light);
+  color: var(--navbar-bg);
 }
 
 /* ==================== RESPONSIVE STYLES ==================== */

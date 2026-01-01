@@ -6,6 +6,16 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(coming-soon|events|organizational-chart|header|footer)\.html$ /pub/pages/$1.html [L]
 
+# Rewrite rules for district pages (serve from pub/pages/districts)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(srinagar|anantnag|baramulla|budgam|bandipora|ganderbal|kupwara|kulgam|pulwama|shopian)\.html$ /pub/pages/districts/$1.html [L]
+
+# Rewrite rules for pilgrimage pages (serve from pub/pages/pilgrimage)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(hazratbal-shrine|shankaracharya-temple|kheer-bhawani-temple|charar-e-sharief|martand-sun-temple|amarnath-cave|jama-masjid-srinagar|dastgeer-sahib|makhdoom-sahib|aishmuqam-shrine|khanqah-e-moula|baba-reshi-shrine|ziyarat-naqshband-sahib)\.html$ /pub/pages/pilgrimage/$1.html [L]
+
 #RewriteCond %{REQUEST_URI} !^/coming-soon/
 #RewriteCond %{REQUEST_URI} !^/pub/
 #RewriteCond %{REQUEST_FILENAME} !-f

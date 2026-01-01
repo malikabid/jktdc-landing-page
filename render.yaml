@@ -119,6 +119,9 @@ services:
     source: /burzahom-site.html
     destination: /pub/pages/monuments/burzahom-archaeological-site.html
   - type: redirect
+    source: /adventure-tourism.html
+    destination: /pub/pages/adventure-tourism.html
+  - type: redirect
     source: /coming-soon.html
     destination: /pub/pages/coming-soon.html
   - type: redirect

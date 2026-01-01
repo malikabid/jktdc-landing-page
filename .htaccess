@@ -16,6 +16,23 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(hazratbal-shrine|shankaracharya-temple|kheer-bhawani-temple|charar-e-sharief|martand-sun-temple|amarnath-cave|jama-masjid-srinagar|dastgeer-sahib|makhdoom-sahib|aishmuqam-shrine|khanqah-e-moula|baba-reshi-shrine|ziyarat-naqshband-sahib)\.html$ /pub/pages/pilgrimage/$1.html [L]
 
+# Rewrite rules for monument pages (serve from pub/pages/monuments)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^martand-temple\.html$ /pub/pages/monuments/martand-sun-temple.html [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(pari-mahal|hari-parbat-fort|shalimar-bagh|nishat-bagh|chashme-shahi|achabal-gardens|verinag-springs|pathar-masjid|shah-hamdan-mosque|avantipur-ruins|awantiswami-temple)\.html$ /pub/pages/monuments/$1.html [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^jama-masjid\.html$ /pub/pages/monuments/jama-masjid-srinagar.html [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^burzahom-site\.html$ /pub/pages/monuments/burzahom-archaeological-site.html [L]
+
 #RewriteCond %{REQUEST_URI} !^/coming-soon/
 #RewriteCond %{REQUEST_URI} !^/pub/
 #RewriteCond %{REQUEST_FILENAME} !-f

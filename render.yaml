@@ -77,6 +77,48 @@ services:
     source: /ziyarat-naqshband-sahib.html
     destination: /pub/pages/pilgrimage/ziyarat-naqshband-sahib.html
   - type: redirect
+    source: /martand-temple.html
+    destination: /pub/pages/monuments/martand-sun-temple.html
+  - type: redirect
+    source: /pari-mahal.html
+    destination: /pub/pages/monuments/pari-mahal.html
+  - type: redirect
+    source: /hari-parbat-fort.html
+    destination: /pub/pages/monuments/hari-parbat-fort.html
+  - type: redirect
+    source: /shalimar-bagh.html
+    destination: /pub/pages/monuments/shalimar-bagh.html
+  - type: redirect
+    source: /nishat-bagh.html
+    destination: /pub/pages/monuments/nishat-bagh.html
+  - type: redirect
+    source: /chashme-shahi.html
+    destination: /pub/pages/monuments/chashme-shahi.html
+  - type: redirect
+    source: /achabal-gardens.html
+    destination: /pub/pages/monuments/achabal-gardens.html
+  - type: redirect
+    source: /verinag-springs.html
+    destination: /pub/pages/monuments/verinag-springs.html
+  - type: redirect
+    source: /pathar-masjid.html
+    destination: /pub/pages/monuments/pathar-masjid.html
+  - type: redirect
+    source: /shah-hamdan-mosque.html
+    destination: /pub/pages/monuments/shah-hamdan-mosque.html
+  - type: redirect
+    source: /jama-masjid.html
+    destination: /pub/pages/monuments/jama-masjid-srinagar.html
+  - type: redirect
+    source: /avantipur-ruins.html
+    destination: /pub/pages/monuments/avantipur-ruins.html
+  - type: redirect
+    source: /awantiswami-temple.html
+    destination: /pub/pages/monuments/awantiswami-temple.html
+  - type: redirect
+    source: /burzahom-site.html
+    destination: /pub/pages/monuments/burzahom-archaeological-site.html
+  - type: redirect
     source: /coming-soon.html
     destination: /pub/pages/coming-soon.html
   - type: redirect

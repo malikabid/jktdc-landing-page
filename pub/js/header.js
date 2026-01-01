@@ -215,13 +215,26 @@ async function initialize() {
         const currentPath = window.location.pathname;
         const currentPathWithoutSlash = currentPath.endsWith('/') ? currentPath.slice(0, -1) : currentPath;
         
+        // Extract filename from current path for comparison
+        const currentFilename = currentPath.split('/').pop() || 'index.html';
+        
         // Don't set active state on coming-soon page
         if (!currentPathWithoutSlash.includes('coming-soon')) {
             document.querySelectorAll('.navbar-list li a').forEach(link => {
                 const href = link.getAttribute('href');
                 const hrefWithoutSlash = href.endsWith('/') ? href.slice(0, -1) : href;
                 
-                if (href !== '#' && (hrefWithoutSlash === currentPathWithoutSlash || hrefWithoutSlash === '/' && currentPathWithoutSlash === '')) {
+                // Extract filename from href for comparison
+                const hrefFilename = href.split('/').pop();
+                
+                // Check for exact path match OR filename match (handles both /page.html and /pub/pages/page.html)
+                const isMatch = href !== '#' && (
+                    hrefWithoutSlash === currentPathWithoutSlash || 
+                    (hrefFilename && hrefFilename === currentFilename) ||
+                    (hrefWithoutSlash === '/' && currentPathWithoutSlash === '')
+                );
+                
+                if (isMatch) {
                     link.parentElement.classList.add('active');
 
                     // Find parent menu item and add active class

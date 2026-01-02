@@ -4,7 +4,7 @@ RewriteEngine On
 # Rewrite rules for HTML pages (serve from pub/pages)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(coming-soon|events|organizational-chart|header|footer|adventure-tourism)\.html$ /pub/pages/$1.html [L]
+RewriteRule ^(coming-soon|notifications|events|organizational-chart|header|footer|adventure-tourism)\.html$ /pub/pages/$1.html [L]
 
 # Rewrite rules for district pages (serve from pub/pages/districts)
 RewriteCond %{REQUEST_FILENAME} !-f

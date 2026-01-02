@@ -126,47 +126,10 @@
                 <h2>Notifications and Announcements</h2>
               </div>
               <div class="scrollable-content" id="notifications-scroll">
-                <div class="notification-item">
-                  <span class="icon">🔔</span>
-                  <p>Online booking for Gulmarg Gondola Phase 1 and Phase 2 tickets now available through the official tourism portal.</p>
-                </div>
-
-                <div class="notification-item">
-                  <span class="icon">🔔</span>
-                  <span class="icon">👉</span>
-                  <p>Tourist advisory: Due to heavy snowfall, visitors are advised to check weather conditions before traveling to higher altitude destinations.</p>
-                </div>
-
-                <div class="notification-item">
-                  <span class="icon">🔔</span>
-                  <span class="icon">👉</span>
-                  <p>Winter sports festival scheduled for December 20-25, 2025 at Gulmarg. Registration open for skiing, snowboarding, and ice skating competitions.</p>
-                </div>
-
-                <div class="notification-item">
-                  <span class="icon">🔔</span>
-                  <p>New heritage walk initiative launched covering Mughal gardens, old city markets, and historic monuments. Guided tours available daily from 10 AM to 4 PM.</p>
-                </div>
-
-                <div class="notification-item">
-                  <span class="icon">🔔</span>
-                  <span class="icon">👉</span>
-                  <p>Tourism department announces special packages for domestic and international tourists visiting Kashmir during the winter season. Early bird discounts available.</p>
-                </div>
-
-                <div class="notification-item">
-                  <span class="icon">🔔</span>
-                  <p>Important notice: All tourist vehicles must carry snow chains when traveling to Gulmarg, Pahalgam, and Sonamarg during winter months.</p>
-                </div>
-
-                <div class="notification-item">
-                  <span class="icon">🔔</span>
-                  <span class="icon">👉</span>
-                  <p>Shikara ride timings at Dal Lake extended until 7 PM. Evening packages with traditional Kashmiri tea now available.</p>
-                </div>
+                <!-- Notifications will be loaded dynamically from JSON -->
               </div>
               <div class="notification-action">
-                <a href="#" class="view-all-link">View All Notifications</a>
+                <a href="/notifications.html" class="view-all-link">View All Notifications</a>
               </div>
             </div>
 
@@ -357,13 +320,15 @@
   <script src="pub/js/header.js?v=764e0ba"></script>
   <script src="pub/js/slider.js?v=764e0ba"></script>
   <script src="pub/js/notifications-scroll.js?v=764e0ba"></script>
+  <script src="pub/js/notifications-manager.js?v=764e0ba"></script>
   <script src="pub/js/service-cards-loader.js?v=764e0ba"></script>
   <script src="pub/js/events-manager.js?v=764e0ba"></script>
   <script src="pub/js/video-modal.js?v=764e0ba"></script>
   
   <script>
-    // Initialize homepage events when DOM is ready
+    // Initialize homepage notifications and events when DOM is ready
     document.addEventListener('DOMContentLoaded', async function() {
+      await window.notificationsManager.initializeHomepage();
       await window.eventsManager.initializeHomepage();
       
       // Preserve skipComingSoon parameter in View All Events link

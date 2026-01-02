@@ -119,6 +119,54 @@ services:
     source: /burzahom-site.html
     destination: /pub/pages/monuments/burzahom-archaeological-site.html
   - type: redirect
+    source: /dal-lake.html
+    destination: /pub/pages/places/dal-lake.html
+  - type: redirect
+    source: /gulmarg.html
+    destination: /pub/pages/places/gulmarg.html
+  - type: redirect
+    source: /pahalgam.html
+    destination: /pub/pages/places/pahalgam.html
+  - type: redirect
+    source: /sonamarg.html
+    destination: /pub/pages/places/sonamarg.html
+  - type: redirect
+    source: /mughal-gardens.html
+    destination: /pub/pages/places/mughal-gardens.html
+  - type: redirect
+    source: /doodhpathri.html
+    destination: /pub/pages/places/doodhpathri.html
+  - type: redirect
+    source: /yusmarg.html
+    destination: /pub/pages/places/yusmarg.html
+  - type: redirect
+    source: /betaab-valley.html
+    destination: /pub/pages/places/betaab-valley.html
+  - type: redirect
+    source: /aru-valley.html
+    destination: /pub/pages/places/aru-valley.html
+  - type: redirect
+    source: /manasbal-lake.html
+    destination: /pub/pages/places/manasbal-lake.html
+  - type: redirect
+    source: /wular-lake.html
+    destination: /pub/pages/places/wular-lake.html
+  - type: redirect
+    source: /gurez-valley.html
+    destination: /pub/pages/places/gurez-valley.html
+  - type: redirect
+    source: /kokernag.html
+    destination: /pub/pages/places/kokernag.html
+  - type: redirect
+    source: /verinag.html
+    destination: /pub/pages/places/verinag.html
+  - type: redirect
+    source: /dachigam-national-park.html
+    destination: /pub/pages/places/dachigam-national-park.html
+  - type: redirect
+    source: /sinthan-top.html
+    destination: /pub/pages/places/sinthan-top.html
+  - type: redirect
     source: /adventure-tourism.html
     destination: /pub/pages/adventure-tourism.html
   - type: redirect

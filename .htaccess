@@ -33,6 +33,11 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^burzahom-site\.html$ /pub/pages/monuments/burzahom-archaeological-site.html [L]
 
+# Rewrite rules for places to visit (serve from pub/pages/places)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(dal-lake|gulmarg|pahalgam|sonamarg|mughal-gardens|doodhpathri|yusmarg|betaab-valley|aru-valley|manasbal-lake|wular-lake|gurez-valley|kokernag|verinag|dachigam-national-park|sinthan-top)\.html$ /pub/pages/places/$1.html [L]
+
 #RewriteCond %{REQUEST_URI} !^/coming-soon/
 #RewriteCond %{REQUEST_URI} !^/pub/
 #RewriteCond %{REQUEST_FILENAME} !-f

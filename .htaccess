@@ -33,6 +33,10 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^burzahom-site\.html$ /pub/pages/monuments/burzahom-archaeological-site.html [L]
 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(sps-museum-srinagar|saqafat-ghar-sopore)\.html$ /pub/pages/monuments/$1.html [L]
+
 # Rewrite rules for places to visit (serve from pub/pages/places)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

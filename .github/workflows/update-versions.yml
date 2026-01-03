@@ -18,6 +18,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Update version numbers
         run: |
@@ -63,4 +64,5 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add index.html pub/pages/coming-soon.html pub/pages/organizational-chart.html pub/pages/events.html
           git commit -m "chore: update asset versions [skip ci]"
-          git push
+          git pull --rebase origin ${{ github.ref_name }} || true
+          git push origin HEAD:${{ github.ref_name }}

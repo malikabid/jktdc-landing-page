@@ -119,6 +119,12 @@ services:
     source: /burzahom-site.html
     destination: /pub/pages/monuments/burzahom-archaeological-site.html
   - type: redirect
+    source: /sps-museum-srinagar.html
+    destination: /pub/pages/monuments/sps-museum-srinagar.html
+  - type: redirect
+    source: /saqafat-ghar-sopore.html
+    destination: /pub/pages/monuments/saqafat-ghar-sopore.html
+  - type: redirect
     source: /dal-lake.html
     destination: /pub/pages/places/dal-lake.html
   - type: redirect

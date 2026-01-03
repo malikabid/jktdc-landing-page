@@ -1247,6 +1247,55 @@ body {
   text-align: center;
 }
 
+.social-links {
+  margin-bottom: 20px;
+}
+
+.social-links h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  color: var(--text-light);
+  font-size: 2rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.social-icon:hover {
+  background: var(--secondary-color);
+  color: var(--text-light);
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  border-color: var(--text-light);
+}
+
+.social-icon i {
+  transition: transform 0.3s ease;
+}
+
+.social-icon:hover i {
+  transform: scale(1.15);
+}
+
 .footer-bottom p {
   font-size: 0.9rem;
   color: #cbd5e0;

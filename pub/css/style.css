@@ -1461,6 +1461,41 @@ body {
   color: #2d3748;
 }
 
+/* Notification Priority Styles */
+.notification-item.priority-critical {
+  border-left-color: #dc2626;
+  background: #fef2f2;
+}
+
+.notification-item.priority-critical:hover {
+  background: #fee2e2;
+}
+
+.notification-item.priority-high {
+  border-left-color: var(--secondary-color);
+  background: #fff7ed;
+}
+
+.notification-item.priority-high:hover {
+  background: #ffedd5;
+}
+
+.notification-item.priority-medium {
+  border-left-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.notification-item.priority-medium:hover {
+  background: #dbeafe;
+}
+
+.no-notifications {
+  text-align: center;
+  padding: 20px;
+  color: #718096;
+  font-style: italic;
+}
+
 /* Event Items */
 .event-item {
   display: flex;

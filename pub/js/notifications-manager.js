@@ -33,10 +33,13 @@ class NotificationsManager {
   // Filter active notifications (today is between publish and expiry date)
   getActiveNotifications() {
     const today = this.getToday();
-    return this.notifications.filter(notification => {
+    console.log('Today:', today.toISOString());
+    const active = this.notifications.filter(notification => {
       const publishDate = this.parseDate(notification.publishDate);
       const expiryDate = this.parseDate(notification.expiryDate);
-      return today >= publishDate && today <= expiryDate;
+      const isActive = today >= publishDate && today <= expiryDate;
+      console.log(`Notification ${notification.id}: publish=${publishDate.toISOString()}, expiry=${expiryDate.toISOString()}, active=${isActive}`);
+      return isActive;
     }).sort((a, b) => {
       // Sort by priority first, then by publish date (newest first)
       const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
@@ -44,6 +47,8 @@ class NotificationsManager {
       if (priorityDiff !== 0) return priorityDiff;
       return this.parseDate(b.publishDate) - this.parseDate(a.publishDate);
     });
+    console.log('Total active notifications:', active.length);
+    return active;
   }
 
   // Filter notifications by priority
@@ -141,13 +146,9 @@ class NotificationsManager {
   async initializeNotificationsPage() {
     await this.fetchNotifications();
     
-    const criticalNotifications = this.getNotificationsByPriority('critical');
-    const highNotifications = this.getNotificationsByPriority('high');
-    const mediumNotifications = this.getNotificationsByPriority('medium');
-
-    this.renderNotifications(criticalNotifications, 'critical-notifications', true);
-    this.renderNotifications(highNotifications, 'high-notifications', true);
-    this.renderNotifications(mediumNotifications, 'medium-notifications', true);
+    const allNotifications = this.getActiveNotifications();
+    console.log('Active notifications:', allNotifications.length, allNotifications);
+    this.renderNotifications(allNotifications, 'all-notifications', true);
   }
 }
 

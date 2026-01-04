@@ -188,6 +188,14 @@ async function initialize() {
             let link = e.target.closest('a');
             if (!link) return;
             
+            // Check if this is a submenu link (inside a ul)
+            const isSubmenuLink = link.closest('.navbar-list > li > ul');
+            
+            // If it's a submenu link, allow normal navigation
+            if (isSubmenuLink) {
+                return;
+            }
+            
             let menuItem = link.closest('.navbar-list > li');
             if (!menuItem || menuItem.classList.contains('more-menu')) return;
             

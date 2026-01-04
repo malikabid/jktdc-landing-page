@@ -508,7 +508,8 @@ body {
   }
 
   .navbar-list > li:hover > a {
-    background-color: var(--navbar-hover);
+    background-color: #fff;
+    color: var(--navbar-bg);
   }
 
   .navbar-list > li > ul {
@@ -516,7 +517,7 @@ body {
     display: none;
     width: 100%;
     box-shadow: none;
-    background: rgba(242, 101, 34, 0.1);
+    background: #fff;
     min-width: 100%;
     transform: none;
     left: 0;
@@ -527,7 +528,7 @@ body {
   }
 
   .navbar-list ul li {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   }
 
   .navbar-list ul li:last-child {
@@ -535,7 +536,7 @@ body {
   }
 
   .navbar-list ul li a {
-    color: #fff;
+    color: #333;
     padding: 12px 20px 12px 40px;
     font-size: 0.85rem;
     background: transparent;
@@ -543,8 +544,8 @@ body {
   }
 
   .navbar-list ul li a:hover {
-    background-color: rgba(242, 101, 34, 0.3);
-    color: var(--text-light);
+    background-color: #f5f5f5;
+    color: var(--secondary-color);
     padding-left: 40px;
   }
 

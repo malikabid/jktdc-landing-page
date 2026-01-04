@@ -185,34 +185,12 @@
           </p>
         </div>
 
-        <!-- Critical Notifications Section -->
+        <!-- All Notifications Section -->
         <section class="notifications-section">
-          <div class="notifications-section-header critical">
-            <h2>
-              <i class="fas fa-exclamation-triangle"></i> Critical Notices
-            </h2>
+          <div class="notifications-section-header">
+            <h2><i class="fas fa-bell"></i> Notifications</h2>
           </div>
-          <div class="notifications-list" id="critical-notifications">
-            <p class="no-notifications">Loading notifications...</p>
-          </div>
-        </section>
-
-        <!-- High Priority Notifications Section -->
-        <section class="notifications-section">
-          <div class="notifications-section-header high">
-            <h2><i class="fas fa-bell"></i> Important Announcements</h2>
-          </div>
-          <div class="notifications-list" id="high-notifications">
-            <p class="no-notifications">Loading notifications...</p>
-          </div>
-        </section>
-
-        <!-- Medium Priority Notifications Section -->
-        <section class="notifications-section">
-          <div class="notifications-section-header medium">
-            <h2><i class="fas fa-info-circle"></i> General Information</h2>
-          </div>
-          <div class="notifications-list" id="medium-notifications">
+          <div class="notifications-list" id="all-notifications">
             <p class="no-notifications">Loading notifications...</p>
           </div>
         </section>
@@ -225,11 +203,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/pub/js/theme-switcher.js?v=764e0ba"></script>
     <script src="/pub/js/header.js?v=764e0ba"></script>
-    <script src="/pub/js/notifications-manager.js?v=764e0ba"></script>
+    <script src="/pub/js/notifications-manager.js?v=debug001"></script>
 
     <script>
       // Initialize notifications page when DOM is ready
       document.addEventListener("DOMContentLoaded", async function () {
+        console.log("DOM loaded, initializing notifications page...");
         await window.notificationsManager.initializeNotificationsPage();
       });
     </script>

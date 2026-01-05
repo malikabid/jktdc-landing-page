@@ -2,6 +2,10 @@
 (function() {
   'use strict';
 
+  // Check URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const hasGoLiveParam = urlParams.has('golive');
+
   // Configuration
   // SHA-256 hash of 'dotk2025' - To generate hash for new password:
   // Open browser console and run: crypto.subtle.digest('SHA-256', new TextEncoder().encode('your-password')).then(h => console.log(Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2, '0')).join('')))
@@ -82,9 +86,15 @@
 
   // Insert modals into page
   document.addEventListener('DOMContentLoaded', function() {
-    // Add both modals to body
+    // Add both modals to body first
     document.body.insertAdjacentHTML('beforeend', passwordModalHTML);
     document.body.insertAdjacentHTML('beforeend', thankYouModalHTML);
+
+    // Show/hide Go Live button based on URL parameter
+    const goLiveSection = document.getElementById('goLiveSection');
+    if (hasGoLiveParam && goLiveSection) {
+      goLiveSection.style.display = 'block';
+    }
 
     // Get elements
     const goLiveBtn = document.getElementById('goLiveBtn');
@@ -97,13 +107,15 @@
     const confirmBtn = document.getElementById('confirmGoLive');
 
     // Show password modal when Go Live button is clicked
-    goLiveBtn.addEventListener('click', function() {
-      passwordModal.classList.add('active');
-      passwordInput.value = '';
-      passwordInput.focus();
-      errorMessage.classList.remove('show');
-      passwordInput.classList.remove('error');
-    });
+    if (goLiveBtn) {
+      goLiveBtn.addEventListener('click', function() {
+        passwordModal.classList.add('active');
+        passwordInput.value = '';
+        passwordInput.focus();
+        errorMessage.classList.remove('show');
+        passwordInput.classList.remove('error');
+      });
+    }
 
     // Close password modal on cancel
     cancelBtn.addEventListener('click', function() {

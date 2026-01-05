@@ -31,6 +31,16 @@
   },
   {
     "id": 4,
+    "title": "Integrated Ski Course at Gulmarg and Sonmarg",
+    "description": "Professional ski courses and training programs at two premier skiing destinations in Kashmir.",
+    "startDate": "2026-01-06",
+    "endDate": "2026-01-06",
+    "location": "Gulmarg and Sonmarg",
+    "category": "Event",
+    "showOnHomepage": true
+  },
+  {
+    "id": 5,
     "title": "Asia's longest and highest Ski Drag Lift",
     "description": "Ski Drag Lift at Kongdori, Gulmarg executed by JKCCC and shall be put to commercial operation during the winter season 2025-26",
     "startDate": "2024-12-13",
@@ -42,7 +52,7 @@
     "showOnHomepage": false
   },
   {
-    "id": 5,
+    "id": 6,
     "title": "Water body conservation initiative at Kongdori",
     "description": "The Restoration and Beautification of the historic Seven Springs water body at Kongdori using scientific methods. Executed by JKCCC / RDD",
     "startDate": "2026-01-01",
@@ -52,7 +62,7 @@
     "showOnHomepage": false
   },
   {
-    "id": 6,
+    "id": 7,
     "title": "World's highest Revolving Restaurant / Multipurpose Hall",
     "description": "The multipurpose hall at Apharwat (G4) with an intake capacity of 70 Persons, situated at an altitude of 4390 meters (14,403 feet) above sea level.",
     "startDate": "2024-12-13",
@@ -62,7 +72,7 @@
     "showOnHomepage": false
   },
   {
-    "id": 7,
+    "id": 8,
     "title": "Winter Sports Festival 2025",
     "description": "Annual winter sports festival featuring skiing, snowboarding, and ice skating competitions. Registration open for all age groups.",
     "startDate": "2025-01-15",
@@ -72,7 +82,7 @@
     "showOnHomepage": false
   },
   {
-    "id": 8,
+    "id": 9,
     "title": "Kashmir Heritage Walk Series",
     "description": "Guided heritage walks covering Mughal gardens, old city markets, and historic monuments. Available daily from 10 AM to 4 PM.",
     "startDate": "2025-01-01",
@@ -82,7 +92,7 @@
     "showOnHomepage": false
   },
   {
-    "id": 9,
+    "id": 10,
     "title": "Tulip Festival 2025",
     "description": "Asia's largest tulip garden showcasing over 1.5 million tulips of 68 varieties in full bloom.",
     "startDate": "2025-03-25",
@@ -92,7 +102,7 @@
     "showOnHomepage": false
   },
   {
-    "id": 10,
+    "id": 11,
     "title": "Kashmir Food & Culture Festival",
     "description": "Celebrate the rich culinary heritage of Kashmir with traditional Wazwan, street food stalls, and cultural performances.",
     "startDate": "2024-11-10",

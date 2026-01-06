@@ -187,6 +187,9 @@ services:
   - type: redirect
     source: /organizational-chart.html
     destination: /pub/pages/organizational-chart.html
+  - type: redirect
+    source: /tenders.html
+    destination: /pub/pages/tenders.html
   headers:
   - path: /*
     name: Cache-Control

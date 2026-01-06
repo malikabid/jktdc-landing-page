@@ -1,4 +1,4 @@
-# Redirect all traffic to coming-soon page
+# URL rewriting rules for proper page routing
 RewriteEngine On
 
 # Rewrite rules for HTML pages (serve from pub/pages)
@@ -41,11 +41,6 @@ RewriteRule ^(sps-museum-srinagar|saqafat-ghar-sopore)\.html$ /pub/pages/monumen
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(dal-lake|gulmarg|pahalgam|sonamarg|mughal-gardens|doodhpathri|yusmarg|betaab-valley|aru-valley|manasbal-lake|wular-lake|gurez-valley|kokernag|verinag|dachigam-national-park|sinthan-top)\.html$ /pub/pages/places/$1.html [L]
-
-#RewriteCond %{REQUEST_URI} !^/coming-soon/
-#RewriteCond %{REQUEST_URI} !^/pub/
-#RewriteCond %{REQUEST_FILENAME} !-f
-#RewriteRule ^(.*)$ /coming-soon/ [R=302,L]
 
 # Set correct MIME types for JavaScript and CSS files
 AddType application/javascript .js

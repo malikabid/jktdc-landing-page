@@ -160,6 +160,13 @@
   width: 20px;
 }
 
+.tender-docs-contact-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
 .tender-documents {
   margin-top: 20px;
   padding: 20px;
@@ -183,7 +190,8 @@
 
 .documents-list {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -205,8 +213,7 @@
   background: var(--secondary-color);
   transform: translateX(5px);
 }
-
-.document-link i {
+0 .document-link i {
   font-size: 1rem;
 }
 
@@ -313,6 +320,11 @@
   .tender-meta {
     grid-template-columns: 1fr;
     gap: 10px;
+  }
+
+  .tender-docs-contact-wrapper {
+    grid-template-columns: 1fr;
+    gap: 15px;
   }
 
   .documents-list {

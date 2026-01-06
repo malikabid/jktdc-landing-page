@@ -160,8 +160,10 @@ class TendersManager {
             </div>
           </div>
 
-          ${documentsHtml}
-          ${contactHtml}
+          <div class="tender-docs-contact-wrapper">
+            ${documentsHtml}
+            ${contactHtml}
+          </div>
         </div>
       </div>
     `;

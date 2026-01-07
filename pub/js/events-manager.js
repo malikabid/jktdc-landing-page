@@ -137,10 +137,17 @@ class EventsManager {
     }
   }
 
-  // Initialize homepage events (current + upcoming only)
+  // Initialize homepage events (current + upcoming, or 3 most recent if none active)
   async initializeHomepage() {
     await this.fetchEvents();
-    const activeEvents = this.getActiveEvents();
+    let activeEvents = this.getActiveEvents();
+    
+    // If no active events, show 3 most recent completed events
+    if (activeEvents.length === 0) {
+      const completedEvents = this.getCompletedEvents();
+      activeEvents = completedEvents.slice(0, 3);
+    }
+    
     this.renderEvents(activeEvents, 'events-scroll');
   }
 

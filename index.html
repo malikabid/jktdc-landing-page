@@ -9,14 +9,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <!-- Add the following line to load OpenSansRegular font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap" />
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
-  <link rel="stylesheet" href="pub/css/theme.css?v=1.0.0" />
-  <link rel="stylesheet" href="pub/css/style.css?v=1.0.0" />
+  <link rel="stylesheet" href="pub/css/theme.css?v=c74e5b4" />
+  <link rel="stylesheet" href="pub/css/style.css?v=c74e5b4" />
+  
+  <!-- Preload first hero image for faster initial render -->
+  <link rel="preload" as="image" href="pub/images/slider/photo_3.webp" type="image/webp" />
 </head>
 
 <body>
@@ -28,16 +31,28 @@
   <section class="hero-slider">
     <div class="slider-container">
       <div class="slide">
-        <img src="pub/images/slider/slide-1.webp" alt="Kashmir Tourism - Slide 1" />
+        <img src="pub/images/slider/photo_3.webp" alt="Kashmir Tourism - Beautiful Valley View" width="2153" height="1420" />
       </div>
       <div class="slide">
-        <img src="pub/images/slider/slide-2.webp" alt="Kashmir Tourism - Slide 2" />
+        <img src="pub/images/slider/photo_4.webp" alt="Kashmir Tourism - Paradise View" loading="lazy" width="2158" height="1336" />
       </div>
       <div class="slide">
-        <img src="pub/images/slider/slide-3.webp" alt="Kashmir Tourism - Slide 3" />
+        <img src="pub/images/slider/slide-02.jpeg" alt="Kashmir Tourism - Slide 2" loading="lazy" />
       </div>
       <div class="slide">
-        <img src="pub/images/slider/slide-4.webp" alt="Kashmir Tourism - Slide 4" />
+        <img src="pub/images/slider/photo_1.webp" alt="Kashmir Tourism - Scenic Landscape" loading="lazy" width="2162" height="1356" />
+      </div>
+      <div class="slide">
+        <img src="pub/images/slider/slide-04.jpeg" alt="Kashmir Tourism - Slide 4" loading="lazy" />
+      </div>
+      <div class="slide">
+        <img src="pub/images/slider/photo_2.webp" alt="Kashmir Tourism - Mountain Vista" loading="lazy" width="2141" height="1291" />
+      </div>
+      <div class="slide">
+        <img src="pub/images/slider/slide-01.jpeg" alt="Kashmir Tourism - Slide 1" loading="lazy" />
+      </div>
+      <div class="slide">
+        <img src="pub/images/slider/slide-03.jpeg" alt="Kashmir Tourism - Slide 3" loading="lazy" />
       </div>
     </div>
   </section>
@@ -69,10 +84,10 @@
             <!-- Card 2: Financial Commissioner -->
             <div class="official-card">
               <div class="card-image">
-                <img src="/pub/images/officials/commisioner.webp" alt="Dr. Ashish Chandra Verma" />
+                <img src="/pub/images/officials/commisioner.webp" alt="Dr. Ashish Chandra Verma (IAS)" />
               </div>
               <div class="card-content">
-                <h3>Dr. Ashish Chandra Verma</h3>
+                <h3>Dr. Ashish Chandra Verma (IAS)</h3>
                 <p class="designation">Financial Commissioner (Additional Chief Secretary), Tourism Department</p>
               </div>
             </div>
@@ -88,6 +103,52 @@
               </div>
             </div>
           </div>
+
+          <!-- Related Links Section -->
+          <div class="related-links-section">
+            <div class="related-links-header">
+              <i class="fas fa-link"></i>
+              <h3>Related Links</h3>
+            </div>
+            <div class="related-links-list">
+              <a
+                href="https://www.jammukashmircablecar.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="related-link-item"
+              >
+                <i class="fas fa-external-link-alt"></i>
+                <span>J&K Cable Car Corporation</span>
+              </a>
+              <a
+                href="https://jammutourism.jk.gov.in/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="related-link-item"
+              >
+                <i class="fas fa-external-link-alt"></i>
+                <span>Jammu Tourism</span>
+              </a>
+              <a
+                href="https://www.jktdc.co.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="related-link-item"
+              >
+                <i class="fas fa-external-link-alt"></i>
+                <span>JKTDC</span>
+              </a>
+              <a
+                href="http://www.skyviewbyempyrean.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="related-link-item"
+              >
+                <i class="fas fa-external-link-alt"></i>
+                <span>Patnitop Ropeway</span>
+              </a>
+            </div>
+          </div>
         </aside>
 
         <!-- Right Content: Main Content -->
@@ -99,47 +160,10 @@
                 <h2>Notifications and Announcements</h2>
               </div>
               <div class="scrollable-content" id="notifications-scroll">
-                <div class="notification-item">
-                  <span class="icon">🔔</span>
-                  <p>Online booking for Gulmarg Gondola Phase 1 and Phase 2 tickets now available through the official tourism portal.</p>
-                </div>
-
-                <div class="notification-item">
-                  <span class="icon">🔔</span>
-                  <span class="icon">👉</span>
-                  <p>Tourist advisory: Due to heavy snowfall, visitors are advised to check weather conditions before traveling to higher altitude destinations.</p>
-                </div>
-
-                <div class="notification-item">
-                  <span class="icon">🔔</span>
-                  <span class="icon">👉</span>
-                  <p>Winter sports festival scheduled for December 20-25, 2025 at Gulmarg. Registration open for skiing, snowboarding, and ice skating competitions.</p>
-                </div>
-
-                <div class="notification-item">
-                  <span class="icon">🔔</span>
-                  <p>New heritage walk initiative launched covering Mughal gardens, old city markets, and historic monuments. Guided tours available daily from 10 AM to 4 PM.</p>
-                </div>
-
-                <div class="notification-item">
-                  <span class="icon">🔔</span>
-                  <span class="icon">👉</span>
-                  <p>Tourism department announces special packages for domestic and international tourists visiting Kashmir during the winter season. Early bird discounts available.</p>
-                </div>
-
-                <div class="notification-item">
-                  <span class="icon">🔔</span>
-                  <p>Important notice: All tourist vehicles must carry snow chains when traveling to Gulmarg, Pahalgam, and Sonamarg during winter months.</p>
-                </div>
-
-                <div class="notification-item">
-                  <span class="icon">🔔</span>
-                  <span class="icon">👉</span>
-                  <p>Shikara ride timings at Dal Lake extended until 7 PM. Evening packages with traditional Kashmiri tea now available.</p>
-                </div>
+                <!-- Notifications will be loaded dynamically from JSON -->
               </div>
               <div class="notification-action">
-                <a href="#" class="view-all-link">View All Notifications</a>
+                <a href="/notifications.html" class="view-all-link">View All Notifications</a>
               </div>
             </div>
 
@@ -158,6 +182,13 @@
                     <h3>Asia's longest and highest Ski Drag Lift</h3>
                     <p>Ski Drag Kift at Kongdori, Gulmarg executed by JKCCC and shall be put to commercial operation
                       during the winter season 2025-26</p>
+                    <div class="video-thumbnail" data-video-url="https://www.youtube.com/embed/QYnHwzMTwqo">
+                      <img src="https://img.youtube.com/vi/QYnHwzMTwqo/hqdefault.jpg" alt="Ski Drag Lift Video" />
+                      <div class="play-overlay">
+                        <i class="fas fa-play-circle"></i>
+                      </div>
+                      <div class="video-label">Watch Video</div>
+                    </div>
                   </div>
                 </div>
 
@@ -230,7 +261,7 @@
                 </div>
               </div>
               <div class="notification-action">
-                <a href="#" class="view-all-link">View All Events</a>
+                <a href="/events.html" class="view-all-link" id="view-all-events-link">View All Events</a>
               </div>
             </div>
           </div>
@@ -261,62 +292,41 @@
       <div class="carousel-wrapper">
         <div class="carousel-slider">
           <div class="carousel-slide">
-            <div class="slide-image" style="background-image: url('/pub/images/slider/slide-1.webp')">
+            <div class="slide-image" style="background-image: url('/pub/images/adventure_cover.webp')">
               <div class="slide-overlay">
-                <h3>ADVENTURE</h3>
-                <p>Tourism in J&K</p>
-                <button class="carousel-btn">GET MORE INFORMATION</button>
+                <h3>ADVENTURE TOURISM</h3>
+                <p>Experience Thrilling Activities in Kashmir</p>
+                <a href="/pub/pdf/adventure_tourism_brochure.pdf" target="_blank" class="carousel-btn">GET MORE INFORMATION</a>
               </div>
             </div>
           </div>
 
           <div class="carousel-slide">
-            <div class="slide-image" style="background-image: url('/pub/images/slider/slide-2.webp')">
+            <div class="slide-image" style="background-image: url('/pub/images/crafts_cover.webp')">
               <div class="slide-overlay">
-                <h3>FAIRS &</h3>
-                <p>FESTIVALS</p>
-                <span class="subtitle">of Kashmir</span>
-                <button class="carousel-btn">GET MORE INFORMATION</button>
+                <h3>KASHMIRI CRAFTS</h3>
+                <p>Discover Traditional Arts & Handicrafts</p>
+                <a href="/pub/pdf/crafts_trifold_brochure.pdf" target="_blank" class="carousel-btn">GET MORE INFORMATION</a>
               </div>
             </div>
           </div>
 
           <div class="carousel-slide">
-            <div class="slide-image" style="background-image: url('/pub/images/slider/slide-3.webp')">
+            <div class="slide-image" style="background-image: url('/pub/images/flavours_cover.webp')">
               <div class="slide-overlay">
-                <h3>LAKES</h3>
-                <p>& Water Bodies in Kashmir</p>
-                <button class="carousel-btn">GET MORE INFORMATION</button>
+                <h3>FLAVOURS OF KASHMIR</h3>
+                <p>Savor the Rich Culinary Heritage</p>
+                <a href="/pub/pdf/flavours_kashmir_brochure.pdf" target="_blank" class="carousel-btn">GET MORE INFORMATION</a>
               </div>
             </div>
           </div>
 
           <div class="carousel-slide">
-            <div class="slide-image" style="background-image: url('/pub/images/slider/slide-4.webp')">
+            <div class="slide-image" style="background-image: url('/pub/images/nature_cover.webp')">
               <div class="slide-overlay">
-                <h3>GOLF TOURISM</h3>
-                <p>Kashmir</p>
-                <button class="carousel-btn">GET MORE INFORMATION</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="carousel-slide">
-            <div class="slide-image" style="background-image: url('/pub/images/slider/slide-1.webp')">
-              <div class="slide-overlay">
-                <h3>MOUNTAIN</h3>
-                <p>Trekking Expeditions</p>
-                <button class="carousel-btn">GET MORE INFORMATION</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="carousel-slide">
-            <div class="slide-image" style="background-image: url('/pub/images/slider/slide-2.webp')">
-              <div class="slide-overlay">
-                <h3>CULTURAL</h3>
-                <p>Heritage Tours</p>
-                <button class="carousel-btn">GET MORE INFORMATION</button>
+                <h3>NATURE & WILDERNESS</h3>
+                <p>Explore the Natural Beauty of Kashmir</p>
+                <a href="/pub/pdf/nature_kashmir_brochure.pdf" target="_blank" class="carousel-btn">GET MORE INFORMATION</a>
               </div>
             </div>
           </div>
@@ -328,13 +338,44 @@
   <div id="footer-placeholder"></div>
   <!-- Add the following line to include the notification popup -->
 
+  <!-- Video Modal -->
+  <div id="videoModal" class="video-modal">
+    <div class="video-modal-content">
+      <span class="video-modal-close">&times;</span>
+      <div class="video-container">
+        <iframe id="videoPlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-  <script src="pub/js/theme-switcher.js?v=1.0.0"></script>
-  <script src="pub/js/header.js?v=1.0.0"></script>
-  <script src="pub/js/slider.js?v=1.0.0"></script>
-  <script src="pub/js/notifications-scroll.js?v=1.0.0"></script>
-  <script src="pub/js/service-cards-loader.js?v=1.0.0"></script>
+  <script src="pub/js/theme-switcher.js?v=c74e5b4"></script>
+  <script src="pub/js/header.js?v=c74e5b4"></script>
+  <script src="pub/js/slider.js?v=c74e5b4"></script>
+  <script src="pub/js/notifications-scroll.js?v=c74e5b4"></script>
+  <script src="pub/js/notifications-manager.js?v=c74e5b4"></script>
+  <script src="pub/js/service-cards-loader.js?v=c74e5b4"></script>
+  <script src="pub/js/events-manager.js?v=c74e5b4"></script>
+  <script src="pub/js/video-modal.js?v=c74e5b4"></script>
+  
+  <script>
+    // Initialize homepage notifications and events when DOM is ready
+    document.addEventListener('DOMContentLoaded', async function() {
+      await window.notificationsManager.initializeHomepage();
+      await window.eventsManager.initializeHomepage();
+      
+      // Preserve skipComingSoon parameter in View All Events link
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('skipComingSoon') === 'true') {
+        const viewAllLink = document.getElementById('view-all-events-link');
+        if (viewAllLink) {
+          const currentHref = viewAllLink.getAttribute('href');
+          viewAllLink.setAttribute('href', currentHref + '?skipComingSoon=true');
+        }
+      }
+    });
+  </script>
 </body>
 
 </html>

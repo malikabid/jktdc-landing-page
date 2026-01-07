@@ -1,0 +1,51 @@
+[
+  {
+    "id": 2,
+    "title": "Supply of Ski Equipment, Safety Gear & Uniforms",
+    "description": "Tender notice for supply of Ski Equipment, Safety Gear and Uniforms to the Directorate of Tourism, Kashmir. Interested suppliers with valid credentials are invited to submit their bids.",
+    "tenderNumber": "Acctts/07/DTK",
+    "publishDate": "2026-01-07",
+    "closingDate": "2026-01-25",
+    "estimatedValue": "₹15,00,000",
+    "category": "Sports Goods/Uniforms",
+    "status": "active",
+    "department": "Directorate of Tourism Kashmir",
+    "documents": [
+      {
+        "name": "Tender Notice and Technical Specifications",
+        "url": "/pub/tenders/ski_equipment_safety_gear_uniform.pdf",
+        "type": "pdf"
+      }
+    ],
+    "contactPerson": "Assistant Director (Procurement)",
+    "contactEmail": "dirtourism-kashmir@jk.gov.in",
+    "contactPhone": "+91 194 2502279"
+  },
+  {
+    "id": 1,
+    "title": "Supply of High Quality Skiing & Trekking Equipment",
+    "description": "Tender notice for supply of High Quality Skiing & Trekking Equipment to the Directorate of Tourism, Kashmir. Interested suppliers with valid credentials are invited to submit their bids.",
+    "tenderNumber": "Acctts/06/DTK ",
+    "publishDate": "2026-01-06",
+    "closingDate": "2026-01-22",
+    "estimatedValue": "₹10,00,000",
+    "category": "Sports Goods/Equipments",
+    "status": "active",
+    "department": "Directorate of Tourism Kashmir",
+    "documents": [
+      {
+        "name": "Tender Notice",
+        "url": "/pub/tenders/trekking_equipments.pdf",
+        "type": "pdf"
+      },
+      {
+        "name": "Technical Specifications",
+        "url": "/pub/tenders/tendernotice_trekking_equipments.pdf",
+        "type": "pdf"
+      }
+    ],
+    "contactPerson": "Assistant Director (Procurement)",
+    "contactEmail": "dirtourism-kashmir@jk.gov.in",
+    "contactPhone": "+91 194 2502279"
+  }
+]

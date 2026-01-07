@@ -1,16 +1,203 @@
 services:
-  - type: web
-    name: jktdc-landing-page
-    env: static
-    buildCommand: echo "No build required"
-    staticPublishPath: .
-    headers:
-      - path: /*
-        name: Cache-Control
-        value: public, max-age=0, must-revalidate
-      - path: /pub/js/*
-        name: Content-Type
-        value: application/javascript
-      - path: /pub/css/*
-        name: Content-Type
-        value: text/css
+- type: web
+  name: kashmirtourism
+  runtime: static
+  repo: https://github.com/malikabid/jktdc-landing-page
+  branch: staging
+  buildCommand: echo "No build required"
+  staticPublishPath: .
+  routes:
+  - type: redirect
+    source: /srinagar.html
+    destination: /pub/pages/districts/srinagar.html
+  - type: redirect
+    source: /anantnag.html
+    destination: /pub/pages/districts/anantnag.html
+  - type: redirect
+    source: /baramulla.html
+    destination: /pub/pages/districts/baramulla.html
+  - type: redirect
+    source: /budgam.html
+    destination: /pub/pages/districts/budgam.html
+  - type: redirect
+    source: /bandipora.html
+    destination: /pub/pages/districts/bandipora.html
+  - type: redirect
+    source: /ganderbal.html
+    destination: /pub/pages/districts/ganderbal.html
+  - type: redirect
+    source: /kupwara.html
+    destination: /pub/pages/districts/kupwara.html
+  - type: redirect
+    source: /kulgam.html
+    destination: /pub/pages/districts/kulgam.html
+  - type: redirect
+    source: /pulwama.html
+    destination: /pub/pages/districts/pulwama.html
+  - type: redirect
+    source: /shopian.html
+    destination: /pub/pages/districts/shopian.html
+  - type: redirect
+    source: /hazratbal-shrine.html
+    destination: /pub/pages/pilgrimage/hazratbal-shrine.html
+  - type: redirect
+    source: /shankaracharya-temple.html
+    destination: /pub/pages/pilgrimage/shankaracharya-temple.html
+  - type: redirect
+    source: /kheer-bhawani-temple.html
+    destination: /pub/pages/pilgrimage/kheer-bhawani-temple.html
+  - type: redirect
+    source: /charar-e-sharief.html
+    destination: /pub/pages/pilgrimage/charar-e-sharief.html
+  - type: redirect
+    source: /martand-sun-temple.html
+    destination: /pub/pages/pilgrimage/martand-sun-temple.html
+  - type: redirect
+    source: /amarnath-cave.html
+    destination: /pub/pages/pilgrimage/amarnath-cave.html
+  - type: redirect
+    source: /jama-masjid-srinagar.html
+    destination: /pub/pages/pilgrimage/jama-masjid-srinagar.html
+  - type: redirect
+    source: /dastgeer-sahib.html
+    destination: /pub/pages/pilgrimage/dastgeer-sahib.html
+  - type: redirect
+    source: /makhdoom-sahib.html
+    destination: /pub/pages/pilgrimage/makhdoom-sahib.html
+  - type: redirect
+    source: /aishmuqam-shrine.html
+    destination: /pub/pages/pilgrimage/aishmuqam-shrine.html
+  - type: redirect
+    source: /khanqah-e-moula.html
+    destination: /pub/pages/pilgrimage/khanqah-e-moula.html
+  - type: redirect
+    source: /baba-reshi-shrine.html
+    destination: /pub/pages/pilgrimage/baba-reshi-shrine.html
+  - type: redirect
+    source: /ziyarat-naqshband-sahib.html
+    destination: /pub/pages/pilgrimage/ziyarat-naqshband-sahib.html
+  - type: redirect
+    source: /martand-temple.html
+    destination: /pub/pages/monuments/martand-sun-temple.html
+  - type: redirect
+    source: /pari-mahal.html
+    destination: /pub/pages/monuments/pari-mahal.html
+  - type: redirect
+    source: /hari-parbat-fort.html
+    destination: /pub/pages/monuments/hari-parbat-fort.html
+  - type: redirect
+    source: /shalimar-bagh.html
+    destination: /pub/pages/monuments/shalimar-bagh.html
+  - type: redirect
+    source: /nishat-bagh.html
+    destination: /pub/pages/monuments/nishat-bagh.html
+  - type: redirect
+    source: /chashme-shahi.html
+    destination: /pub/pages/monuments/chashme-shahi.html
+  - type: redirect
+    source: /achabal-gardens.html
+    destination: /pub/pages/monuments/achabal-gardens.html
+  - type: redirect
+    source: /verinag-springs.html
+    destination: /pub/pages/monuments/verinag-springs.html
+  - type: redirect
+    source: /pathar-masjid.html
+    destination: /pub/pages/monuments/pathar-masjid.html
+  - type: redirect
+    source: /shah-hamdan-mosque.html
+    destination: /pub/pages/monuments/shah-hamdan-mosque.html
+  - type: redirect
+    source: /jama-masjid.html
+    destination: /pub/pages/monuments/jama-masjid-srinagar.html
+  - type: redirect
+    source: /avantipur-ruins.html
+    destination: /pub/pages/monuments/avantipur-ruins.html
+  - type: redirect
+    source: /awantiswami-temple.html
+    destination: /pub/pages/monuments/awantiswami-temple.html
+  - type: redirect
+    source: /burzahom-site.html
+    destination: /pub/pages/monuments/burzahom-archaeological-site.html
+  - type: redirect
+    source: /sps-museum-srinagar.html
+    destination: /pub/pages/monuments/sps-museum-srinagar.html
+  - type: redirect
+    source: /saqafat-ghar-sopore.html
+    destination: /pub/pages/monuments/saqafat-ghar-sopore.html
+  - type: redirect
+    source: /dal-lake.html
+    destination: /pub/pages/places/dal-lake.html
+  - type: redirect
+    source: /gulmarg.html
+    destination: /pub/pages/places/gulmarg.html
+  - type: redirect
+    source: /pahalgam.html
+    destination: /pub/pages/places/pahalgam.html
+  - type: redirect
+    source: /sonamarg.html
+    destination: /pub/pages/places/sonamarg.html
+  - type: redirect
+    source: /mughal-gardens.html
+    destination: /pub/pages/places/mughal-gardens.html
+  - type: redirect
+    source: /doodhpathri.html
+    destination: /pub/pages/places/doodhpathri.html
+  - type: redirect
+    source: /yusmarg.html
+    destination: /pub/pages/places/yusmarg.html
+  - type: redirect
+    source: /betaab-valley.html
+    destination: /pub/pages/places/betaab-valley.html
+  - type: redirect
+    source: /aru-valley.html
+    destination: /pub/pages/places/aru-valley.html
+  - type: redirect
+    source: /manasbal-lake.html
+    destination: /pub/pages/places/manasbal-lake.html
+  - type: redirect
+    source: /wular-lake.html
+    destination: /pub/pages/places/wular-lake.html
+  - type: redirect
+    source: /gurez-valley.html
+    destination: /pub/pages/places/gurez-valley.html
+  - type: redirect
+    source: /kokernag.html
+    destination: /pub/pages/places/kokernag.html
+  - type: redirect
+    source: /verinag.html
+    destination: /pub/pages/places/verinag.html
+  - type: redirect
+    source: /dachigam-national-park.html
+    destination: /pub/pages/places/dachigam-national-park.html
+  - type: redirect
+    source: /sinthan-top.html
+    destination: /pub/pages/places/sinthan-top.html
+  - type: redirect
+    source: /adventure-tourism.html
+    destination: /pub/pages/adventure-tourism.html
+  - type: redirect
+    source: /coming-soon.html
+    destination: /pub/pages/coming-soon.html
+  - type: redirect
+    source: /notifications.html
+    destination: /pub/pages/notifications.html
+  - type: redirect
+    source: /events.html
+    destination: /pub/pages/events.html
+  - type: redirect
+    source: /organizational-chart.html
+    destination: /pub/pages/organizational-chart.html
+  - type: redirect
+    source: /tenders.html
+    destination: /pub/pages/tenders.html
+  headers:
+  - path: /*
+    name: Cache-Control
+    value: public, max-age=0, must-revalidate
+  - path: /pub/css/*.css
+    name: Content-Type
+    value: text/css
+  - path: /pub/js/*.js
+    name: Content-Type
+    value: application/javascript; charset=utf-8
+  autoDeployTrigger: commit

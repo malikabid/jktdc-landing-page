@@ -1,3 +1,47 @@
+# URL rewriting rules for proper page routing
+RewriteEngine On
+
+# Rewrite rules for HTML pages (serve from pub/pages)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(coming-soon|notifications|events|organizational-chart|header|footer|adventure-tourism|tenders)\.html$ /pub/pages/$1.html [L]
+
+# Rewrite rules for district pages (serve from pub/pages/districts)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(srinagar|anantnag|baramulla|budgam|bandipora|ganderbal|kupwara|kulgam|pulwama|shopian)\.html$ /pub/pages/districts/$1.html [L]
+
+# Rewrite rules for pilgrimage pages (serve from pub/pages/pilgrimage)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(hazratbal-shrine|shankaracharya-temple|kheer-bhawani-temple|charar-e-sharief|martand-sun-temple|amarnath-cave|jama-masjid-srinagar|dastgeer-sahib|makhdoom-sahib|aishmuqam-shrine|khanqah-e-moula|baba-reshi-shrine|ziyarat-naqshband-sahib)\.html$ /pub/pages/pilgrimage/$1.html [L]
+
+# Rewrite rules for monument pages (serve from pub/pages/monuments)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^martand-temple\.html$ /pub/pages/monuments/martand-sun-temple.html [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(pari-mahal|hari-parbat-fort|shalimar-bagh|nishat-bagh|chashme-shahi|achabal-gardens|verinag-springs|pathar-masjid|shah-hamdan-mosque|avantipur-ruins|awantiswami-temple)\.html$ /pub/pages/monuments/$1.html [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^jama-masjid\.html$ /pub/pages/monuments/jama-masjid-srinagar.html [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^burzahom-site\.html$ /pub/pages/monuments/burzahom-archaeological-site.html [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(sps-museum-srinagar|saqafat-ghar-sopore)\.html$ /pub/pages/monuments/$1.html [L]
+
+# Rewrite rules for places to visit (serve from pub/pages/places)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(dal-lake|gulmarg|pahalgam|sonamarg|mughal-gardens|doodhpathri|yusmarg|betaab-valley|aru-valley|manasbal-lake|wular-lake|gurez-valley|kokernag|verinag|dachigam-national-park|sinthan-top|zabarwan-park)\.html$ /pub/pages/places/$1.html [L]
+
 # Set correct MIME types for JavaScript and CSS files
 AddType application/javascript .js
 AddType text/css .css

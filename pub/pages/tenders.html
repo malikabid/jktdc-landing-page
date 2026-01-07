@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tenders - Directorate of Tourism Kashmir</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap"
+    />
+    <link rel="stylesheet" href="/pub/css/theme.css?v=66aeb29" />
+    <link rel="stylesheet" href="/pub/css/style.css?v=66aeb29" />
+    <link rel="stylesheet" href="/pub/css/tenders.css?v=66aeb29" />
+  </head>
+
+  <body>
+    <!-- Include header -->
+    <div id="header-placeholder"></div>
+
+    <main class="main-content">
+      <div class="tenders-page-container">
+        <a href="/" class="back-to-home">
+          <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+
+        <div class="tenders-page-header">
+          <h1>Tenders</h1>
+          <p>
+            View active and closed tenders issued by Directorate of Tourism
+            Kashmir
+          </p>
+        </div>
+
+        <!-- Active Tenders Section -->
+        <section class="tenders-section">
+          <div class="tenders-section-header">
+            <h2><i class="fas fa-file-contract"></i> Active Tenders</h2>
+          </div>
+          <div class="tenders-list" id="active-tenders">
+            <p class="no-tenders">Loading tenders...</p>
+          </div>
+        </section>
+
+        <!-- Closed Tenders Section -->
+        <section class="tenders-section">
+          <div class="tenders-section-header">
+            <h2><i class="fas fa-archive"></i> Closed Tenders</h2>
+          </div>
+          <div class="tenders-list" id="closed-tenders">
+            <p class="no-tenders">Loading tenders...</p>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Include footer -->
+    <div id="footer-placeholder"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/pub/js/theme-switcher.js?v=66aeb29"></script>
+    <script src="/pub/js/header.js?v=66aeb29"></script>
+    <script src="/pub/js/tenders-manager.js?v=66aeb29"></script>
+
+    <script>
+      // Initialize tenders page when DOM is ready
+      document.addEventListener("DOMContentLoaded", async function () {
+        await window.tendersManager.initializeTendersPage();
+      });
+    </script>
+  </body>
+</html>

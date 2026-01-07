@@ -148,12 +148,11 @@ class EventsManager {
   async initializeEventsPage() {
     await this.fetchEvents();
     
-    const currentEvents = this.getCurrentEvents();
-    const upcomingEvents = this.getUpcomingEvents();
+    // Combine current and upcoming events
+    const activeEvents = this.getActiveEvents();
     const completedEvents = this.getCompletedEvents();
 
-    this.renderEvents(currentEvents, 'current-events');
-    this.renderEvents(upcomingEvents, 'upcoming-events');
+    this.renderEvents(activeEvents, 'upcoming-events');
     this.renderEvents(completedEvents, 'completed-events');
   }
 }

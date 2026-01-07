@@ -37,7 +37,7 @@ class TendersManager {
       const closingDate = this.parseDate(tender.closingDate);
       return closingDate >= today && tender.status === 'active';
     }).sort((a, b) => {
-      return this.parseDate(a.closingDate) - this.parseDate(b.closingDate);
+      return this.parseDate(b.publishDate) - this.parseDate(a.publishDate);
     });
   }
 
@@ -48,7 +48,7 @@ class TendersManager {
       const closingDate = this.parseDate(tender.closingDate);
       return closingDate < today || tender.status === 'closed';
     }).sort((a, b) => {
-      return this.parseDate(b.closingDate) - this.parseDate(a.closingDate);
+      return this.parseDate(b.publishDate) - this.parseDate(a.publishDate);
     });
   }
 

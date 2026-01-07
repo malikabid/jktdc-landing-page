@@ -40,7 +40,7 @@ RewriteRule ^(sps-museum-srinagar|saqafat-ghar-sopore)\.html$ /pub/pages/monumen
 # Rewrite rules for places to visit (serve from pub/pages/places)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(dal-lake|gulmarg|pahalgam|sonamarg|mughal-gardens|doodhpathri|yusmarg|betaab-valley|aru-valley|manasbal-lake|wular-lake|gurez-valley|kokernag|verinag|dachigam-national-park|sinthan-top)\.html$ /pub/pages/places/$1.html [L]
+RewriteRule ^(dal-lake|gulmarg|pahalgam|sonamarg|mughal-gardens|doodhpathri|yusmarg|betaab-valley|aru-valley|manasbal-lake|wular-lake|gurez-valley|kokernag|verinag|dachigam-national-park|sinthan-top|zabarwan-park)\.html$ /pub/pages/places/$1.html [L]
 
 # Set correct MIME types for JavaScript and CSS files
 AddType application/javascript .js

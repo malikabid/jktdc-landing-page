@@ -1,5 +1,27 @@
 [
   {
+    "id": 3,
+    "title": "Procurement of Snow Mobiles",
+    "description": "Tender notice for procurement of Snow Mobiles for winter adventure tourism activities in Kashmir. Interested manufacturers/suppliers with valid credentials and experience in supply of snow mobiles are invited to submit their bids.",
+    "tenderNumber": "Acctts/08/DTK",
+    "publishDate": "2026-01-09",
+    "closingDate": "2026-01-27",
+    "estimatedValue": "₹25,00,000",
+    "category": "Adventure Equipment/Vehicles",
+    "status": "active",
+    "department": "Directorate of Tourism Kashmir",
+    "documents": [
+      {
+        "name": "Tender Notice and Technical Specifications",
+        "url": "/pub/tenders/procurement_of_snow_mobiles..pdf",
+        "type": "pdf"
+      }
+    ],
+    "contactPerson": "Assistant Director (Procurement)",
+    "contactEmail": "dirtourism-kashmir@jk.gov.in",
+    "contactPhone": "+91 194 2502279"
+  },
+  {
     "id": 2,
     "title": "Supply of Ski Equipment, Safety Gear & Uniforms",
     "description": "Tender notice for supply of Ski Equipment, Safety Gear and Uniforms to the Directorate of Tourism, Kashmir. Interested suppliers with valid credentials are invited to submit their bids.",

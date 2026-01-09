@@ -1836,6 +1836,11 @@ body {
 
   .sidebar {
     position: static;
+    order: 2;
+  }
+
+  .content-section {
+    order: 1;
   }
 
   .officials-section {

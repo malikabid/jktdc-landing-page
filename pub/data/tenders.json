@@ -1,5 +1,27 @@
 [
   {
+    "id": 4,
+    "title": "Printing of Tourism Brochures",
+    "description": "Tender notice for printing of high-quality tourism brochures for the Directorate of Tourism, Kashmir. Interested printing presses/vendors with valid credentials and experience in high-quality offset printing are invited to submit their bids.",
+    "tenderNumber": "Acctts/09/DTK",
+    "publishDate": "2026-01-13",
+    "closingDate": "2026-01-31",
+    "estimatedValue": "₹8,00,000",
+    "category": "Printing Services",
+    "status": "active",
+    "department": "Directorate of Tourism Kashmir",
+    "documents": [
+      {
+        "name": "Tender Notice - Brochure Printing",
+        "url": "/pub/tenders/brochure_printing_tender.pdf",
+        "type": "pdf"
+      }
+    ],
+    "contactPerson": "Assistant Director (Procurement)",
+    "contactEmail": "dirtourism-kashmir@jk.gov.in",
+    "contactPhone": "+91 194 2502279"
+  },
+  {
     "id": 3,
     "title": "Procurement of Snow Mobiles",
     "description": "Tender notice for procurement of Snow Mobiles for winter adventure tourism activities in Kashmir. Interested manufacturers/suppliers with valid credentials and experience in supply of snow mobiles are invited to submit their bids.",
@@ -12,8 +34,8 @@
     "department": "Directorate of Tourism Kashmir",
     "documents": [
       {
-        "name": "Tender Notice and Technical Specifications",
-        "url": "/pub/tenders/procurement_of_snow_mobiles..pdf",
+        "name": "Tender Notice - Snow Mobiles Procurement",
+        "url": "/pub/tenders/snow_mobiles_procurement.pdf",
         "type": "pdf"
       }
     ],

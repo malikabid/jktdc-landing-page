@@ -1,0 +1,49 @@
+<?php
+/**
+ * DOTK Admin CMS - Front Controller
+ * 
+ * This file redirects all requests to the public directory
+ * where the Slim application is located.
+ */
+
+// Redirect to public directory
+header('Location: /admin/public/');
+exit;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .admin-phase {
+            font-size: 0.95rem;
+            color: #8b5a6f;
+            margin-top: 18px;
+            font-style: italic;
+        }
+        @media (max-width: 500px) {
+            .admin-coming-soon {
+                padding: 32px 10px;
+            }
+            .admin-coming-soon h1 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-coming-soon">
+        <h1>Admin Portal Coming Soon</h1>
+        <p>
+            The admin dashboard is under development.<br>
+            <strong>Phase 1</strong> will let you manage:
+        </p>
+        <ul class="admin-features">
+            <li>Notifications</li>
+            <li>Events</li>
+            <li>Tenders</li>
+        </ul>
+        <div class="admin-phase">
+            Stay tuned for updates.<br>
+            Secure login &amp; management tools arriving soon.
+        </div>
+    </div>
+</body>
+</html>

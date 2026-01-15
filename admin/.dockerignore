@@ -1,0 +1,47 @@
+# Git
+.git
+.gitignore
+.github
+
+# Documentation
+*.md
+docs/
+
+# Tests
+tests/
+phpunit.xml
+
+# Development
+.env
+.env.example
+.editorconfig
+.phpunit.result.cache
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+
+# Build artifacts
+*.log
+
+# Storage (will be created in container)
+storage/logs/*
+storage/cache/*
+storage/uploads/*
+storage/backups/*
+
+# Keep .gitkeep files
+!storage/logs/.gitkeep
+!storage/cache/.gitkeep
+!storage/uploads/.gitkeep
+!storage/backups/.gitkeep

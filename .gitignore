@@ -3,7 +3,6 @@ pub/images/backup/
 VERSIONING.md
 admin/.htpasswd
 passwords
-admin/*
 generate-favicon.html
 Godaddy_Hosting_Invoice.pdf
 cleanup-branches.sh

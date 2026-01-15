@@ -1,0 +1,47 @@
+# Dependencies
+/vendor/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Docker (keep .env.docker as template)
+# docker-compose.override.yml
+
+# Storage & Cache
+/storage/logs/*.log
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/uploads/*
+!/storage/uploads/.gitkeep
+/storage/backups/*
+!/storage/backups/.gitkeep
+
+# Database
+*.sqlite
+*.sqlite-journal
+*.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+/tests/coverage/
+.phpunit.result.cache
+
+# Build
+/node_modules/
+/dist/
+/build/
+
+# Sensitive files
+.htpasswd
+passwords
+*.pem
+*.key

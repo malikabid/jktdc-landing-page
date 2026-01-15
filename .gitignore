@@ -1,7 +1,8 @@
 pub/images/backup/
 .DS_Store
 VERSIONING.md
-admin/*
+admin/.htpasswd
+passwords
 generate-favicon.html
 Godaddy_Hosting_Invoice.pdf
 cleanup-branches.sh

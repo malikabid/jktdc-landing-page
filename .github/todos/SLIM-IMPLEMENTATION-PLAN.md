@@ -1,8 +1,8 @@
-# JKTDC Admin Panel - Slim 4 Implementation Plan
+# DOTK Admin Panel - Slim 4 Implementation Plan
 
 ## 🎯 Complete Step-by-Step Working Plan
 
-This document provides a detailed, actionable roadmap for building the JKTDC admin panel using Slim Framework 4.
+This document provides a detailed, actionable roadmap for building the DOTK admin panel using Slim Framework 4.
 
 ---
 
@@ -34,7 +34,7 @@ This document provides a detailed, actionable roadmap for building the JKTDC adm
 
 - [ ] Initialize Composer project in admin directory
   ```bash
-  cd /Users/abidhussainmalik/Sites/JKTDC/admin
+  cd /Users/abidhussainmalik/Sites/DOTK/admin
   composer init
   ```
 
@@ -94,7 +94,7 @@ This document provides a detailed, actionable roadmap for building the JKTDC adm
   # Database
   DB_HOST=localhost
   DB_PORT=3306
-  DB_DATABASE=jktdc_admin
+  DB_DATABASE=dotk_admin
   DB_USERNAME=root
   DB_PASSWORD=
   
@@ -146,7 +146,7 @@ This document provides a detailed, actionable roadmap for building the JKTDC adm
 - [ ] Create database:
   ```bash
   mysql -u root -p
-  CREATE DATABASE jktdc_admin CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+  CREATE DATABASE dotk_admin CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
   ```
 
 - [ ] Install Phinx (migration tool):
@@ -189,7 +189,7 @@ This document provides a detailed, actionable roadmap for building the JKTDC adm
 
 - [ ] Verify tables were created:
   ```bash
-  mysql -u root -p jktdc_admin -e "SHOW TABLES;"
+  mysql -u root -p dotk_admin -e "SHOW TABLES;"
   ```
 
 ### Step 2.4: Create Seeders

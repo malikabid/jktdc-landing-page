@@ -224,7 +224,7 @@ $decoded = JWT::decode($token, new Key($key, 'HS256'));
 
 ---
 
-## 🎯 My Recommendation for JKTDC
+## \ud83c\udfaf My Recommendation for DOTK
 
 ### **Go with Custom Auth (Option 1)**
 
@@ -233,7 +233,7 @@ $decoded = JWT::decode($token, new Key($key, 'HS256'));
 2. **Lightweight:** No unnecessary features
 3. **Maintainable:** Easy to modify and extend
 4. **Learning:** You'll know exactly how auth works
-5. **Control:** Full customization for JKTDC needs
+5. **Control:** Full customization for DOTK needs
 
 ### **What I'll Build:**
 

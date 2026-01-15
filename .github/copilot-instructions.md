@@ -1,8 +1,8 @@
-# JKTDC Landing Page - Copilot Instructions
+# DOTK Landing Page - Copilot Instructions
 
 ## Project Overview
 
-Static website for Jammu & Kashmir Tourism Development Corporation (JKTDC), featuring a modular component architecture with URL-based feature flags and dynamic theming. Deployed on Render as a static site with cache-busting versioning.
+Static website for Directorate of Tourism Kashmir (DOTK), featuring a modular component architecture with URL-based feature flags and dynamic theming. Deployed on Render as a static site with cache-busting versioning.
 
 ## Architecture & Key Patterns
 

@@ -79,7 +79,7 @@ class NotificationsManager {
     const hasFile = notification.fileUrl ? 'data-has-file="true"' : '';
     
     return `
-      <div class="notification-item ${priorityClass}" data-notification-id="${notification.id}" ${hasFile} style="cursor: pointer;" onclick="window.location.href='/pub/pages/notifications.html'">
+      <div class="notification-item ${priorityClass}" data-notification-id="${notification.id}" ${hasFile} style="cursor: pointer;" onclick="window.location.href='/notifications.html'">
         <span class="icon">${notification.icon || '🔔'}</span>
         ${arrowIcon}
         <p>${notification.description}</p>

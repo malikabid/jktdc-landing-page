@@ -1,90 +1,16 @@
 [
   {
     "id": 1,
-    "title": "Winter sports festival at Gulmarg",
-    "description": "Winter sports festival scheduled for December 20-25, 2025 at Gulmarg. Registration open for skiing, snowboarding, and ice skating competitions.",
-    "icon": "🔔",
+    "title": "Final Seniority List of Ministerial/Executive and Technical Staff 2026",
+    "notificationNo": "Est/407-A/DTK/14",
+    "description": "Final Seniority list of Ministerial/Executive and Technical staff of the Directorate of Tourism Kashmir and Tourism Development Authorities has been issued.",
+    "icon": "📄",
     "showArrow": true,
     "priority": "high",
-    "publishDate": "2024-12-01",
-    "expiryDate": "2026-03-31",
-    "category": "Event"
-  },
-  {
-    "id": 2,
-    "title": "New heritage walk initiative",
-    "description": "New heritage walk initiative launched covering Mughal gardens, old city markets, and historic monuments. Guided tours available daily from 10 AM to 4 PM.",
-    "icon": "🔔",
-    "showArrow": false,
-    "priority": "medium",
-    "publishDate": "2024-12-15",
+    "publishDate": "2026-01-10",
     "expiryDate": "2026-12-31",
-    "category": "Tourism"
-  },
-  {
-    "id": 3,
-    "title": "Special winter tourism packages",
-    "description": "Tourism department announces special packages for domestic and international tourists visiting Kashmir during the winter season. Early bird discounts available.",
-    "icon": "🔔",
-    "showArrow": true,
-    "priority": "high",
-    "publishDate": "2025-01-01",
-    "expiryDate": "2026-03-31",
-    "category": "Tourism"
-  },
-  {
-    "id": 4,
-    "title": "Winter travel safety notice",
-    "description": "Important notice: All tourist vehicles must carry snow chains when traveling to Gulmarg, Pahalgam, and Sonamarg during winter months.",
-    "icon": "🔔",
-    "showArrow": false,
-    "priority": "critical",
-    "publishDate": "2024-11-01",
-    "expiryDate": "2026-03-31",
-    "category": "Advisory"
-  },
-  {
-    "id": 5,
-    "title": "Dal Lake Shikara timings extended",
-    "description": "Shikara ride timings at Dal Lake extended until 7 PM. Evening packages with traditional Kashmiri tea now available.",
-    "icon": "🔔",
-    "showArrow": true,
-    "priority": "medium",
-    "publishDate": "2024-12-20",
-    "expiryDate": "2026-12-31",
-    "category": "Service Update"
-  },
-  {
-    "id": 6,
-    "title": "New trekking routes opened",
-    "description": "Department of Tourism Kashmir announces opening of new trekking routes in Sonamarg and Pahalgam. Professional guides available for booking.",
-    "icon": "🔔",
-    "showArrow": true,
-    "priority": "medium",
-    "publishDate": "2025-01-02",
-    "expiryDate": "2026-12-31",
-    "category": "Adventure"
-  },
-  {
-    "id": 7,
-    "title": "Online permit system launched",
-    "description": "New online permit system for tourist vehicle entry to protected areas. Apply 48 hours in advance on the official portal.",
-    "icon": "🔔",
-    "showArrow": false,
-    "priority": "high",
-    "publishDate": "2025-01-01",
-    "expiryDate": "2026-12-31",
-    "category": "Service Update"
-  },
-  {
-    "id": 8,
-    "title": "Weather advisory for hill stations",
-    "description": "Heavy snowfall expected in Gulmarg and Sonamarg this weekend. Tourists advised to check weather conditions before travel and carry warm clothing.",
-    "icon": "🔔",
-    "showArrow": false,
-    "priority": "critical",
-    "publishDate": "2025-01-02",
-    "expiryDate": "2026-01-10",
-    "category": "Advisory"
+    "category": "Official",
+    "fileUrl": "/pub/notifications/final_seniority_list_2026_1.pdf",
+    "fileName": "Final Seniority List 2026"
   }
 ]

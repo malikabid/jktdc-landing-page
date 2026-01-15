@@ -76,9 +76,10 @@ class NotificationsManager {
   renderNotificationItem(notification) {
     const arrowIcon = notification.showArrow ? '<span class="icon">👉</span>' : '';
     const priorityClass = notification.priority ? `priority-${notification.priority}` : '';
+    const hasFile = notification.fileUrl ? 'data-has-file="true"' : '';
     
     return `
-      <div class="notification-item ${priorityClass}" data-notification-id="${notification.id}">
+      <div class="notification-item ${priorityClass}" data-notification-id="${notification.id}" ${hasFile} style="cursor: pointer;" onclick="window.location.href='/notifications.html'">
         <span class="icon">${notification.icon || '🔔'}</span>
         ${arrowIcon}
         <p>${notification.description}</p>
@@ -90,6 +91,15 @@ class NotificationsManager {
   renderNotificationItemFull(notification) {
     const arrowIcon = notification.showArrow ? '<span class="icon">👉</span>' : '';
     const priorityClass = notification.priority ? `priority-${notification.priority}` : '';
+    const notificationTitle = notification.title ? `<h3 style="font-size: 1.2rem; color: var(--accent-color); margin-bottom: 8px; font-weight: 600;">${notification.title}</h3>` : '';
+    const notificationNo = notification.notificationNo ? `<div style="font-size: 0.9rem; color: #666; margin-bottom: 8px;"><strong>Notification No:</strong> ${notification.notificationNo}</div>` : '';
+    
+    let fileDownload = '';
+    if (notification.fileUrl) {
+      fileDownload = `<a href="${notification.fileUrl}" target="_blank" class="download-btn" style="display: inline-flex; margin-top: 12px;">
+          <i class="fas fa-download"></i> Download ${notification.fileName || 'File'}
+        </a>`;
+    }
     
     return `
       <div class="notification-item ${priorityClass}" data-notification-id="${notification.id}">
@@ -97,12 +107,14 @@ class NotificationsManager {
           <span class="icon">${notification.icon || '🔔'}</span>
           ${arrowIcon}
           <div style="flex: 1;">
+            ${notificationTitle}
+            ${notificationNo}
             <p style="margin-bottom: 10px;">${notification.description}</p>
             <div class="notification-meta">
               <span><i class="fas fa-tag"></i> ${notification.category}</span>
               <span><i class="fas fa-calendar"></i> Published: ${this.formatDate(notification.publishDate)}</span>
-              <span><i class="fas fa-calendar-times"></i> Valid Until: ${this.formatDate(notification.expiryDate)}</span>
             </div>
+            ${fileDownload}
           </div>
         </div>
       </div>

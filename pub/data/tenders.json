@@ -1,5 +1,115 @@
 [
   {
+    "id": 7,
+    "title": "Procurement of Various Items",
+    "description": "Tender notice for procurement of various items required for tourism operations and facilities at the Directorate of Tourism, Kashmir. Interested suppliers with valid credentials and GST registration are invited to submit their bids.",
+    "tenderNumber": "Acctts/12/DTK",
+    "publishDate": "2026-01-13",
+    "closingDate": "2026-02-05",
+    "estimatedValue": "₹5,00,000",
+    "category": "General Supplies",
+    "status": "active",
+    "department": "Directorate of Tourism Kashmir",
+    "documents": [
+      {
+        "name": "Bid Document",
+        "url": "/pub/tenders/various_items_procurement.pdf",
+        "type": "pdf"
+      }
+    ],
+    "contactPerson": "Assistant Director (Procurement)",
+    "contactEmail": "dirtourism-kashmir@jk.gov.in",
+    "contactPhone": "+91 194 2502279"
+  },
+  {
+    "id": 6,
+    "title": "Washing and Dry Cleaning of Curtains",
+    "description": "Tender notice for washing and dry cleaning services for curtains and furnishings at tourism department offices and facilities. Interested service providers with experience in institutional laundry services are invited to submit their bids.",
+    "tenderNumber": "Acctts/11/DTK",
+    "publishDate": "2026-01-13",
+    "closingDate": "2026-02-03",
+    "estimatedValue": "₹2,50,000",
+    "category": "Housekeeping Services",
+    "status": "active",
+    "department": "Directorate of Tourism Kashmir",
+    "documents": [
+      {
+        "name": "Bid Document",
+        "url": "/pub/tenders/curtains_washing_service.pdf",
+        "type": "pdf"
+      }
+    ],
+    "contactPerson": "Assistant Director (Procurement)",
+    "contactEmail": "dirtourism-kashmir@jk.gov.in",
+    "contactPhone": "+91 194 2502279"
+  },
+  {
+    "id": 5,
+    "title": "Entry and Mid Level Laptop - Notebook (Q2) , Tablet Computer (V2) (Q2)",
+    "description": "Consolidated bid document for procurement through Government e-Marketplace (GeM) portal covering multiple categories of goods and services required by the Directorate of Tourism, Kashmir. Registered GeM vendors are invited to submit their bids.",
+    "tenderNumber": "Acctts/10/DTK",
+    "publishDate": "2026-01-13",
+    "closingDate": "2026-02-01",
+    "estimatedValue": "₹12,00,000",
+    "category": "GeM Procurement",
+    "status": "active",
+    "department": "Directorate of Tourism Kashmir",
+    "documents": [
+      {
+        "name": "Bid Document",
+        "url": "/pub/tenders/laptop_tablet_procurement.pdf",
+        "type": "pdf"
+      }
+    ],
+    "contactPerson": "Assistant Director (Procurement)",
+    "contactEmail": "dirtourism-kashmir@jk.gov.in",
+    "contactPhone": "+91 194 2502279"
+  },
+  {
+    "id": 4,
+    "title": "Printing of Tourism Brochures",
+    "description": "Tender notice for printing of high-quality tourism brochures for the Directorate of Tourism, Kashmir. Interested printing presses/vendors with valid credentials and experience in high-quality offset printing are invited to submit their bids.",
+    "tenderNumber": "Acctts/09/DTK",
+    "publishDate": "2026-01-13",
+    "closingDate": "2026-01-31",
+    "estimatedValue": "₹8,00,000",
+    "category": "Printing Services",
+    "status": "active",
+    "department": "Directorate of Tourism Kashmir",
+    "documents": [
+      {
+        "name": "Tender Notice and Specifications",
+        "url": "/pub/tenders/brochure_printing_tender.pdf",
+        "type": "pdf"
+      }
+    ],
+    "contactPerson": "Assistant Director (Procurement)",
+    "contactEmail": "dirtourism-kashmir@jk.gov.in",
+    "contactPhone": "+91 194 2502279"
+  },
+  {
+    "id": 3,
+    "title": "Procurement of Snow Mobiles",
+    "description": "Tender notice for procurement of Snow Mobiles for winter adventure tourism activities in Kashmir. Interested manufacturers/suppliers with valid credentials and experience in supply of snow mobiles are invited to submit their bids.",
+    "tenderNumber": "Acctts/08/DTK",
+    "publishDate": "2026-01-09",
+    "closingDate": "2026-01-27",
+    "estimatedValue": "₹25,00,000",
+    "category": "Adventure Equipment/Vehicles",
+    "status": "active",
+    "department": "Directorate of Tourism Kashmir",
+    "documents": [
+      {
+        "name": "Tender Notice and Specifications",
+        "url": "/pub/tenders/snow_mobiles_procurement.pdf",
+        "type": "pdf"
+      }
+    ],
+    "contactPerson": "Assistant Director (Procurement)",
+    "contactEmail": "dirtourism-kashmir@jk.gov.in",
+    "contactPhone": "+91 194 2502279"
+  },
+  {
     "id": 2,
     "title": "Supply of Ski Equipment, Safety Gear & Uniforms",
     "description": "Tender notice for supply of Ski Equipment, Safety Gear and Uniforms to the Directorate of Tourism, Kashmir. Interested suppliers with valid credentials are invited to submit their bids.",
@@ -12,7 +122,7 @@
     "department": "Directorate of Tourism Kashmir",
     "documents": [
       {
-        "name": "Tender Notice and Technical Specifications",
+        "name": "Tender Notice and Specifications",
         "url": "/pub/tenders/ski_equipment_safety_gear_uniform.pdf",
         "type": "pdf"
       }
@@ -39,7 +149,7 @@
         "type": "pdf"
       },
       {
-        "name": "Technical Specifications",
+        "name": "Specifications",
         "url": "/pub/tenders/tendernotice_trekking_equipments.pdf",
         "type": "pdf"
       }

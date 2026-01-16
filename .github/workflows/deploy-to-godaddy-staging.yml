@@ -67,9 +67,3 @@ jobs:
           script: |
             cd /home/nw9v11i4x4i5/staging.kashmirtourismofficial.com/admin
             composer install --no-dev --optimize-autoloader --no-interaction
-            **/admin/.env.docker
-            **/admin/composer.json
-            **/admin/composer.lock
-            **/admin/docker-compose.yml
-            **/admin/vendor/**/tests/**
-            **/admin/vendor/**/test/**

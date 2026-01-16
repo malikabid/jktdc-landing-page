@@ -19,6 +19,16 @@ return function (App $app) {
         return $response->withHeader('Content-Type', 'application/json');
     });
     
+    // PHP Info endpoint
+    $app->get('/info', function (Request $request, Response $response) {
+        ob_start();
+        phpinfo();
+        $phpinfo = ob_get_clean();
+        
+        $response->getBody()->write($phpinfo);
+        return $response->withHeader('Content-Type', 'text/html');
+    });
+    
     // API base endpoint
     $app->get('/api', function (Request $request, Response $response) {
         $data = [

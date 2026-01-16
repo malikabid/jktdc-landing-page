@@ -21,12 +21,15 @@ return function (App $app) {
     
     // PHP Info endpoint
     $app->get('/info', function (Request $request, Response $response) {
+        $view = $this->get('view');
+        
         ob_start();
         phpinfo();
         $phpinfo = ob_get_clean();
         
-        $response->getBody()->write($phpinfo);
-        return $response->withHeader('Content-Type', 'text/html');
+        return $view->render($response, 'info.html.twig', [
+            'phpinfo_output' => $phpinfo
+        ]);
     });
     
     // API base endpoint

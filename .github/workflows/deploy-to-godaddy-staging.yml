@@ -21,11 +21,6 @@ jobs:
           php-version: "8.3"
           tools: composer:v2
 
-      - name: Install Admin Dependencies
-        run: |
-          cd admin
-          composer install --no-dev --optimize-autoloader --no-interaction
-
       - name: Create Admin .htaccess redirect
         run: |
           cat > admin/.htaccess << 'EOF'
@@ -58,6 +53,20 @@ jobs:
             **/admin/docker/**
             **/admin/Dockerfile
             **/admin/.env.example
+            **/admin/.env.docker
+            **/admin/docker-compose.yml
+            **/admin/vendor/**
+
+      - name: Install Composer Dependencies on Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: |
+            cd /home/nw9v11i4x4i5/staging.kashmirtourismofficial.com/admin
+            composer install --no-dev --optimize-autoloader --no-interaction
             **/admin/.env.docker
             **/admin/composer.json
             **/admin/composer.lock

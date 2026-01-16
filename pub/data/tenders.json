@@ -1,5 +1,49 @@
 [
   {
+    "id": 9,
+    "title": "Upholstery of Sofa Set",
+    "description": "Tender notice for upholstery work of sofa set at the Directorate of Tourism, Kashmir. Interested service providers with experience in furniture upholstery and valid credentials are invited to submit their bids.",
+    "tenderNumber": "Acctts/14/DTK",
+    "publishDate": "2026-01-16",
+    "closingDate": "2026-02-10",
+    "estimatedValue": "₹1,50,000",
+    "category": "Furniture Services",
+    "status": "active",
+    "department": "Directorate of Tourism Kashmir",
+    "documents": [
+      {
+        "name": "Tender Notice and Specifications",
+        "url": "/pub/tenders/sofa_upholstery.pdf",
+        "type": "pdf"
+      }
+    ],
+    "contactPerson": "Assistant Director (Procurement)",
+    "contactEmail": "dirtourism-kashmir@jk.gov.in",
+    "contactPhone": "+91 194 2502279"
+  },
+  {
+    "id": 8,
+    "title": "Repair and Maintenance of Air Conditioners",
+    "description": "Dasti quotation for repair and maintenance of Air Conditioners at various tourism department offices and facilities. Interested service providers with experience in AC repair and valid credentials are invited to submit their quotations.",
+    "tenderNumber": "Acctts/13/DTK",
+    "publishDate": "2026-01-16",
+    "closingDate": "2026-02-07",
+    "estimatedValue": "₹75,000",
+    "category": "Maintenance Services",
+    "status": "active",
+    "department": "Directorate of Tourism Kashmir",
+    "documents": [
+      {
+        "name": "Quotation Notice",
+        "url": "/pub/tenders/ac_repair_quotation.pdf",
+        "type": "pdf"
+      }
+    ],
+    "contactPerson": "Assistant Director (Procurement)",
+    "contactEmail": "dirtourism-kashmir@jk.gov.in",
+    "contactPhone": "+91 194 2502279"
+  },
+  {
     "id": 7,
     "title": "Procurement of Various Items",
     "description": "Tender notice for procurement of various items required for tourism operations and facilities at the Directorate of Tourism, Kashmir. Interested suppliers with valid credentials and GST registration are invited to submit their bids.",

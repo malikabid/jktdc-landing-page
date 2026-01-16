@@ -15,6 +15,28 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: composer:v2
+
+      - name: Install Admin Dependencies
+        run: |
+          cd admin
+          composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Create Admin .htaccess redirect
+        run: |
+          cat > admin/.htaccess << 'EOF'
+          # Redirect all requests to the public subdirectory
+          RewriteEngine On
+
+          # Redirect to public folder
+          RewriteCond %{REQUEST_URI} !^/admin/public/
+          RewriteRule ^(.*)$ public/$1 [L]
+          EOF
+
       - name: Deploy to GoDaddy Staging via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -29,6 +51,16 @@ jobs:
             **/.DS_Store
             **/VERSIONING.md
             **/AUTOMATED-VERSIONING.md
-            **/README.md
+            **/README*.md
             **/update-versions.sh
             **/.github/**
+            **/admin/tests/**
+            **/admin/docker/**
+            **/admin/Dockerfile
+            **/admin/.env.example
+            **/admin/.env.docker
+            **/admin/composer.json
+            **/admin/composer.lock
+            **/admin/docker-compose.yml
+            **/admin/vendor/**/tests/**
+            **/admin/vendor/**/test/**

@@ -12,7 +12,7 @@ return function (App $app) {
             'status' => 'ok',
             'timestamp' => time(),
             'service' => 'DOTK Admin API',
-            'version' => '1.0.0',
+            'version' => '1.0.2',
         ];
         
         $response->getBody()->write(json_encode($data));
@@ -36,7 +36,7 @@ return function (App $app) {
     $app->get('/api', function (Request $request, Response $response) {
         $data = [
             'message' => 'DOTK Admin API',
-            'version' => '1.0.0',
+            'version' => '1.0.2',
             'endpoints' => [
                 'health' => '/health',
                 'auth' => '/api/auth/*',
@@ -51,24 +51,35 @@ return function (App $app) {
         return $response->withHeader('Content-Type', 'application/json');
     });
     
-    // Root - Welcome/Login page
+    // Root - Login page
     $app->get('/', function (Request $request, Response $response) {
         $view = $this->get('view');
         
-        return $view->render($response, 'welcome.html.twig', [
-            'title' => 'Welcome',
-            'heading' => 'DOTK Admin Panel',
-            'description' => 'Welcome to the Directorate of Tourism Kashmir Admin Panel',
-            'status' => 'System Online and Running',
-            'message' => 'The admin API is successfully configured and ready to use.',
-            'footer_message' => 'Login functionality coming soon...',
-            'version' => '1.0.1'
+        return $view->render($response, 'auth/login.html.twig', [
+            'title' => 'Login - DOTK Admin',
+            'version' => '1.0.2'
         ]);
     });
     
-    // Auth routes will be added here
-    // $app->group('/api/auth', function ($group) { ... });
+    // Dashboard
+    $app->get('/dashboard', function (Request $request, Response $response) {
+        $view = $this->get('view');
+        return $view->render($response, 'dashboard.html.twig');
+    });
     
-    // Protected routes will be added here
-    // $app->group('/api', function ($group) { ... })->add(AuthMiddleware::class);
+    // Auth routes (public)
+    $app->group('/api/auth', function ($group) {
+        $group->post('/login', 'App\Controllers\AuthController:login');
+        $group->post('/logout', 'App\Controllers\AuthController:logout');
+        $group->get('/me', 'App\Controllers\AuthController:me')->add('App\Middleware\AuthMiddleware');
+    });
+    
+    // User management routes (Super Admin only)
+    $app->group('/api/users', function ($group) {
+        $group->get('', 'App\Controllers\UserController:index');
+        $group->get('/{id}', 'App\Controllers\UserController:show');
+        $group->post('', 'App\Controllers\UserController:store');
+        $group->put('/{id}', 'App\Controllers\UserController:update');
+        $group->delete('/{id}', 'App\Controllers\UserController:destroy');
+    })->add('App\Middleware\SuperAdminMiddleware')->add('App\Middleware\AuthMiddleware');
 };

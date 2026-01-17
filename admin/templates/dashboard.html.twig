@@ -268,7 +268,7 @@
         </div>
         
         <div class="stats-grid">
-            <div class="stat-card users">
+            <div class="stat-card users" id="usersCard" style="display: none;">
                 <div class="stat-icon">
                     <i class="fas fa-users"></i>
                 </div>
@@ -347,6 +347,9 @@
         const actionsGrid = document.getElementById('actionsGrid');
         
         if (user.role === 'super_admin') {
+            // Show users card for super admin
+            document.getElementById('usersCard').style.display = 'block';
+            
             actionsGrid.innerHTML = `
                 <button class="action-btn" onclick="location.href='/admin/users'">
                     <i class="fas fa-users-cog"></i> Manage Users

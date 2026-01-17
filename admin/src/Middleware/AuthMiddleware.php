@@ -22,6 +22,16 @@ class AuthMiddleware
     {
         $authHeader = $request->getHeaderLine('Authorization');
         
+        // If Authorization header is missing, try to get it from server params (Apache workaround)
+        if (empty($authHeader)) {
+            $serverParams = $request->getServerParams();
+            if (isset($serverParams['HTTP_AUTHORIZATION'])) {
+                $authHeader = $serverParams['HTTP_AUTHORIZATION'];
+            } elseif (isset($serverParams['REDIRECT_HTTP_AUTHORIZATION'])) {
+                $authHeader = $serverParams['REDIRECT_HTTP_AUTHORIZATION'];
+            }
+        }
+        
         if (empty($authHeader)) {
             $response = new \Slim\Psr7\Response();
             $response->getBody()->write(json_encode([

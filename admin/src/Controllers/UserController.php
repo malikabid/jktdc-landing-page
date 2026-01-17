@@ -221,6 +221,7 @@ class UserController
     
     /**
      * Delete user (Super Admin only)
+     * Note: Super Admin users cannot be deleted, only deactivated
      */
     public function destroy(Request $request, Response $response, array $args): Response
     {
@@ -242,6 +243,14 @@ class UserController
                 'error' => 'User not found'
             ]));
             return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
+        }
+        
+        // Prevent deletion of super admin users - they can only be deactivated
+        if ($user->role === User::ROLE_SUPER_ADMIN) {
+            $response->getBody()->write(json_encode([
+                'error' => 'Super Admin users cannot be deleted. Please deactivate the account instead.'
+            ]));
+            return $response->withStatus(403)->withHeader('Content-Type', 'application/json');
         }
         
         $user->delete();

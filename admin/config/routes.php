@@ -67,6 +67,12 @@ return function (App $app) {
         return $view->render($response, 'dashboard.html.twig');
     });
     
+    // Users management page (Super Admin only)
+    $app->get('/users', function (Request $request, Response $response) {
+        $view = $this->get('view');
+        return $view->render($response, 'users/index.html.twig');
+    });
+    
     // Auth routes (public)
     $app->group('/api/auth', function ($group) {
         $group->post('/login', 'App\Controllers\AuthController:login');

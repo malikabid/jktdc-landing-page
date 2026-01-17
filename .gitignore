@@ -9,3 +9,7 @@ cleanup-branches.sh
 Data Tourism/*
 shrine-images/
 dotk_godaddy_credentials.txt
+docker-compose.override.yml
+httpd-local.conf
+certs/
+admin/.env.local

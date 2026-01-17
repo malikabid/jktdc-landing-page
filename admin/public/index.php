@@ -20,12 +20,18 @@ $container->set('settings', $settings);
 $dependencies = require __DIR__ . '/../config/dependencies.php';
 $dependencies($container);
 
+// Initialize database connection
+$container->get('db');
+
 // Create App
 AppFactory::setContainer($container);
 $app = AppFactory::create();
 
 // Set base path for subdirectory deployment
 $app->setBasePath('/admin');
+
+// Add Body Parsing Middleware
+$app->addBodyParsingMiddleware();
 
 // Add Routing Middleware
 $app->addRoutingMiddleware();

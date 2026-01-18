@@ -360,13 +360,25 @@
                 <button class="action-btn" onclick="alert('Coming soon!')">
                     <i class="fas fa-calendar"></i> Manage Events
                 </button>
-                <button class="action-btn" onclick="alert('Coming soon!')">
+                <button class="action-btn" onclick="location.href='/admin/tenders'">
                     <i class="fas fa-file-contract"></i> Manage Tenders
                 </button>
             `;
             
             // Load user count for super admin
             loadUserCount();
+        } else if (user.role === 'admin') {
+            actionsGrid.innerHTML = `
+                <button class="action-btn" onclick="alert('Coming soon!')">
+                    <i class="fas fa-bell"></i> Manage Notifications
+                </button>
+                <button class="action-btn" onclick="alert('Coming soon!')">
+                    <i class="fas fa-calendar"></i> Manage Events
+                </button>
+                <button class="action-btn" onclick="location.href='/admin/tenders'">
+                    <i class="fas fa-file-contract"></i> Manage Tenders
+                </button>
+            `;
         } else {
             actionsGrid.innerHTML = `
                 <button class="action-btn" onclick="alert('Coming soon!')">
@@ -375,7 +387,7 @@
                 <button class="action-btn" onclick="alert('Coming soon!')">
                     <i class="fas fa-calendar"></i> View Events
                 </button>
-                <button class="action-btn" onclick="alert('Coming soon!')">
+                <button class="action-btn" onclick="location.href='/admin/tenders'">
                     <i class="fas fa-file-contract"></i> View Tenders
                 </button>
             `;

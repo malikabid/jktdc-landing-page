@@ -83,13 +83,18 @@ return function (App $app) {
     // Tenders create page
     $app->get('/tenders/create', function (Request $request, Response $response) {
         $view = $this->get('view');
-        return $view->render($response, 'tenders/create.html.twig');
+        return $view->render($response, 'tenders/create.html.twig', [
+            'categories' => \App\Models\Tender::CATEGORIES
+        ]);
     });
     
     // Tenders edit page
     $app->get('/tenders/{id}/edit', function (Request $request, Response $response, array $args) {
         $view = $this->get('view');
-        return $view->render($response, 'tenders/edit.html.twig', ['tenderId' => $args['id']]);
+        return $view->render($response, 'tenders/edit.html.twig', [
+            'tenderId' => $args['id'],
+            'categories' => \App\Models\Tender::CATEGORIES
+        ]);
     });
     
     // Auth routes (public)

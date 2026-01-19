@@ -329,8 +329,10 @@ class TenderController
             $extension
         );
 
-        // Upload directory - use absolute path to main site's pub folder
-        $uploadDir = '/var/www/html/pub/tenders/';
+        // Use base path from settings/env
+        $container = $GLOBALS['app']->getContainer();
+        $basePath = $container->get('settings')['app']['base_path'] ?? '';
+        $uploadDir = rtrim($basePath, '/') . '/pub/tenders/';
         if (!is_dir($uploadDir)) {
             $log('Upload dir does not exist, creating: ' . $uploadDir);
             mkdir($uploadDir, 0755, true);

@@ -189,7 +189,7 @@
         const currentToken = getToken();
         if (!currentToken) {
             showToast('Session Expired', 'Please login again.', 'error');
-            setTimeout(() => { window.location.href = '/admin/login'; }, 1500);
+            setTimeout(() => { window.location.href = '/admin/'; }, 1500);
             return;
         }
         
@@ -250,7 +250,7 @@
             if (response.status === 401) {
                 showToast('Session Expired', 'Please login again.', 'error');
                 localStorage.removeItem('dotk_admin_token');
-                setTimeout(() => { window.location.href = '/admin/login'; }, 1500);
+                setTimeout(() => { window.location.href = '/admin/'; }, 1500);
                 return;
             }
             
@@ -280,7 +280,7 @@
                             if (uploadResponse.status === 401) {
                                 showToast('Session Expired', 'Please login again.', 'error');
                                 localStorage.removeItem('dotk_admin_token');
-                                setTimeout(() => { window.location.href = '/admin/login'; }, 1500);
+                                setTimeout(() => { window.location.href = '/admin/'; }, 1500);
                                 return;
                             }
                             

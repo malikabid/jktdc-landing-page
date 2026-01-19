@@ -1,87 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - DOTK Admin</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f3f4f6;
-            min-height: 100vh;
-        }
-        
-        .navbar {
-            background: linear-gradient(135deg, #6b21a8 0%, #9333ea 100%);
-            color: white;
-            padding: 0 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .navbar-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 70px;
-        }
-        
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-        
-        .navbar-user {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .user-info {
-            text-align: right;
-        }
-        
-        .user-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-        
-        .user-role {
-            font-size: 0.8rem;
-            opacity: 0.9;
-            text-transform: uppercase;
-        }
-        
-        .btn-logout {
-            padding: 8px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-logout:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Dashboard - DOTK Admin{% endblock %}
+
+{% block styles %}
         .container {
             max-width: 1400px;
-            margin: 0 auto;
-            padding: 30px;
         }
         
         .welcome-section {
@@ -220,18 +143,6 @@
                 padding: 20px;
             }
             
-            .navbar-content {
-                padding: 0 15px;
-            }
-            
-            .navbar-user {
-                gap: 10px;
-            }
-            
-            .user-info {
-                display: none;
-            }
-            
             .welcome-section {
                 padding: 25px;
             }
@@ -240,27 +151,9 @@
                 font-size: 1.5rem;
             }
         }
-    </style>
-</head>
-<body>
-    <nav class="navbar">
-        <div class="navbar-content">
-            <div class="navbar-brand">
-                <i class="fas fa-mountain"></i>
-                <span>DOTK Admin Panel</span>
-            </div>
-            <div class="navbar-user">
-                <div class="user-info">
-                    <div class="user-name" id="userName">Loading...</div>
-                    <div class="user-role" id="userRole"></div>
-                </div>
-                <button class="btn-logout" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </div>
-        </div>
-    </nav>
-    
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <div class="welcome-section">
             <h1>Welcome back, <span id="welcomeName">User</span>!</h1>
@@ -296,7 +189,7 @@
                 <div class="stat-icon">
                     <i class="fas fa-file-contract"></i>
                 </div>
-                <div class="stat-value">-</div>
+                <div class="stat-value" id="tendersCount">-</div>
                 <div class="stat-label">Tenders</div>
             </div>
         </div>
@@ -308,40 +201,14 @@
             </div>
         </div>
     </div>
-    
+{% endblock %}
+
+{% block scripts %}
     <script>
-        // Check if user is logged in
-        const token = localStorage.getItem('dotk_admin_token');
-        const userStr = localStorage.getItem('dotk_admin_user');
+        const user = JSON.parse(localStorage.getItem('dotk_admin_user') || '{}');
         
-        if (!token || !userStr) {
-            window.location.href = '/admin/';
-        }
-        
-        const user = JSON.parse(userStr);
-        
-        // Update user info in navbar
-        document.getElementById('userName').textContent = user.full_name || user.username;
-        document.getElementById('userRole').textContent = user.role.replace('_', ' ');
-        document.getElementById('welcomeName').textContent = user.full_name || user.username;
-        
-        // Logout functionality
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            try {
-                await fetch('/admin/api/auth/logout', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-            } catch (error) {
-                console.error('Logout error:', error);
-            } finally {
-                localStorage.removeItem('dotk_admin_token');
-                localStorage.removeItem('dotk_admin_user');
-                window.location.href = '/admin/';
-            }
-        });
+        // Update welcome name
+        document.getElementById('welcomeName').textContent = user.full_name || user.username || 'User';
         
         // Load quick actions based on role
         const actionsGrid = document.getElementById('actionsGrid');
@@ -398,7 +265,7 @@
             try {
                 const response = await fetch('/admin/api/users', {
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${getToken()}`
                     }
                 });
                 
@@ -410,6 +277,26 @@
                 console.error('Error loading user count:', error);
             }
         }
+        
+        // Load tenders count
+        async function loadTendersCount() {
+            try {
+                const response = await fetch('/admin/api/tenders', {
+                    headers: {
+                        'Authorization': `Bearer ${getToken()}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('tendersCount').textContent = data.total || 0;
+                }
+            } catch (error) {
+                console.error('Error loading tenders count:', error);
+            }
+        }
+        
+        // Load tenders count on page load
+        loadTendersCount();
     </script>
-</body>
-</html>
+{% endblock %}

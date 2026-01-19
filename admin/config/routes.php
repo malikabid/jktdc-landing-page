@@ -8,11 +8,12 @@ return function (App $app) {
     
     // Health check endpoint
     $app->get('/health', function (Request $request, Response $response) {
+        $settings = $this->get('settings');
         $data = [
             'status' => 'ok',
             'timestamp' => time(),
             'service' => 'DOTK Admin API',
-            'version' => '1.0.2',
+            'version' => $settings['app']['version'],
         ];
         
         $response->getBody()->write(json_encode($data));
@@ -34,9 +35,10 @@ return function (App $app) {
     
     // API base endpoint
     $app->get('/api', function (Request $request, Response $response) {
+        $settings = $this->get('settings');
         $data = [
             'message' => 'DOTK Admin API',
-            'version' => '1.0.2',
+            'version' => $settings['app']['version'],
             'endpoints' => [
                 'health' => '/health',
                 'auth' => '/api/auth/*',
@@ -56,8 +58,7 @@ return function (App $app) {
         $view = $this->get('view');
         
         return $view->render($response, 'auth/login.html.twig', [
-            'title' => 'Login - DOTK Admin',
-            'version' => '1.0.2'
+            'title' => 'Login - DOTK Admin'
         ]);
     });
     
@@ -77,6 +78,18 @@ return function (App $app) {
     $app->get('/tenders', function (Request $request, Response $response) {
         $view = $this->get('view');
         return $view->render($response, 'tenders/index.html.twig');
+    });
+    
+    // Tenders create page
+    $app->get('/tenders/create', function (Request $request, Response $response) {
+        $view = $this->get('view');
+        return $view->render($response, 'tenders/create.html.twig');
+    });
+    
+    // Tenders edit page
+    $app->get('/tenders/{id}/edit', function (Request $request, Response $response, array $args) {
+        $view = $this->get('view');
+        return $view->render($response, 'tenders/edit.html.twig', ['tenderId' => $args['id']]);
     });
     
     // Auth routes (public)

@@ -313,8 +313,8 @@ class TenderController
             $extension
         );
         
-        // Upload directory
-        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/pub/tenders/';
+        // Upload directory - use absolute path to main site's pub folder
+        $uploadDir = '/var/www/html/pub/tenders/';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
@@ -322,9 +322,12 @@ class TenderController
         $uploadedFile->moveTo($uploadDir . $filename);
         
         // Create document record
+        // Accept both 'label' (from frontend) and 'name' for backwards compatibility
+        $documentName = $data['label'] ?? $data['name'] ?? $uploadedFile->getClientFilename();
+        
         $document = TenderDocument::create([
             'tender_id' => $tender->id,
-            'name' => $data['name'] ?? $uploadedFile->getClientFilename(),
+            'name' => $documentName,
             'file_path' => '/pub/tenders/' . $filename,
             'file_type' => $extension,
             'file_size' => $uploadedFile->getSize(),

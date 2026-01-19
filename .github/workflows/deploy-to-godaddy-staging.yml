@@ -57,7 +57,7 @@ jobs:
             **/admin/docker-compose.yml
             **/admin/vendor/**
 
-      - name: Install Composer Dependencies on Server via SSH
+      - name: Install Composer & Run Migrations/Seeds via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.FTP_SERVER }}
@@ -67,15 +67,5 @@ jobs:
           script: |
             cd /home/nw9v11i4x4i5/staging.kashmirtourismofficial.com/admin
             composer install --no-dev --optimize-autoloader --no-interaction
-
-      - name: Run Database Migrations via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          script: |
-            cd /home/nw9v11i4x4i5/staging.kashmirtourismofficial.com/admin
             vendor/bin/phinx migrate -e production
-            vendor/bin/phinx seed:run -s TendersSeeder -e production || echo "Phinx seed failed"
+            vendor/bin/phinx seed:run -e production || echo "Phinx seed failed"

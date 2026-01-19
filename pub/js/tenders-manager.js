@@ -1,15 +1,15 @@
-// Tenders Manager - Fetch and filter tenders from JSON
+// Tenders Manager - Fetch and filter tenders from API
 class TendersManager {
   constructor() {
     this.tenders = [];
-    this.dataUrl = '/pub/data/tenders.json';
+    this.apiUrl = '/admin/api/public/tenders';
   }
 
-  // Fetch tenders from JSON
+  // Fetch tenders from API
   async fetchTenders() {
     try {
-      const response = await fetch(this.dataUrl);
-      if (!response.ok) throw new Error('Failed to fetch tenders');
+      const response = await fetch(this.apiUrl);
+      if (!response.ok) throw new Error('Failed to fetch tenders from API');
       this.tenders = await response.json();
       return this.tenders;
     } catch (error) {
@@ -30,23 +30,19 @@ class TendersManager {
     return new Date(dateString + 'T00:00:00');
   }
 
-  // Filter active tenders (closing date is in the future or today)
+  // Filter active tenders (status is 'active' from API)
   getActiveTenders() {
-    const today = this.getToday();
     return this.tenders.filter(tender => {
-      const closingDate = this.parseDate(tender.closingDate);
-      return closingDate >= today && tender.status === 'active';
+      return tender.status === 'active';
     }).sort((a, b) => {
       return this.parseDate(b.publishDate) - this.parseDate(a.publishDate);
     });
   }
 
-  // Filter closed tenders (closing date is in the past)
+  // Filter closed tenders (status is 'closed' from API)
   getClosedTenders() {
-    const today = this.getToday();
     return this.tenders.filter(tender => {
-      const closingDate = this.parseDate(tender.closingDate);
-      return closingDate < today || tender.status === 'closed';
+      return tender.status === 'closed';
     }).sort((a, b) => {
       return this.parseDate(b.publishDate) - this.parseDate(a.publishDate);
     });
@@ -133,7 +129,7 @@ class TendersManager {
         </div>
         
         <div class="tender-details">
-          <p class="tender-description">${tender.description}</p>
+          ${tender.description ? `<p class="tender-description">${tender.description}</p>` : ''}
           
           <div class="tender-meta">
             <div class="meta-item">

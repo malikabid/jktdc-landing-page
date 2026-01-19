@@ -32,6 +32,7 @@ services:
     volumes:
       - ./admin:/var/www/admin:cached
       - ./admin/docker/php-fpm-custom.conf:/usr/local/etc/php-fpm.d/zzz-custom.conf:ro
+      - ./pub/tenders:/var/www/html/pub/tenders:cached
     environment:
       - DB_CONNECTION=mysql
       - DB_HOST=mysql

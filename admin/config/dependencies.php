@@ -30,9 +30,15 @@ return function (ContainerInterface $container) {
     
     // Twig Views
     $container->set('view', function () use ($settings) {
-        return Twig::create($settings['twig']['path'], [
+        $twig = Twig::create($settings['twig']['path'], [
             'cache' => $settings['twig']['cache']
         ]);
+        
+        // Add global variables
+        $twig->getEnvironment()->addGlobal('app_version', $settings['app']['version']);
+        $twig->getEnvironment()->addGlobal('app_name', $settings['app']['name']);
+        
+        return $twig;
     });
     
     // JWT Service (will be implemented later)

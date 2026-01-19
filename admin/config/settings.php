@@ -5,6 +5,11 @@ return [
     'logErrors' => true,
     'logErrorDetails' => true,
     
+    'app' => [
+        'version' => $_ENV['APP_VERSION'] ?? '1.0.0',
+        'name' => 'DOTK Admin',
+    ],
+    
     'db' => [
         'driver' => $_ENV['DB_CONNECTION'] ?? 'mysql',
         'host' => $_ENV['DB_HOST'] ?? 'localhost',
@@ -20,7 +25,7 @@ return [
     'jwt' => [
         'secret' => $_ENV['JWT_SECRET'],
         'algorithm' => $_ENV['JWT_ALGORITHM'] ?? 'HS256',
-        'expiration' => (int)($_ENV['JWT_EXPIRATION'] ?? 3600),
+        'expiration' => (int)($_ENV['JWT_EXPIRATION'] ?? 86400), // 24 hours
     ],
     
     'twoFactor' => [

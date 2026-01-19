@@ -1,95 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management - DOTK Admin</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f3f4f6;
-            min-height: 100vh;
-        }
-        
-        .navbar {
-            background: linear-gradient(135deg, #6b21a8 0%, #9333ea 100%);
-            color: white;
-            padding: 0 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .navbar-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 70px;
-        }
-        
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.3rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        
-        .navbar-user {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .user-info {
-            text-align: right;
-        }
-        
-        .user-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-        
-        .user-role {
-            font-size: 0.8rem;
-            opacity: 0.9;
-            text-transform: uppercase;
-        }
-        
-        .btn-logout {
-            padding: 8px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-logout:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}User Management - DOTK Admin{% endblock %}
+
+{% block styles %}
         .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 30px;
+            max-width: 1200px;
         }
         
         .page-header {
             background: white;
             border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             display: flex;
             justify-content: space-between;
@@ -98,7 +20,40 @@
         
         .page-header h1 {
             color: #1f2937;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .page-header h1 i {
+            color: #6b21a8;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .btn-back {
+            padding: 10px 16px;
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-back:hover {
+            background: #e2e8f0;
         }
         
         .btn-primary {
@@ -108,7 +63,7 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             transition: all 0.3s ease;
             display: inline-flex;
@@ -124,18 +79,18 @@
         .users-table-container {
             background: white;
             border-radius: 12px;
-            padding: 30px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
         }
         
         .search-box {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
+            padding: 20px;
+            border-bottom: 1px solid #f3f4f6;
         }
         
         .search-box input {
-            flex: 1;
+            width: 100%;
+            max-width: 400px;
             padding: 12px 20px;
             border: 2px solid #e5e7eb;
             border-radius: 8px;
@@ -362,36 +317,22 @@
             padding: 40px;
             color: #9ca3af;
         }
-    </style>
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="navbar-content">
-            <div class="navbar-brand" onclick="location.href='/admin/dashboard'">
-                <i class="fas fa-user-shield"></i>
-                <span>DOTK Admin</span>
-            </div>
-            <div class="navbar-user">
-                <div class="user-info">
-                    <div class="user-name" id="userName">Loading...</div>
-                    <div class="user-role" id="userRole">-</div>
-                </div>
-                <button class="btn-logout" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </div>
-        </div>
-    </nav>
-    
+{% endblock %}
+
+{% block content %}
     <!-- Main Container -->
     <div class="container">
         <!-- Page Header -->
         <div class="page-header">
             <h1><i class="fas fa-users"></i> User Management</h1>
-            <button class="btn-primary" id="addUserBtn">
-                <i class="fas fa-plus"></i> Add New User
-            </button>
+            <div class="header-actions">
+                <button class="btn-primary" id="addUserBtn">
+                    <i class="fas fa-plus"></i> Add New User
+                </button>
+                <a href="/admin/dashboard" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Dashboard
+                </a>
+            </div>
         </div>
         
         <!-- Users Table -->
@@ -467,43 +408,17 @@
             </div>
         </div>
     </div>
-    
+{% endblock %}
+
+{% block scripts %}
     <script>
-        // Check authentication
-        const token = localStorage.getItem('dotk_admin_token');
-        const userStr = localStorage.getItem('dotk_admin_user');
-        
-        if (!token || !userStr) {
-            window.location.href = '/admin/';
-        }
-        
-        const currentUser = JSON.parse(userStr);
+        const currentUser = JSON.parse(localStorage.getItem('dotk_admin_user') || '{}');
         
         // Check if user is super admin
         if (currentUser.role !== 'super_admin') {
             alert('Access denied. Only Super Admins can access this page.');
             window.location.href = '/admin/dashboard';
         }
-        
-        // Update navbar
-        document.getElementById('userName').textContent = currentUser.full_name || currentUser.username;
-        document.getElementById('userRole').textContent = currentUser.role.replace('_', ' ');
-        
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            try {
-                await fetch('/admin/api/auth/logout', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-            } catch (error) {
-                console.error('Logout error:', error);
-            } finally {
-                localStorage.removeItem('dotk_admin_token');
-                localStorage.removeItem('dotk_admin_user');
-                window.location.href = '/admin/';
-            }
-        });
         
         // Global variables
         let allUsers = [];
@@ -513,7 +428,7 @@
         async function loadUsers() {
             try {
                 const response = await fetch('/admin/api/users', {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
                 });
                 
                 if (!response.ok) {
@@ -634,7 +549,7 @@
             
             try {
                 const response = await fetch(`/admin/api/users/${userId}`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
                 });
                 
                 if (!response.ok) throw new Error('Failed to load user');
@@ -694,7 +609,7 @@
                 const response = await fetch(url, {
                     method: method,
                     headers: {
-                        'Authorization': `Bearer ${token}`,
+                        'Authorization': `Bearer ${getToken()}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(formData)
@@ -723,7 +638,7 @@
             try {
                 const response = await fetch(`/admin/api/users/${userId}`, {
                     method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
                 });
                 
                 const data = await response.json();
@@ -739,7 +654,7 @@
             }
         };
         
-        // Toggle user status (activate/deactivate) - used for super admin users
+        // Toggle user status (activate/deactivate)
         window.toggleUserStatus = async function(userId, username, isActive) {
             const action = isActive ? 'deactivate' : 'activate';
             if (!confirm(`Are you sure you want to ${action} user "${username}"?`)) {
@@ -750,7 +665,7 @@
                 const response = await fetch(`/admin/api/users/${userId}`, {
                     method: 'PUT',
                     headers: {
-                        'Authorization': `Bearer ${token}`,
+                        'Authorization': `Bearer ${getToken()}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ is_active: !isActive })
@@ -779,5 +694,4 @@
         // Initialize
         loadUsers();
     </script>
-</body>
-</html>
+{% endblock %}

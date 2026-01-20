@@ -564,7 +564,7 @@
     
     <script>
         const token = localStorage.getItem('dotk_admin_token');
-        if (!token) window.location.href = '/admin/login';
+        if (!token) window.location.href = '/admin/';
         
         function getToken() { return localStorage.getItem('dotk_admin_token'); }
         
@@ -577,7 +577,7 @@
                 });
                 if (response.status === 401) {
                     localStorage.removeItem('dotk_admin_token');
-                    window.location.href = '/admin/login';
+                    window.location.href = '/admin/';
                     return;
                 }
                 if (response.ok) {

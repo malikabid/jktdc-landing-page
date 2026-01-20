@@ -8,6 +8,7 @@ return [
     'app' => [
         'version' => $_ENV['APP_VERSION'] ?? '1.0.0',
         'name' => 'DOTK Admin',
+        'base_path' => $_ENV['APP_BASE_PATH'] ?? '',
     ],
     
     'db' => [

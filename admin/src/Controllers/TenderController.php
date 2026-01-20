@@ -272,38 +272,54 @@ class TenderController
      */
     public function uploadDocument(Request $request, Response $response, array $args): Response
     {
+        // Debug log file
+        $debugLog = __DIR__ . '/../../../storage/logs/upload_debug.log';
+        $log = function($msg) use ($debugLog) {
+            file_put_contents($debugLog, date('c') . ' ' . $msg . "\n", FILE_APPEND);
+        };
+
+        $log('--- uploadDocument called ---');
+        $log('Session ID: ' . (session_id() ?: 'no session'));
+        $log('User ID: ' . ($request->getAttribute('user_id') ?? 'none'));
+        $log('Args: ' . json_encode($args));
+        $log('POST: ' . json_encode($request->getParsedBody()));
+        $log('FILES: ' . json_encode(array_keys($request->getUploadedFiles())));
+
         $tender = Tender::find($args['id']);
-        
         if (!$tender) {
+            $log('Tender not found for id ' . $args['id']);
             $response->getBody()->write(json_encode(['error' => 'Tender not found']));
             return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
         }
-        
+
         $uploadedFiles = $request->getUploadedFiles();
         $data = $request->getParsedBody();
-        
+
         if (empty($uploadedFiles['document'])) {
+            $log('No file uploaded');
             $response->getBody()->write(json_encode(['error' => 'No file uploaded']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
-        
+
         /** @var UploadedFileInterface $uploadedFile */
         $uploadedFile = $uploadedFiles['document'];
-        
+
         if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
+            $log('File upload error: ' . $uploadedFile->getError());
             $response->getBody()->write(json_encode(['error' => 'File upload failed']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
-        
+
         // Validate file type
         $allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
         $mimeType = $uploadedFile->getClientMediaType();
-        
+        $log('File mime type: ' . $mimeType);
         if (!in_array($mimeType, $allowedTypes)) {
+            $log('Invalid file type: ' . $mimeType);
             $response->getBody()->write(json_encode(['error' => 'Only PDF and Word documents are allowed']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
-        
+
         // Generate filename
         $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
         $filename = sprintf(
@@ -312,19 +328,22 @@ class TenderController
             date('YmdHis'),
             $extension
         );
-        
-        // Upload directory - use absolute path to main site's pub folder
-        $uploadDir = '/var/www/html/pub/tenders/';
+
+        // Use base path from settings/env
+        $container = $GLOBALS['app']->getContainer();
+        $basePath = $container->get('settings')['app']['base_path'] ?? '';
+        $uploadDir = rtrim($basePath, '/') . '/pub/tenders/';
         if (!is_dir($uploadDir)) {
+            $log('Upload dir does not exist, creating: ' . $uploadDir);
             mkdir($uploadDir, 0755, true);
         }
-        
+
+        $log('Moving file to: ' . $uploadDir . $filename);
         $uploadedFile->moveTo($uploadDir . $filename);
-        
+
         // Create document record
-        // Accept both 'label' (from frontend) and 'name' for backwards compatibility
         $documentName = $data['label'] ?? $data['name'] ?? $uploadedFile->getClientFilename();
-        
+
         $document = TenderDocument::create([
             'tender_id' => $tender->id,
             'name' => $documentName,
@@ -333,7 +352,9 @@ class TenderController
             'file_size' => $uploadedFile->getSize(),
             'sort_order' => $tender->documents()->count(),
         ]);
-        
+
+        $log('Document created: ' . $document->id);
+
         $response->getBody()->write(json_encode([
             'success' => true,
             'message' => 'Document uploaded successfully',
@@ -345,7 +366,8 @@ class TenderController
                 'formatted_size' => $document->getFormattedSize(),
             ],
         ]));
-        
+
+        $log('Upload completed successfully');
         return $response->withStatus(201)->withHeader('Content-Type', 'application/json');
     }
     

@@ -15,6 +15,23 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: composer:v2
+
+      - name: Create Admin .htaccess redirect
+        run: |
+          cat > admin/.htaccess << 'EOF'
+          # Redirect all requests to the public subdirectory
+          RewriteEngine On
+
+          # Redirect to public folder
+          RewriteCond %{REQUEST_URI} !^/admin/public/
+          RewriteRule ^(.*)$ public/$1 [L]
+          EOF
+
       - name: Deploy to GoDaddy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -29,6 +46,26 @@ jobs:
             **/.DS_Store
             **/VERSIONING.md
             **/AUTOMATED-VERSIONING.md
-            **/README.md
+            **/README*.md
             **/update-versions.sh
             **/.github/**
+            **/admin/tests/**
+            **/admin/docker/**
+            **/admin/Dockerfile
+            **/admin/.env.example
+            **/admin/.env.docker
+            **/admin/docker-compose.yml
+            **/admin/vendor/**
+
+      - name: Install Composer & Run Migrations/Seeds via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: |
+            cd /home/nw9v11i4x4i5/public_html/admin
+            composer install --no-dev --optimize-autoloader --no-interaction
+            vendor/bin/phinx migrate -e production
+            vendor/bin/phinx seed:run -e production || echo "Phinx seed failed"

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DOTK Admin{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #6b21a8 0%, #9333ea 100%);
+            color: white;
+            padding: 0 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .navbar-user {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .user-info {
+            text-align: right;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .user-role {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+        }
+        
+        .btn-logout {
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .main-content {
+            flex: 1;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .container.wide {
+            max-width: 1400px;
+        }
+        
+        .page-header {
+            background: white;
+            border-radius: 12px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .page-header h1 {
+            color: #1f2937;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .page-header h1 i {
+            color: #6b21a8;
+        }
+        
+        .btn-back {
+            padding: 10px 20px;
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-back:hover {
+            background: #e2e8f0;
+        }
+        
+        .form-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .loading-container {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .loading-container i {
+            font-size: 3rem;
+            color: #9333ea;
+            margin-bottom: 20px;
+        }
+        
+        .loading-container p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-row.four-cols {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .form-label .required {
+            color: #ef4444;
+        }
+        
+        .form-control {
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #9333ea;
+        }
+        
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        select.form-control {
+            cursor: pointer;
+            background: white;
+        }
+        
+        .existing-docs-section {
+            background: #fef3c7;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #fcd34d;
+        }
+        
+        .existing-docs-section h3 {
+            font-size: 1.1rem;
+            color: #92400e;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .existing-doc-item {
+            background: white;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #fcd34d;
+        }
+        
+        .existing-doc-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .doc-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .doc-info i {
+            color: #d97706;
+            font-size: 1.2rem;
+        }
+        
+        .doc-info a {
+            color: #1e40af;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .doc-info a:hover {
+            text-decoration: underline;
+        }
+        
+        .btn-delete-doc {
+            padding: 6px 12px;
+            background: #fee2e2;
+            color: #991b1b;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        
+        .btn-delete-doc:hover {
+            background: #fecaca;
+        }
+        
+        .documents-section {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .documents-section h3 {
+            font-size: 1.1rem;
+            color: #374151;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .documents-section .help-text {
+            color: #6b7280;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+        
+        .document-row {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid #e5e7eb;
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+        
+        .document-row .form-group {
+            margin-bottom: 0;
+        }
+        
+        .btn-remove-doc {
+            padding: 10px 15px;
+            background: #fee2e2;
+            color: #991b1b;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-remove-doc:hover {
+            background: #fecaca;
+        }
+        
+        .btn-add-doc {
+            padding: 10px 20px;
+            background: #dbeafe;
+            color: #1e40af;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-add-doc:hover {
+            background: #bfdbfe;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .btn-primary {
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #6b21a8 0%, #9333ea 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(107, 33, 168, 0.3);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            padding: 14px 30px;
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        
+        /* Footer Styles */
+        .admin-footer {
+            background: #1f2937;
+            color: #9ca3af;
+            padding: 20px 30px;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .footer-copyright {
+            font-size: 0.85rem;
+        }
+        
+        .footer-copyright a {
+            color: #a78bfa;
+            text-decoration: none;
+        }
+        
+        .footer-copyright a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer-version {
+            font-size: 0.8rem;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-version .version-badge {
+            background: #374151;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #a78bfa;
+        }
+        
+        /* Toast Styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        .toast {
+            display: none;
+            background: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            min-width: 300px;
+            max-width: 400px;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .toast.show { display: block; }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .toast-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .toast-header strong { font-size: 0.95rem; }
+        .toast-body { color: #64748b; font-size: 0.9rem; }
+        
+        .toast.success .toast-header i { color: #10b981; }
+        .toast.error .toast-header i { color: #ef4444; }
+        .toast.warning .toast-header i { color: #f59e0b; }
+        .toast.info .toast-header i { color: #3b82f6; }
+        
+        .no-docs-msg {
+            color: #6b7280;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .page-header { flex-direction: column; gap: 15px; text-align: center; }
+            .form-row, .form-row.four-cols { grid-template-columns: 1fr; }
+            .document-row { grid-template-columns: 1fr; }
+            .navbar-content { padding: 0 15px; }
+            .user-info { display: none; }
+            .footer-content { flex-direction: column; text-align: center; }
+        }
+        
+        {% block styles %}{% endblock %}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/admin/" class="navbar-brand">
+                <i class="fas fa-shield-alt"></i>
+                <span>DOTK Admin</span>
+            </a>
+            <div class="navbar-user">
+                <div class="user-info">
+                    <div class="user-name" id="userName">Loading...</div>
+                    <div class="user-role" id="userRole"></div>
+                </div>
+                <button class="btn-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer class="admin-footer">
+        <div class="footer-content">
+            <div class="footer-copyright">
+                © {{ "now"|date("Y") }} <a href="https://kashmirtourismofficial.com" target="_blank">Directorate of Tourism Kashmir</a>, Government of J&K. All Rights Reserved.
+            </div>
+            <div class="footer-version">
+                <span>Admin Panel</span>
+                <span class="version-badge">v{{ app_version }}</span>
+            </div>
+        </div>
+    </footer>
+    
+    <div class="toast-container">
+        <div id="toast" class="toast">
+            <div class="toast-header">
+                <i class="fas fa-info-circle" id="toastIcon"></i>
+                <strong id="toastTitle">Notification</strong>
+            </div>
+            <div class="toast-body" id="toastMessage"></div>
+        </div>
+    </div>
+    
+    <script>
+        const token = localStorage.getItem('dotk_admin_token');
+        if (!token) window.location.href = '/admin/';
+        
+        function getToken() { return localStorage.getItem('dotk_admin_token'); }
+        
+        loadUserInfo();
+        
+        async function loadUserInfo() {
+            try {
+                const response = await fetch('/admin/api/auth/me', {
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                });
+                if (response.status === 401) {
+                    localStorage.removeItem('dotk_admin_token');
+                    window.location.href = '/admin/';
+                    return;
+                }
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('userName').textContent = data.user.full_name;
+                    document.getElementById('userRole').textContent = data.user.role.replace('_', ' ');
+                }
+            } catch (error) {
+                console.error('Error loading user info:', error);
+            }
+        }
+        
+        function showToast(title, message, type = 'info') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastMessage').textContent = message;
+            
+            toast.classList.remove('success', 'error', 'warning', 'info');
+            toast.classList.add(type);
+            
+            const icon = document.getElementById('toastIcon');
+            switch(type) {
+                case 'success': icon.className = 'fas fa-check-circle'; break;
+                case 'error': icon.className = 'fas fa-exclamation-circle'; break;
+                case 'warning': icon.className = 'fas fa-exclamation-triangle'; break;
+                default: icon.className = 'fas fa-info-circle';
+            }
+            
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 5000);
+        }
+        
+        function logout() {
+            localStorage.removeItem('dotk_admin_token');
+            window.location.href = '/admin/';
+        }
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

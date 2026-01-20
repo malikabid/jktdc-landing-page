@@ -1,0 +1,436 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Edit Tender - DOTK Admin{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-edit"></i> Edit Tender</h1>
+        <a href="/admin/tenders" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+    
+    <div class="form-card">
+        <div id="loadingContainer" class="loading-container">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading tender details...</p>
+        </div>
+        
+        <form id="tenderForm" style="display: none;">
+            <input type="hidden" id="tenderId" value="{{ tenderId }}">
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Title <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tender Number <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="tender_number" name="tender_number" required placeholder="e.g., DOTK/TENDER/2025/001">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Reference Number</label>
+                    <input type="text" class="form-control" id="reference_number" name="reference_number">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category <span class="required">*</span></label>
+                    <select class="form-control" id="category" name="category" required>
+                        <option value="">Select Category</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                </div>
+            </div>
+            
+            <div class="form-row four-cols">
+                <div class="form-group">
+                    <label class="form-label">Publish Date <span class="required">*</span></label>
+                    <input type="date" class="form-control" id="publish_date" name="publish_date" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Closing Date <span class="required">*</span></label>
+                    <input type="date" class="form-control" id="closing_date" name="closing_date" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Estimated Value (₹)</label>
+                    <input type="text" class="form-control" id="estimated_value" name="estimated_value" placeholder="e.g., 10,00,000">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select class="form-control" id="status" name="status">
+                        <option value="draft">Draft</option>
+                        <option value="active">Active</option>
+                        <option value="closed">Closed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Department</label>
+                    <input type="text" class="form-control" id="department" name="department" placeholder="e.g., Tourism Development">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contact Person</label>
+                    <input type="text" class="form-control" id="contact_person" name="contact_person">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Contact Email</label>
+                    <input type="email" class="form-control" id="contact_email" name="contact_email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contact Phone</label>
+                    <input type="tel" class="form-control" id="contact_phone" name="contact_phone">
+                </div>
+            </div>
+            
+            <!-- Existing Documents Section -->
+            <div class="existing-docs-section" id="existingDocsSection" style="display: none;">
+                <h3><i class="fas fa-paperclip"></i> Existing Documents</h3>
+                <div id="existingDocsList"></div>
+            </div>
+            
+            <div class="documents-section">
+                <h3><i class="fas fa-file-alt"></i> Add New Documents</h3>
+                <p class="help-text">Add up to 5 documents total. Supported formats: PDF, DOC, DOCX. Max size: 10MB each.</p>
+                
+                <div id="documentsContainer">
+                    <div class="document-row" data-row="1">
+                        <div class="form-group">
+                            <label class="form-label">Document Label</label>
+                            <input type="text" class="form-control doc-label" placeholder="e.g., Tender Notice">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">File</label>
+                            <input type="file" class="form-control doc-file" accept=".pdf,.doc,.docx">
+                        </div>
+                        <button type="button" class="btn-remove-doc" style="display: none;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <button type="button" id="addDocumentBtn" class="btn-add-doc">
+                    <i class="fas fa-plus"></i> Add Another Document
+                </button>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-primary" id="submitBtn">
+                    <i class="fas fa-save"></i> Update Tender
+                </button>
+                <a href="/admin/tenders" class="btn-secondary">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const tenderId = document.getElementById('tenderId').value;
+    let documentRowCount = 1;
+    let existingDocsCount = 0;
+    const maxDocuments = 5;
+    
+    loadTenderData();
+    
+    async function loadTenderData() {
+        try {
+            const response = await fetch(`/admin/api/tenders/${tenderId}`, {
+                headers: { 'Authorization': `Bearer ${getToken()}` }
+            });
+            
+            if (response.status === 401) {
+                localStorage.removeItem('dotk_admin_token');
+                window.location.href = '/admin/';
+                return;
+            }
+            
+            if (!response.ok) {
+                showToast('Error', 'Failed to load tender details', 'error');
+                return;
+            }
+            
+            const result = await response.json();
+            const tender = result.tender || result;
+            
+            document.getElementById('title').value = tender.title || '';
+            document.getElementById('tender_number').value = tender.tender_number || '';
+            document.getElementById('reference_number').value = tender.reference_number || '';
+            document.getElementById('category').value = tender.category || '';
+            document.getElementById('description').value = tender.description || '';
+            document.getElementById('publish_date').value = tender.publish_date ? tender.publish_date.split('T')[0] : '';
+            document.getElementById('closing_date').value = tender.closing_date ? tender.closing_date.split('T')[0] : '';
+            document.getElementById('estimated_value').value = tender.estimated_value || '';
+            document.getElementById('status').value = tender.status || 'draft';
+            document.getElementById('department').value = tender.department || '';
+            document.getElementById('contact_person').value = tender.contact_person || '';
+            document.getElementById('contact_email').value = tender.contact_email || '';
+            document.getElementById('contact_phone').value = tender.contact_phone || '';
+            
+            // Load existing documents
+            if (tender.documents && tender.documents.length > 0) {
+                existingDocsCount = tender.documents.length;
+                const existingDocsSection = document.getElementById('existingDocsSection');
+                const existingDocsList = document.getElementById('existingDocsList');
+                existingDocsSection.style.display = 'block';
+                
+                existingDocsList.innerHTML = tender.documents.map(doc => `
+                    <div class="existing-doc-item" data-doc-id="${doc.id}">
+                        <div class="doc-info">
+                            <i class="fas fa-file-pdf"></i>
+                            <a href="${doc.file_path}" target="_blank">${doc.name}</a>
+                        </div>
+                        <button type="button" class="btn-delete-doc" onclick="deleteDocument(${doc.id}, this)">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('loadingContainer').style.display = 'none';
+            document.getElementById('tenderForm').style.display = 'block';
+            
+        } catch (error) {
+            console.error('Error:', error);
+            showToast('Error', 'Network error loading tender details', 'error');
+        }
+    }
+    
+    async function deleteDocument(docId, btn) {
+        if (!confirm('Are you sure you want to delete this document?')) return;
+        
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        
+        try {
+            const response = await fetch(`/admin/api/tenders/${tenderId}/documents/${docId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${getToken()}` }
+            });
+            
+            if (response.status === 401) {
+                localStorage.removeItem('dotk_admin_token');
+                window.location.href = '/admin/'
+            }
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                btn.closest('.existing-doc-item').remove();
+                existingDocsCount--;
+                
+                if (existingDocsCount === 0) {
+                    document.getElementById('existingDocsSection').style.display = 'none';
+                }
+                
+                showToast('Success', 'Document deleted successfully', 'success');
+            } else {
+                showToast('Error', result.error || 'Failed to delete document', 'error');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-trash"></i> Delete';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showToast('Error', 'Network error deleting document', 'error');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-trash"></i> Delete';
+        }
+    }
+    
+    document.getElementById('addDocumentBtn').addEventListener('click', function() {
+        const totalDocs = existingDocsCount + documentRowCount;
+        if (totalDocs >= maxDocuments) {
+            showToast('Maximum Documents', 'You can only have up to 5 documents total.', 'warning');
+            return;
+        }
+        documentRowCount++;
+        const container = document.getElementById('documentsContainer');
+        const newRow = document.createElement('div');
+        newRow.className = 'document-row';
+        newRow.dataset.row = documentRowCount;
+        newRow.innerHTML = `
+            <div class="form-group">
+                <label class="form-label">Document Label</label>
+                <input type="text" class="form-control doc-label" placeholder="e.g., Terms & Conditions">
+            </div>
+            <div class="form-group">
+                <label class="form-label">File</label>
+                <input type="file" class="form-control doc-file" accept=".pdf,.doc,.docx">
+            </div>
+            <button type="button" class="btn-remove-doc"><i class="fas fa-trash"></i></button>
+        `;
+        container.appendChild(newRow);
+        updateRemoveButtons();
+    });
+    
+    document.getElementById('documentsContainer').addEventListener('click', function(e) {
+        if (e.target.closest('.btn-remove-doc')) {
+            e.target.closest('.document-row').remove();
+            documentRowCount--;
+            updateRemoveButtons();
+        }
+    });
+    
+    function updateRemoveButtons() {
+        const rows = document.querySelectorAll('.document-row');
+        rows.forEach((row) => {
+            const btn = row.querySelector('.btn-remove-doc');
+            btn.style.display = rows.length > 1 ? 'block' : 'none';
+        });
+    }
+    
+    document.getElementById('tenderForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+        
+        const currentToken = getToken();
+        if (!currentToken) {
+            showToast('Session Expired', 'Please login again.', 'error');
+            setTimeout(() => { window.location.href = '/admin/'; }, 1500);
+            return;
+        }
+        
+        const fileInputs = document.querySelectorAll('.doc-file');
+        let hasValidationError = false;
+        
+        for (const input of fileInputs) {
+            if (input.files.length > 0) {
+                const file = input.files[0];
+                const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+                const maxSize = 10 * 1024 * 1024;
+                
+                if (!allowedTypes.includes(file.type)) {
+                    showToast('Invalid File Type', `File "${file.name}" is not valid. Only PDF, DOC, DOCX allowed.`, 'error');
+                    hasValidationError = true;
+                    break;
+                }
+                if (file.size > maxSize) {
+                    showToast('File Too Large', `File "${file.name}" exceeds 10MB limit.`, 'error');
+                    hasValidationError = true;
+                    break;
+                }
+            }
+        }
+        
+        if (hasValidationError) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Tender';
+            return;
+        }
+        
+        const tenderData = {
+            title: document.getElementById('title').value,
+            tender_number: document.getElementById('tender_number').value,
+            reference_number: document.getElementById('reference_number').value,
+            category: document.getElementById('category').value,
+            description: document.getElementById('description').value,
+            publish_date: document.getElementById('publish_date').value,
+            closing_date: document.getElementById('closing_date').value,
+            estimated_value: document.getElementById('estimated_value').value,
+            status: document.getElementById('status').value,
+            department: document.getElementById('department').value,
+            contact_person: document.getElementById('contact_person').value,
+            contact_email: document.getElementById('contact_email').value,
+            contact_phone: document.getElementById('contact_phone').value
+        };
+        
+        try {
+            const response = await fetch(`/admin/api/tenders/${tenderId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentToken
+                },
+                body: JSON.stringify(tenderData)
+            });
+            
+            if (response.status === 401) {
+                showToast('Session Expired', 'Please login again.', 'error');
+                localStorage.removeItem('dotk_admin_token');
+                setTimeout(() => { window.location.href = '/admin/'; }, 1500);
+                return;
+            }
+            
+            const result = await response.json();
+            
+            if (result.success || result.tender) {
+                const documentRows = document.querySelectorAll('.document-row');
+                let uploadErrors = [];
+                
+                for (const row of documentRows) {
+                    const labelInput = row.querySelector('.doc-label');
+                    const fileInput = row.querySelector('.doc-file');
+                    
+                    if (fileInput.files.length > 0 && labelInput.value.trim()) {
+                        const formData = new FormData();
+                        formData.append('label', labelInput.value.trim());
+                        formData.append('document', fileInput.files[0]);
+                        
+                        try {
+                            const uploadResponse = await fetch(`/admin/api/tenders/${tenderId}/documents`, {
+                                method: 'POST',
+                                headers: { 'Authorization': 'Bearer ' + getToken() },
+                                body: formData
+                            });
+                            
+                            if (uploadResponse.status === 401) {
+                                showToast('Session Expired', 'Please login again.', 'error');
+                                localStorage.removeItem('dotk_admin_token');
+                                setTimeout(() => { window.location.href = '/admin/'; }, 1500);
+                                return;
+                            }
+                            
+                            const uploadResult = await uploadResponse.json();
+                            if (!uploadResult.success) {
+                                uploadErrors.push(labelInput.value + ': ' + (uploadResult.message || uploadResult.error || 'Upload failed'));
+                            }
+                        } catch (err) {
+                            uploadErrors.push(labelInput.value + ': ' + err.message);
+                        }
+                    }
+                }
+                
+                if (uploadErrors.length > 0) {
+                    showToast('Partial Success', 'Tender updated but some documents failed: ' + uploadErrors.join(', '), 'warning');
+                } else {
+                    showToast('Success', 'Tender updated successfully!', 'success');
+                }
+                
+                setTimeout(() => { window.location.href = '/admin/tenders'; }, 1500);
+            } else {
+                showToast('Error', result.error || result.message || 'Failed to update tender', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Tender';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showToast('Error', 'Network error. Please try again.', 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Tender';
+        }
+    });
+</script>
+{% endblock %}

@@ -1,12 +1,89 @@
-version: "3.8"
-
 services:
+  # MySQL Database for Admin Panel
+  mysql:
+    image: mysql:8.0
+    container_name: dotk-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password_change_me
+      MYSQL_DATABASE: dotk_admin
+      MYSQL_USER: dotk_admin_user
+      MYSQL_PASSWORD: dotk_admin_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./admin/docker/mysql-init:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - dotk-network
+
+  # PHP-FPM for Admin Backend
+  php-fpm:
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    container_name: dotk-php-fpm
+    working_dir: /var/www/admin
+    volumes:
+      - ./admin:/var/www/admin:cached
+      - ./admin/docker/php-fpm-custom.conf:/usr/local/etc/php-fpm.d/zzz-custom.conf:ro
+      - ./pub/tenders:/var/www/html/pub/tenders:cached
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=dotk_admin
+      - DB_USERNAME=dotk_admin_user
+      - DB_PASSWORD=dotk_admin_pass
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - dotk-network
+
+  # Apache Web Server (Frontend + Admin Proxy)
   apache:
     image: httpd:2.4
-    container_name: jktdc-apache
+    container_name: dotk-apache
     ports:
       - "8080:80"
     volumes:
       - .:/usr/local/apache2/htdocs/:cached
       - ./httpd.conf:/usr/local/apache2/conf/httpd.conf:cached
+    depends_on:
+      - php-fpm
     restart: unless-stopped
+    networks:
+      - dotk-network
+
+  # PHPMyAdmin (Optional - for database management)
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: dotk-phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root_password_change_me
+    ports:
+      - "8081:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - dotk-network
+
+networks:
+  dotk-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local

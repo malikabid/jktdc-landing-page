@@ -1,0 +1,33 @@
+# Enable PHP 8.3 (adjust handler based on your GoDaddy setup)
+# AddHandler application/x-httpd-php83 .php
+
+# Slim Framework Routing
+RewriteEngine On
+
+# Some hosts may require RewriteBase
+RewriteBase /admin/
+
+# Redirect to HTTPS (optional but recommended)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# If not a file or directory, route through index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Disable directory browsing
+Options -Indexes
+
+# Protect sensitive files
+<FilesMatch "(\.env|composer\.(json|lock)|\.git)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

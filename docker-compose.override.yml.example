@@ -1,0 +1,38 @@
+# Docker Compose Override Template
+# Copy this file to docker-compose.override.yml and customize as needed
+# This file is gitignored, so your local changes won't be committed
+
+version: "3.8"
+
+services:
+  # Example: Change MySQL port if 3306 conflicts
+  # mysql:
+  #   ports:
+  #     - "3307:3306"
+
+  # Example: Add more PHP extensions
+  # php-fpm:
+  #   build:
+  #     args:
+  #       - INSTALL_XDEBUG=true
+
+  # Example: Change Apache port if 8080 conflicts
+  # apache:
+  #   ports:
+  #     - "8081:80"
+
+  # Example: Disable PHPMyAdmin
+  # phpmyadmin:
+  #   profiles:
+  #     - disabled
+
+  # Example: Mount additional volumes
+  # apache:
+  #   volumes:
+  #     - ./custom-config.conf:/usr/local/apache2/conf/custom.conf
+
+  # Example: Override environment variables
+  # php-fpm:
+  #   environment:
+  #     - APP_DEBUG=true
+  #     - LOG_LEVEL=debug

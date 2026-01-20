@@ -1,9 +1,15 @@
 pub/images/backup/
 .DS_Store
 VERSIONING.md
-admin/*
+admin/.htpasswd
+passwords
 generate-favicon.html
 Godaddy_Hosting_Invoice.pdf
 cleanup-branches.sh
 Data Tourism/*
 shrine-images/
+dotk_godaddy_credentials.txt
+docker-compose.override.yml
+httpd-local.conf
+certs/
+admin/.env.local

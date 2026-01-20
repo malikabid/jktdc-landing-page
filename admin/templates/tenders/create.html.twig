@@ -1,0 +1,317 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Add New Tender - DOTK Admin{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-plus-circle"></i> Add New Tender</h1>
+        <a href="/admin/tenders" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+    
+    <div class="form-card">
+        <form id="tenderForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Title <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tender Number <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="tender_number" name="tender_number" required placeholder="e.g., DOTK/TENDER/2025/001">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Reference Number</label>
+                    <input type="text" class="form-control" id="reference_number" name="reference_number">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category <span class="required">*</span></label>
+                    <select class="form-control" id="category" name="category" required>
+                        <option value="">Select Category</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                </div>
+            </div>
+            
+            <div class="form-row four-cols">
+                <div class="form-group">
+                    <label class="form-label">Publish Date <span class="required">*</span></label>
+                    <input type="date" class="form-control" id="publish_date" name="publish_date" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Closing Date <span class="required">*</span></label>
+                    <input type="date" class="form-control" id="closing_date" name="closing_date" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Estimated Value (₹)</label>
+                    <input type="text" class="form-control" id="estimated_value" name="estimated_value" placeholder="e.g., 10,00,000">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select class="form-control" id="status" name="status">
+                        <option value="draft">Draft</option>
+                        <option value="active">Active</option>
+                        <option value="closed">Closed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Department</label>
+                    <input type="text" class="form-control" id="department" name="department" placeholder="e.g., Tourism Development">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contact Person</label>
+                    <input type="text" class="form-control" id="contact_person" name="contact_person" value="Assistant Director (Procurement)">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Contact Email</label>
+                    <input type="email" class="form-control" id="contact_email" name="contact_email" value="dirtourism-kashmir@jk.gov.in">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contact Phone</label>
+                    <input type="tel" class="form-control" id="contact_phone" name="contact_phone" value="+91 194 2502279">
+                </div>
+            </div>
+            
+            <div class="documents-section">
+                <h3><i class="fas fa-file-alt"></i> Documents</h3>
+                <p class="help-text">Add up to 5 documents. Supported formats: PDF, DOC, DOCX. Max size: 10MB each.</p>
+                
+                <div id="documentsContainer">
+                    <div class="document-row" data-row="1">
+                        <div class="form-group">
+                            <label class="form-label">Document Label</label>
+                            <input type="text" class="form-control doc-label" placeholder="e.g., Tender Notice">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">File</label>
+                            <input type="file" class="form-control doc-file" accept=".pdf,.doc,.docx">
+                        </div>
+                        <button type="button" class="btn-remove-doc" style="display: none;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <button type="button" id="addDocumentBtn" class="btn-add-doc">
+                    <i class="fas fa-plus"></i> Add Another Document
+                </button>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-primary" id="submitBtn">
+                    <i class="fas fa-save"></i> Save Tender
+                </button>
+                <a href="/admin/tenders" class="btn-secondary">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let documentRowCount = 1;
+    const maxDocuments = 5;
+    
+    document.getElementById('publish_date').value = new Date().toISOString().split('T')[0];
+    
+    document.getElementById('addDocumentBtn').addEventListener('click', function() {
+        if (documentRowCount >= maxDocuments) {
+            showToast('Maximum Documents', 'You can only add up to 5 documents.', 'warning');
+            return;
+        }
+        documentRowCount++;
+        const container = document.getElementById('documentsContainer');
+        const newRow = document.createElement('div');
+        newRow.className = 'document-row';
+        newRow.dataset.row = documentRowCount;
+        newRow.innerHTML = `
+            <div class="form-group">
+                <label class="form-label">Document Label</label>
+                <input type="text" class="form-control doc-label" placeholder="e.g., Terms & Conditions">
+            </div>
+            <div class="form-group">
+                <label class="form-label">File</label>
+                <input type="file" class="form-control doc-file" accept=".pdf,.doc,.docx">
+            </div>
+            <button type="button" class="btn-remove-doc"><i class="fas fa-trash"></i></button>
+        `;
+        container.appendChild(newRow);
+        updateRemoveButtons();
+    });
+    
+    document.getElementById('documentsContainer').addEventListener('click', function(e) {
+        if (e.target.closest('.btn-remove-doc')) {
+            e.target.closest('.document-row').remove();
+            documentRowCount--;
+            updateRemoveButtons();
+        }
+    });
+    
+    function updateRemoveButtons() {
+        const rows = document.querySelectorAll('.document-row');
+        rows.forEach((row) => {
+            const btn = row.querySelector('.btn-remove-doc');
+            btn.style.display = rows.length > 1 ? 'block' : 'none';
+        });
+    }
+    
+    document.getElementById('tenderForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        
+        const currentToken = getToken();
+        if (!currentToken) {
+            showToast('Session Expired', 'Please login again.', 'error');
+            setTimeout(() => { window.location.href = '/admin/'; }, 1500);
+            return;
+        }
+        
+        const fileInputs = document.querySelectorAll('.doc-file');
+        let hasValidationError = false;
+        
+        for (const input of fileInputs) {
+            if (input.files.length > 0) {
+                const file = input.files[0];
+                const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+                const maxSize = 10 * 1024 * 1024;
+                
+                if (!allowedTypes.includes(file.type)) {
+                    showToast('Invalid File Type', `File "${file.name}" is not valid. Only PDF, DOC, DOCX allowed.`, 'error');
+                    hasValidationError = true;
+                    break;
+                }
+                if (file.size > maxSize) {
+                    showToast('File Too Large', `File "${file.name}" exceeds 10MB limit.`, 'error');
+                    hasValidationError = true;
+                    break;
+                }
+            }
+        }
+        
+        if (hasValidationError) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Tender';
+            return;
+        }
+        
+        const tenderData = {
+            title: document.getElementById('title').value,
+            tender_number: document.getElementById('tender_number').value,
+            reference_number: document.getElementById('reference_number').value,
+            category: document.getElementById('category').value,
+            description: document.getElementById('description').value,
+            publish_date: document.getElementById('publish_date').value,
+            closing_date: document.getElementById('closing_date').value,
+            estimated_value: document.getElementById('estimated_value').value,
+            status: document.getElementById('status').value,
+            department: document.getElementById('department').value,
+            contact_person: document.getElementById('contact_person').value,
+            contact_email: document.getElementById('contact_email').value,
+            contact_phone: document.getElementById('contact_phone').value
+        };
+        
+        try {
+            const response = await fetch('/admin/api/tenders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentToken
+                },
+                body: JSON.stringify(tenderData)
+            });
+            
+            if (response.status === 401) {
+                showToast('Session Expired', 'Please login again.', 'error');
+                localStorage.removeItem('dotk_admin_token');
+                setTimeout(() => { window.location.href = '/admin/'; }, 1500);
+                return;
+            }
+            
+            const result = await response.json();
+            
+            if (result.success || result.tender) {
+                const tenderId = result.tender.id;
+                const documentRows = document.querySelectorAll('.document-row');
+                let uploadErrors = [];
+                
+                for (const row of documentRows) {
+                    const labelInput = row.querySelector('.doc-label');
+                    const fileInput = row.querySelector('.doc-file');
+                    
+                    if (fileInput.files.length > 0 && labelInput.value.trim()) {
+                        const formData = new FormData();
+                        formData.append('label', labelInput.value.trim());
+                        formData.append('document', fileInput.files[0]);
+                        
+                        try {
+                            const uploadResponse = await fetch(`/admin/api/tenders/${tenderId}/documents`, {
+                                method: 'POST',
+                                headers: { 'Authorization': 'Bearer ' + getToken() },
+                                body: formData
+                            });
+                            
+                            if (uploadResponse.status === 401) {
+                                showToast('Session Expired', 'Please login again.', 'error');
+                                localStorage.removeItem('dotk_admin_token');
+                                setTimeout(() => { window.location.href = '/admin/'; }, 1500);
+                                return;
+                            }
+                            
+                            const uploadResult = await uploadResponse.json();
+                            if (!uploadResult.success) {
+                                uploadErrors.push(labelInput.value + ': ' + (uploadResult.message || uploadResult.error || 'Upload failed'));
+                            }
+                        } catch (err) {
+                            uploadErrors.push(labelInput.value + ': ' + err.message);
+                        }
+                    }
+                }
+                
+                if (uploadErrors.length > 0) {
+                    showToast('Partial Success', 'Tender created but some documents failed: ' + uploadErrors.join(', '), 'warning');
+                } else {
+                    showToast('Success', 'Tender created successfully!', 'success');
+                }
+                
+                setTimeout(() => { window.location.href = '/admin/tenders'; }, 1500);
+            } else {
+                showToast('Error', result.error || result.message || 'Failed to create tender', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Tender';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showToast('Error', 'Network error. Please try again.', 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Tender';
+        }
+    });
+</script>
+{% endblock %}

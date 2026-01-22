@@ -139,8 +139,10 @@ class EventsManager {
           <p>${event.description}</p>
           ${event.location ? `<p class="event-location"><i class="fas fa-map-marker-alt"></i> ${event.location}</p>` : ''}
           ${registrationHtml}
-          ${imageHtml}
-          ${videoHtml}
+        </div>
+        <div class="event-media">
+        ${imageHtml}
+        ${videoHtml}
         </div>
       </div>
     `;

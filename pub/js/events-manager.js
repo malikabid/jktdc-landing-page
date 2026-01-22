@@ -67,6 +67,13 @@ class EventsManager {
     return [...this.getCurrentEvents(), ...this.getUpcomingEvents()];
   }
 
+  // Get events marked for homepage display (sorted by start date descending - newest first)
+  getHomepageEvents() {
+    return this.events
+      .filter(event => event.showOnHomepage === true)
+      .sort((a, b) => this.parseDate(b.startDate) - this.parseDate(a.startDate));
+  }
+
   // Format date for display
   formatDate(dateString) {
     const date = this.parseDate(dateString);
@@ -100,6 +107,27 @@ class EventsManager {
       `;
     }
 
+    let imageHtml = '';
+    if (event.image && !event.videoUrl) {
+      imageHtml = `
+        <div class="event-image">
+          <img src="${event.image}" alt="${event.title}" />
+        </div>
+      `;
+    }
+
+    let registrationHtml = '';
+    if (event.registrationUrl) {
+      const deadlineText = event.registrationDeadline 
+        ? ` (Closes: ${this.formatDate(event.registrationDeadline)})` 
+        : '';
+      registrationHtml = `
+        <a href="${event.registrationUrl}" target="_blank" rel="noopener noreferrer" class="event-register-btn">
+          <i class="fas fa-user-plus"></i> Register Now${deadlineText}
+        </a>
+      `;
+    }
+
     return `
       <div class="event-item" data-event-id="${event.id}">
         <div class="event-date">
@@ -110,6 +138,8 @@ class EventsManager {
           <h3>${event.title}</h3>
           <p>${event.description}</p>
           ${event.location ? `<p class="event-location"><i class="fas fa-map-marker-alt"></i> ${event.location}</p>` : ''}
+          ${registrationHtml}
+          ${imageHtml}
           ${videoHtml}
         </div>
       </div>
@@ -137,18 +167,24 @@ class EventsManager {
     }
   }
 
-  // Initialize homepage events (current + upcoming, or 3 most recent if none active)
+  // Initialize homepage events (show events marked for homepage, or 3 most recent if none)
   async initializeHomepage() {
     await this.fetchEvents();
-    let activeEvents = this.getActiveEvents();
+    let homepageEvents = this.getHomepageEvents();
     
-    // If no active events, show 3 most recent completed events
-    if (activeEvents.length === 0) {
-      const completedEvents = this.getCompletedEvents();
-      activeEvents = completedEvents.slice(0, 3);
+    // If no homepage events, show 3 most recent active events
+    if (homepageEvents.length === 0) {
+      const activeEvents = this.getActiveEvents();
+      homepageEvents = activeEvents.slice(0, 3);
     }
     
-    this.renderEvents(activeEvents, 'events-scroll');
+    // If still no events, show 3 most recent completed events
+    if (homepageEvents.length === 0) {
+      const completedEvents = this.getCompletedEvents();
+      homepageEvents = completedEvents.slice(0, 3);
+    }
+    
+    this.renderEvents(homepageEvents, 'events-scroll');
   }
 
   // Initialize events page (all sections)

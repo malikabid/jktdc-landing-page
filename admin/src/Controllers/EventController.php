@@ -65,7 +65,7 @@ class EventController
     public function store(Request $request, Response $response): Response
     {
         $data = $request->getParsedBody();
-        
+
         // Validation
         if (empty($data['title']) || empty($data['startDate'])) {
             $response->getBody()->write(json_encode([
@@ -73,13 +73,23 @@ class EventController
             ]));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
-        
+
+        // Validate startDate and endDate logic
+        $startDate = $data['startDate'];
+        $endDate = $data['endDate'] ?? null;
+        if ($endDate && strtotime($startDate) > strtotime($endDate)) {
+            $response->getBody()->write(json_encode([
+                'error' => 'Event start date cannot be after end date.'
+            ]));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
+
         try {
             $event = Event::create([
                 'title' => $data['title'],
                 'description' => $data['description'] ?? null,
-                'startDate' => $data['startDate'],
-                'endDate' => $data['endDate'] ?? null,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
                 'location' => $data['location'] ?? null,
                 'category' => $data['category'] ?? null,
                 'videoUrl' => $data['videoUrl'] ?? null,
@@ -90,7 +100,7 @@ class EventController
                 'showOnHomepage' => (bool)($data['showOnHomepage'] ?? false),
                 'created_by' => $request->getAttribute('user')->id ?? null,
             ]);
-            
+
             $response->getBody()->write(json_encode(['event' => $event->toPublicArray()]));
             return $response->withStatus(201)->withHeader('Content-Type', 'application/json');
         } catch (\Exception $e) {
@@ -105,20 +115,30 @@ class EventController
     public function update(Request $request, Response $response, array $args): Response
     {
         $event = Event::find($args['id']);
-        
+
         if (!$event) {
             $response->getBody()->write(json_encode(['error' => 'Event not found']));
             return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
         }
-        
+
         $data = $request->getParsedBody();
-        
+
+        // Validate startDate and endDate logic
+        $startDate = $data['startDate'] ?? $event->startDate;
+        $endDate = $data['endDate'] ?? $event->endDate;
+        if ($endDate && strtotime($startDate) > strtotime($endDate)) {
+            $response->getBody()->write(json_encode([
+                'error' => 'Event start date cannot be after end date.'
+            ]));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
+
         try {
             $event->update([
                 'title' => $data['title'] ?? $event->title,
                 'description' => $data['description'] ?? $event->description,
-                'startDate' => $data['startDate'] ?? $event->startDate,
-                'endDate' => $data['endDate'] ?? $event->endDate,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
                 'location' => $data['location'] ?? $event->location,
                 'category' => $data['category'] ?? $event->category,
                 'videoUrl' => $data['videoUrl'] ?? $event->videoUrl,
@@ -129,7 +149,7 @@ class EventController
                 'showOnHomepage' => isset($data['showOnHomepage']) ? (bool)$data['showOnHomepage'] : $event->showOnHomepage,
                 'updated_by' => $request->getAttribute('user')->id ?? null,
             ]);
-            
+
             $response->getBody()->write(json_encode(['event' => $event->toPublicArray()]));
             return $response->withHeader('Content-Type', 'application/json');
         } catch (\Exception $e) {

@@ -46,6 +46,9 @@ return function (App $app) {
                 'events' => '/api/events/*',
                 'tenders' => '/api/tenders/*',
                 'officials' => '/api/officials/*',
+                'users' => '/api/users/*',
+                'public_events' => '/api/public/events',
+                'public_tenders' => '/api/public/tenders',
             ]
         ];
         
@@ -97,6 +100,29 @@ return function (App $app) {
         ]);
     });
     
+    // Events management page
+    $app->get('/events', function (Request $request, Response $response) {
+        $view = $this->get('view');
+        return $view->render($response, 'events/index.html.twig');
+    });
+    
+    // Events create page
+    $app->get('/events/create', function (Request $request, Response $response) {
+        $view = $this->get('view');
+        return $view->render($response, 'events/create.html.twig', [
+            'categories' => \App\Models\Event::CATEGORIES
+        ]);
+    });
+    
+    // Events edit page
+    $app->get('/events/{id}/edit', function (Request $request, Response $response, array $args) {
+        $view = $this->get('view');
+        return $view->render($response, 'events/edit.html.twig', [
+            'eventId' => $args['id'],
+            'categories' => \App\Models\Event::CATEGORIES
+        ]);
+    });
+    
     // Auth routes (public)
     $app->group('/api/auth', function ($group) {
         $group->post('/login', 'App\Controllers\AuthController:login');
@@ -125,6 +151,16 @@ return function (App $app) {
         $group->delete('/{id}/documents/{docId}', 'App\Controllers\TenderController:deleteDocument');
     })->add('App\Middleware\AdminMiddleware')->add('App\Middleware\AuthMiddleware');
     
-    // Public API for tenders (no auth required)
-    $app->get('/api/public/tenders', 'App\Controllers\TenderController:publicIndex');
+    // Event management routes (Admin only)
+    $app->group('/api/events', function ($group) {
+        $group->get('', 'App\Controllers\EventController:index');
+        $group->get('/{id}', 'App\Controllers\EventController:show');
+        $group->post('', 'App\Controllers\EventController:store');
+        $group->put('/{id}', 'App\Controllers\EventController:update');
+        $group->delete('/{id}', 'App\Controllers\EventController:destroy');
+        $group->post('/upload', 'App\Controllers\EventController:uploadFile');
+    })->add('App\Middleware\AdminMiddleware')->add('App\Middleware\AuthMiddleware');
+    
+    // Public API for events (no auth required)
+    $app->get('/api/public/events', 'App\Controllers\EventController:homepage');
 };

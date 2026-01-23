@@ -1,0 +1,299 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Edit Event - DOTK Admin{% endblock %}
+
+{% block styles %}
+<style>
+    /* Simplified edit form styles */
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-edit"></i> Edit Event</h1>
+        <a href="/admin/events" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+    
+    <div class="form-card">
+        <div id="loadingContainer" class="loading-container">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading event details...</p>
+        </div>
+        
+        <form id="eventForm" style="display: none;">
+            <input type="hidden" id="eventId" value="{{ eventId }}">
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Title <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-control" id="category" name="category">
+                        <option value="">Select Category</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" placeholder="Event details and information"></textarea>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Start Date <span class="required">*</span></label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">End Date</label>
+                    <input type="date" class="form-control" id="endDate" name="endDate">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Location</label>
+                    <input type="text" class="form-control" id="location" name="location" placeholder="e.g., Dal Lake, Srinagar">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Video URL</label>
+                    <input type="url" class="form-control" id="videoUrl" name="videoUrl" placeholder="https://www.youtube.com/embed/...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Thumbnail URL</label>
+                    <input type="url" class="form-control" id="thumbnail" name="thumbnail" placeholder="https://img.youtube.com/vi/...">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <div class="themed-upload-container" style="background: #fffbe6; border: 2px solid #f6c453; border-radius: 10px; padding: 18px 18px 10px 18px; margin-bottom: 10px;">
+                        <label class="form-label" style="color: #a86a00; font-weight: 600; font-size: 1.1rem;">
+                            <i class="fas fa-paperclip"></i> Event Document
+                        </label>
+                        <div id="eventDocSection">
+                            <div id="eventDocFileContainer" style="display: none;">
+                                <div class="existing-doc-item">
+                                    <div class="doc-info">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <a href="#" id="fileLink" target="_blank" class="event-doc-link"><span id="fileName"></span></a>
+                                    </div>
+                                    <button type="button" class="btn-delete-doc" onclick="removeFile()">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="eventDocUploadContainer">
+                                <input type="file" class="form-control" id="file_upload" name="file_upload" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.mp4,.avi,.mov" style="margin-top: 10px;">
+                                <small class="form-text" style="color: #a86a00;">Allowed: Images (JPG, PNG, GIF), Documents (PDF, DOC, DOCX), Videos (MP4, AVI, MOV) - Max 50MB</small>
+                            </div>
+                        </div>
+                        <input type="hidden" id="file_path" name="file_path">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">CTA Button Text</label>
+                    <input type="text" class="form-control" id="cta_text" name="cta_text" placeholder="e.g., Register Now, Download Brochure, Learn More">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">CTA Button Link</label>
+                    <input type="url" class="form-control" id="cta_link" name="cta_link" placeholder="https://...">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="showOnHomepage" name="showOnHomepage">
+                    <label for="showOnHomepage">Show on Homepage</label>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-primary" id="submitBtn">
+                    <i class="fas fa-save"></i> Update Event
+                </button>
+                <a href="/admin/events" class="btn-secondary">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const eventId = document.getElementById('eventId').value;
+    
+    loadEventData();
+    
+    async function loadEventData() {
+        try {
+            const response = await fetch(`/admin/api/events/${eventId}`, {
+                headers: { 'Authorization': `Bearer ${getToken()}` }
+            });
+            
+            if (response.status === 401) {
+                localStorage.removeItem('dotk_admin_token');
+                window.location.href = '/admin/';
+                return;
+            }
+            
+            if (!response.ok) {
+                showToast('Error', 'Failed to load event details', 'error');
+                return;
+            }
+            
+            const result = await response.json();
+            const event = result.event || result;
+            
+            document.getElementById('title').value = event.title || '';
+            document.getElementById('description').value = event.description || '';
+            document.getElementById('startDate').value = event.startDate || '';
+            document.getElementById('endDate').value = event.endDate || '';
+            document.getElementById('location').value = event.location || '';
+            document.getElementById('category').value = event.category || '';
+            document.getElementById('videoUrl').value = event.videoUrl || '';
+            document.getElementById('thumbnail').value = event.thumbnail || '';
+            document.getElementById('file_path').value = event.file_path || '';
+            document.getElementById('cta_text').value = event.cta_text || '';
+            document.getElementById('cta_link').value = event.cta_link || '';
+            document.getElementById('showOnHomepage').checked = event.showOnHomepage || false;
+            
+            // Show file info if present, else show upload
+            if (event.file_path) {
+                document.getElementById('eventDocFileContainer').style.display = 'block';
+                document.getElementById('eventDocUploadContainer').style.display = 'none';
+                document.getElementById('fileName').textContent = event.file_path.split('/').pop();
+                document.getElementById('fileLink').href = event.file_path;
+            } else {
+                document.getElementById('eventDocFileContainer').style.display = 'none';
+                document.getElementById('eventDocUploadContainer').style.display = 'block';
+            }
+            
+            document.getElementById('loadingContainer').style.display = 'none';
+            document.getElementById('eventForm').style.display = 'block';
+            
+        } catch (error) {
+            console.error('Error:', error);
+            showToast('Error', 'Network error loading event details', 'error');
+        }
+    }
+    
+    function removeFile() {
+        document.getElementById('eventDocFileContainer').style.display = 'none';
+        document.getElementById('file_path').value = '';
+        document.getElementById('file_upload').value = '';
+        document.getElementById('eventDocUploadContainer').style.display = 'block';
+    }
+    
+    document.getElementById('eventForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+        
+        const formData = new FormData(this);
+        
+        // Handle file upload first if present
+        const fileInput = document.getElementById('file_upload');
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            
+            // Validate file size (50MB)
+            if (file.size > 50 * 1024 * 1024) {
+                showToast('Error', 'File size must be less than 50MB', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Event';
+                return;
+            }
+            
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'video/mp4', 'video/avi', 'video/quicktime'];
+            if (!allowedTypes.includes(file.type)) {
+                showToast('Error', 'Invalid file type. Allowed: Images, PDF, DOC, DOCX, MP4, AVI, MOV', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Event';
+                return;
+            }
+            
+            // Upload file first
+            const uploadFormData = new FormData();
+            uploadFormData.append('file', file);
+            
+            try {
+                const uploadResponse = await fetch('/admin/api/events/upload', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${getToken()}` },
+                    body: uploadFormData
+                });
+                
+                if (!uploadResponse.ok) {
+                    const errorData = await uploadResponse.json();
+                    throw new Error(errorData.error || 'File upload failed');
+                }
+                
+                const uploadResult = await uploadResponse.json();
+                formData.set('file_path', uploadResult.file_path);
+            } catch (uploadError) {
+                showToast('Error', uploadError.message || 'File upload failed', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Event';
+                return;
+            }
+        }
+        
+        const data = Object.fromEntries(formData);
+        data.showOnHomepage = document.getElementById('showOnHomepage').checked;
+        delete data.file_upload; // Remove file input from data
+        
+        try {
+            const response = await fetch(`/admin/api/events/${eventId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getToken()}`
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (response.status === 401) {
+                localStorage.removeItem('dotk_admin_token');
+                window.location.href = '/admin/';
+                return;
+            }
+            
+            if (!response.ok) {
+                const result = await response.json();
+                throw new Error(result.error || 'Failed to update event');
+            }
+            
+            showToast('Success', 'Event updated successfully!', 'success');
+            setTimeout(() => { window.location.href = '/admin/events'; }, 1500);
+            
+        } catch (error) {
+            console.error('Error saving event:', error);
+            showToast('Error', error.message || 'Failed to save event', 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Event';
+        }
+    });
+</script>
+{% endblock %}

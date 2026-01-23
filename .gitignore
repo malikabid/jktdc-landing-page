@@ -14,3 +14,4 @@ httpd-local.conf
 certs/
 admin/.env.local
 pub/tenders/*
+pub/events/*

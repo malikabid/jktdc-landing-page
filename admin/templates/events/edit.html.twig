@@ -84,15 +84,22 @@
                         <label class="form-label" style="color: #a86a00; font-weight: 600; font-size: 1.1rem;">
                             <i class="fas fa-paperclip"></i> Event Document
                         </label>
-                        <div id="fileUploadContainer">
-                            <input type="file" class="form-control" id="file_upload" name="file_upload" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.mp4,.avi,.mov" style="margin-top: 10px;">
-                            <small class="form-text" style="color: #a86a00;">Allowed: Images (JPG, PNG, GIF), Documents (PDF, DOC, DOCX), Videos (MP4, AVI, MOV) - Max 50MB</small>
-                        </div>
-                        <div id="currentFile" style="margin-top: 10px; display: none; background: #fff; border-radius: 6px; padding: 8px 12px; box-shadow: 0 2px 8px #f6c45333; display: flex; align-items: center; gap: 10px;">
-                            <i class="fas fa-file" style="color: #f6c453; font-size: 1.3rem;"></i>
-                            <span id="fileName" style="font-weight: 500; color: #a86a00;"></span>
-                            <a href="#" id="fileLink" target="_blank" style="margin-left: 10px; color: #a86a00; text-decoration: underline;">View</a>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="removeFile()" style="margin-left: auto;">Delete</button>
+                        <div id="eventDocSection">
+                            <div id="eventDocFileContainer" style="display: none;">
+                                <div class="existing-doc-item">
+                                    <div class="doc-info">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <a href="#" id="fileLink" target="_blank" class="event-doc-link"><span id="fileName"></span></a>
+                                    </div>
+                                    <button type="button" class="btn-delete-doc" onclick="removeFile()">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="eventDocUploadContainer">
+                                <input type="file" class="form-control" id="file_upload" name="file_upload" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.mp4,.avi,.mov" style="margin-top: 10px;">
+                                <small class="form-text" style="color: #a86a00;">Allowed: Images (JPG, PNG, GIF), Documents (PDF, DOC, DOCX), Videos (MP4, AVI, MOV) - Max 50MB</small>
+                            </div>
                         </div>
                         <input type="hidden" id="file_path" name="file_path">
                     </div>
@@ -169,15 +176,15 @@
             document.getElementById('cta_link').value = event.cta_link || '';
             document.getElementById('showOnHomepage').checked = event.showOnHomepage || false;
             
-            // Show existing file if present, else show upload
+            // Show file info if present, else show upload
             if (event.file_path) {
-                document.getElementById('currentFile').style.display = 'flex';
+                document.getElementById('eventDocFileContainer').style.display = 'block';
+                document.getElementById('eventDocUploadContainer').style.display = 'none';
                 document.getElementById('fileName').textContent = event.file_path.split('/').pop();
                 document.getElementById('fileLink').href = event.file_path;
-                document.getElementById('fileUploadContainer').style.display = 'none';
             } else {
-                document.getElementById('currentFile').style.display = 'none';
-                document.getElementById('fileUploadContainer').style.display = 'block';
+                document.getElementById('eventDocFileContainer').style.display = 'none';
+                document.getElementById('eventDocUploadContainer').style.display = 'block';
             }
             
             document.getElementById('loadingContainer').style.display = 'none';
@@ -190,10 +197,10 @@
     }
     
     function removeFile() {
-        document.getElementById('currentFile').style.display = 'none';
+        document.getElementById('eventDocFileContainer').style.display = 'none';
         document.getElementById('file_path').value = '';
         document.getElementById('file_upload').value = '';
-        document.getElementById('fileUploadContainer').style.display = 'block';
+        document.getElementById('eventDocUploadContainer').style.display = 'block';
     }
     
     document.getElementById('eventForm').addEventListener('submit', async function(e) {

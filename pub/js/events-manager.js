@@ -157,6 +157,16 @@ class EventsManager {
       `;
     }
 
+    // CTA button (call-to-action) - use same style as registration
+    let ctaHtml = '';
+    if (event.cta_text && event.cta_link) {
+      ctaHtml = `
+        <a href="${event.cta_link}" target="_blank" rel="noopener noreferrer" class="event-register-btn">
+          <i class="fas fa-external-link-alt"></i> ${event.cta_text}
+        </a>
+      `;
+    }
+
     return `
       <div class="event-item" data-event-id="${event.id}">
         <div class="event-date">
@@ -168,6 +178,7 @@ class EventsManager {
           <p>${event.description}</p>
           ${event.location ? `<p class="event-location"><i class="fas fa-map-marker-alt"></i> ${event.location}</p>` : ''}
           ${registrationHtml}
+          ${ctaHtml}
         </div>
         <div class="event-media">
           ${mediaHtml}

@@ -109,14 +109,17 @@ return function (App $app) {
     // Events create page
     $app->get('/events/create', function (Request $request, Response $response) {
         $view = $this->get('view');
-        return $view->render($response, 'events/create.html.twig');
+        return $view->render($response, 'events/create.html.twig', [
+            'categories' => \App\Models\Event::CATEGORIES
+        ]);
     });
     
     // Events edit page
     $app->get('/events/{id}/edit', function (Request $request, Response $response, array $args) {
         $view = $this->get('view');
         return $view->render($response, 'events/edit.html.twig', [
-            'eventId' => $args['id']
+            'eventId' => $args['id'],
+            'categories' => \App\Models\Event::CATEGORIES
         ]);
     });
     
@@ -155,6 +158,7 @@ return function (App $app) {
         $group->post('', 'App\Controllers\EventController:store');
         $group->put('/{id}', 'App\Controllers\EventController:update');
         $group->delete('/{id}', 'App\Controllers\EventController:destroy');
+        $group->post('/upload', 'App\Controllers\EventController:uploadFile');
     })->add('App\Middleware\AdminMiddleware')->add('App\Middleware\AuthMiddleware');
     
     // Public API for events (no auth required)

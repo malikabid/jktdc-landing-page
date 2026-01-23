@@ -26,6 +26,9 @@ class Event extends Model
         'category',
         'videoUrl',
         'thumbnail',
+        'file_path',
+        'cta_text',
+        'cta_link',
         'showOnHomepage',
         'created_by',
         'updated_by'
@@ -122,6 +125,9 @@ class Event extends Model
             'category' => $this->category,
             'videoUrl' => $this->videoUrl,
             'thumbnail' => $this->thumbnail,
+            'file_path' => $this->file_path,
+            'cta_text' => $this->cta_text,
+            'cta_link' => $this->cta_link,
             'showOnHomepage' => $this->showOnHomepage,
         ];
     }

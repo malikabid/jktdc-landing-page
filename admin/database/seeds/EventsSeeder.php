@@ -47,6 +47,20 @@ class EventsSeeder extends AbstractSeed
         
         $eventData = [];
         foreach ($events as $event) {
+            // Map image to file_path
+            $filePath = $event['image'] ?? null;
+            // Map registrationUrl to cta_link
+            $ctaLink = $event['registrationUrl'] ?? ($event['cta_link'] ?? null);
+            // Set cta_text to 'Register Now'
+            $ctaText = 'Register Now';
+            // Determine file_type from file_path extension
+            $fileType = null;
+            if ($filePath) {
+                $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+                if ($ext) {
+                    $fileType = $ext;
+                }
+            }
             $eventData[] = [
                 'title' => $event['title'],
                 'description' => $event['description'] ?? null,
@@ -56,6 +70,10 @@ class EventsSeeder extends AbstractSeed
                 'category' => $event['category'] ?? 'Event',
                 'videoUrl' => $event['videoUrl'] ?? null,
                 'thumbnail' => $event['thumbnail'] ?? null,
+                'file_path' => $filePath,
+                'file_type' => $fileType,
+                'cta_text' => $ctaText,
+                'cta_link' => $ctaLink,
                 'showOnHomepage' => $event['showOnHomepage'] ?? false,
                 'created_by' => $createdBy,
                 'updated_by' => $createdBy,

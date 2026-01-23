@@ -226,8 +226,7 @@ class EventController
             // Generate unique filename
             $uniqueFilename = 'event_' . date('YmdHis') . '_' . uniqid() . '.' . $extension;
             $destination = $uploadDir . $uniqueFilename;
-
-            die($destination);
+            
             // Move uploaded file
             $file->moveTo($destination);
 

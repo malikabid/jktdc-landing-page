@@ -372,16 +372,14 @@
                         <th>Date</th>
                         <th>Title</th>
                         <th class="hide-mobile">Location</th>
-                        <th class="hide-mobile">Type</th>
                         <th class="hide-mobile">Category</th>
-                        <th class="hide-mobile">Views</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="eventsBody">
                     <tr class="loading-row">
-                        <td colspan="8">
+                        <td colspan="6">
                             <i class="fas fa-spinner fa-spin"></i> Loading events...
                         </td>
                     </tr>
@@ -440,7 +438,7 @@
             const tbody = document.getElementById('eventsBody');
             tbody.innerHTML = '<tr class="loading-row"><td colspan="8"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
             
-            try {
+            try {6
                 const params = new URLSearchParams();
                 const search = document.getElementById('searchInput').value;
                 const category = document.getElementById('categoryFilter').value;
@@ -459,7 +457,7 @@
                 
             } catch (error) {
                 console.error('Error loading events:', error);
-                tbody.innerHTML = '<tr class="loading-row"><td colspan="8">Error loading events</td></tr>';
+                tbody.innerHTML = '<tr class="loading-row"><td colspan="6">Error loading events</td></tr>';
             }
         }
         
@@ -468,7 +466,7 @@
             const tbody = document.getElementById('eventsBody');
             
             if (!events || events.length === 0) {
-                tbody.innerHTML = '<tr class="loading-row"><td colspan="8">No events found</td></tr>';
+                tbody.innerHTML = '<tr class="loading-row"><td colspan="6">No events found</td></tr>';
                 return;
             }
             
@@ -481,8 +479,6 @@
                     </td>
                     <td class="hide-mobile event-location">${event.location || '-'}</td>
                     <td class="hide-mobile">${event.category || '-'}</td>
-                    <td class="hide-mobile">${event.category || '-'}</td>
-                    <td class="hide-mobile"><i class="fas fa-eye"></i> 0</td>
                     <td><span class="badge badge-${getEventStatus(event.startDate, event.endDate)}">${getEventStatusText(event.startDate, event.endDate)}</span></td>
                     <td>
                         <div class="action-buttons">

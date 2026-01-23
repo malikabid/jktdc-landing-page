@@ -161,6 +161,7 @@ return function (App $app) {
         $group->post('/upload', 'App\Controllers\EventController:uploadFile');
     })->add('App\Middleware\AdminMiddleware')->add('App\Middleware\AuthMiddleware');
     
-    // Public API for events (no auth required)
+    // Public APIs (no auth required)
     $app->get('/api/public/events', 'App\Controllers\EventController:homepage');
+    $app->get('/api/public/tenders', 'App\Controllers\TenderController:publicIndex');
 };

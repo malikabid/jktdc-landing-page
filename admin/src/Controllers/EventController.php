@@ -162,7 +162,7 @@ class EventController
     public function homepage(Request $request, Response $response): Response
     {
         $events = Event::homepage()
-            ->orderBy('startDate', 'asc')
+            ->orderBy('startDate', 'desc')
             ->limit(10)
             ->get();
         
@@ -226,7 +226,7 @@ class EventController
             // Generate unique filename
             $uniqueFilename = 'event_' . date('YmdHis') . '_' . uniqid() . '.' . $extension;
             $destination = $uploadDir . $uniqueFilename;
-            
+
             // Move uploaded file
             $file->moveTo($destination);
 

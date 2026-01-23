@@ -169,7 +169,7 @@
                 <div class="stat-icon">
                     <i class="fas fa-calendar"></i>
                 </div>
-                <div class="stat-value">-</div>
+                <div class="stat-value" id="eventsCount">-</div>
                 <div class="stat-label">Events</div>
             </div>
             
@@ -209,14 +209,14 @@
                 <button class="action-btn" onclick="location.href='/admin/users'">
                     <i class="fas fa-users-cog"></i> Manage Users
                 </button>
-                <button class="action-btn" onclick="alert('Coming soon!')">
-                    <i class="fas fa-bell"></i> Manage Notifications
-                </button>
-                <button class="action-btn" onclick="alert('Coming soon!')">
+                <button class="action-btn" onclick="location.href='/admin/events'">
                     <i class="fas fa-calendar"></i> Manage Events
                 </button>
                 <button class="action-btn" onclick="location.href='/admin/tenders'">
                     <i class="fas fa-file-contract"></i> Manage Tenders
+                </button>
+                <button class="action-btn" onclick="alert('Coming soon!')">
+                    <i class="fas fa-bell"></i> Manage Notifications
                 </button>
             `;
             
@@ -224,26 +224,26 @@
             loadUserCount();
         } else if (user.role === 'admin') {
             actionsGrid.innerHTML = `
-                <button class="action-btn" onclick="alert('Coming soon!')">
-                    <i class="fas fa-bell"></i> Manage Notifications
-                </button>
-                <button class="action-btn" onclick="alert('Coming soon!')">
+                <button class="action-btn" onclick="location.href='/admin/events'">
                     <i class="fas fa-calendar"></i> Manage Events
                 </button>
                 <button class="action-btn" onclick="location.href='/admin/tenders'">
                     <i class="fas fa-file-contract"></i> Manage Tenders
                 </button>
+                <button class="action-btn" onclick="alert('Coming soon!')">
+                    <i class="fas fa-bell"></i> Manage Notifications
+                </button>
             `;
         } else {
             actionsGrid.innerHTML = `
-                <button class="action-btn" onclick="alert('Coming soon!')">
-                    <i class="fas fa-bell"></i> View Notifications
-                </button>
-                <button class="action-btn" onclick="alert('Coming soon!')">
+                <button class="action-btn" onclick="location.href='/admin/events'">
                     <i class="fas fa-calendar"></i> View Events
                 </button>
                 <button class="action-btn" onclick="location.href='/admin/tenders'">
                     <i class="fas fa-file-contract"></i> View Tenders
+                </button>
+                <button class="action-btn" onclick="alert('Coming soon!')">
+                    <i class="fas fa-bell"></i> View Notifications
                 </button>
             `;
         }
@@ -284,7 +284,26 @@
             }
         }
         
-        // Load tenders count on page load
+        // Load events count
+        async function loadEventsCount() {
+            try {
+                const response = await fetch('/admin/api/events', {
+                    headers: {
+                        'Authorization': `Bearer ${getToken()}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('eventsCount').textContent = data.total || 0;
+                }
+            } catch (error) {
+                console.error('Error loading events count:', error);
+            }
+        }
+        
+        // Load tenders and events count on page load
         loadTendersCount();
+        loadEventsCount();
     </script>
 {% endblock %}

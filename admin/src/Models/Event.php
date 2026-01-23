@@ -9,6 +9,14 @@ class Event extends Model
 {
     protected $table = 'events';
 
+    // Event categories
+    const CATEGORIES = [
+        'Event',
+        'Infrastructure',
+        'Conservation',
+        'Tourism',
+    ];
+
     protected $fillable = [
         'title',
         'description',

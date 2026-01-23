@@ -35,10 +35,9 @@
                     <label class="form-label">Category</label>
                     <select class="form-control" id="category" name="category">
                         <option value="">Select Category</option>
-                        <option value="Event">Event</option>
-                        <option value="Infrastructure">Infrastructure</option>
-                        <option value="Conservation">Conservation</option>
-                        <option value="Tourism">Tourism</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>

@@ -37,6 +37,7 @@ class EventController
         $response->getBody()->write(json_encode([
             'events' => $events->map(fn($e) => $e->toPublicArray())->toArray(),
             'total' => $events->count(),
+            'categories' => Event::CATEGORIES,
         ]));
         
         return $response->withHeader('Content-Type', 'application/json');

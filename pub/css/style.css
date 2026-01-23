@@ -261,7 +261,9 @@ body {
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
-  transition: background-color 0.2s ease, color 0.2s ease,
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
     padding-left 0.2s ease;
   border-left: 3px solid transparent;
 }
@@ -288,7 +290,9 @@ body {
   font-weight: 400;
   font-size: 1.0625rem;
   white-space: nowrap;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .navbar-list > li:hover > a {
@@ -343,7 +347,9 @@ body {
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
-  transition: background-color 0.2s ease, color 0.2s ease,
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
     padding-left 0.2s ease;
   border-left: 3px solid transparent;
 }
@@ -585,7 +591,7 @@ body {
 
 .slide img {
   width: 100%;
-  height: 550px;
+  height: 750px;
   object-fit: cover;
   display: block;
   background: #f5f5f5;
@@ -599,7 +605,9 @@ body {
   z-index: 100;
   background: rgba(100, 100, 100, 0.75);
   border-radius: 50%;
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
   border: none;
   top: 50%;
   transform: translateY(-50%);
@@ -642,7 +650,9 @@ body {
   z-index: 100;
   background: rgba(100, 100, 100, 0.75);
   border-radius: 50%;
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
   border: none;
   color: white;
   cursor: pointer;
@@ -687,10 +697,17 @@ body {
   opacity: 1;
 }
 
+/* Responsive Slider for 1024px */
+@media screen and (max-width: 1024px) {
+  .slide img {
+    max-height: 400px;
+  }
+}
+
 /* Responsive Slider */
 @media screen and (max-width: 768px) {
   .slide img {
-    height: 30 0px;
+    max-height: 300px;
   }
 
   .slick-prev,
@@ -715,7 +732,7 @@ body {
 
 @media screen and (max-width: 480px) {
   .slide img {
-    height: 300px;
+    max-height: 250px;
   }
 }
 
@@ -740,7 +757,9 @@ body {
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .service-card:hover {
@@ -842,8 +861,13 @@ body {
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   margin: 0 12.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .carousel-slide:hover {
@@ -854,11 +878,13 @@ body {
 .slide-image {
   width: 100%;
   height: 100%;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   align-items: flex-end;
   position: relative;
+  padding: 10px;
 }
 
 .slide-image::before {
@@ -952,7 +978,9 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 24px;
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
   z-index: 25;
   position: absolute;
   top: 50%;
@@ -979,6 +1007,12 @@ body {
 @media screen and (max-width: 1024px) {
   .carousel-slide {
     margin: 0 7.5px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .carousel-slide {
+    height: 300px;
   }
 }
 
@@ -1379,7 +1413,9 @@ body {
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .official-card:hover {
@@ -1586,7 +1622,9 @@ body {
   background: #f8f9fa;
   border-radius: 6px;
   border-left: 4px solid var(--secondary-color);
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition:
+    background 0.3s ease,
+    transform 0.2s ease;
 }
 
 .notification-item:hover {
@@ -1647,7 +1685,8 @@ body {
 /* Event Items */
 .event-item {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 15px;
   padding: 20px;
   margin-bottom: 15px;
   background: #f8f9fa;
@@ -1672,6 +1711,7 @@ body {
   min-width: 70px;
   width: fit-content;
   align-self: flex-start;
+  margin-bottom: 5px;
 }
 
 .event-date .month {
@@ -1697,6 +1737,74 @@ body {
   font-size: 0.9rem;
   line-height: 1.6;
   color: #4a5568;
+}
+
+/* Event Image Styles */
+.event-image {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.event-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.event-image:hover img {
+  transform: scale(1.02);
+}
+
+/* Event Registration Button */
+.event-register-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin: 15px 0;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--secondary-color) 0%, #e55a1c 100%);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(242, 101, 34, 0.4);
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 4px 15px rgba(242, 101, 34, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(242, 101, 34, 0.6);
+  }
+}
+
+.event-register-btn:hover {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #2a6f99 100%);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  color: white;
+  text-decoration: none;
+  animation: none;
+}
+
+.event-register-btn i {
+  font-size: 1.1rem;
 }
 
 .notification-action {
@@ -1781,7 +1889,9 @@ body {
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .content-card:hover {
@@ -1908,11 +2018,6 @@ body {
     font-size: 1.2rem;
   }
 
-  .event-item {
-    flex-direction: column;
-    gap: 10px;
-  }
-
   .event-date {
     align-self: flex-start;
   }
@@ -2019,7 +2124,9 @@ body {
   font-size: 40px;
   font-weight: bold;
   cursor: pointer;
-  transition: color 0.3s ease, transform 0.3s ease;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
   z-index: 10000;
   line-height: 1;
 }
@@ -2051,7 +2158,9 @@ body {
 /* Video Thumbnail with Play Overlay */
 .video-thumbnail {
   position: relative;
-  margin-top: 12px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 0;
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;

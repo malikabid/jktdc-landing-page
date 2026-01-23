@@ -112,7 +112,7 @@
     "showOnHomepage": false
   },
   {
-    "id": 11,
+    "id": 12,
     "title": "Pahalgam Summer Adventure Camp",
     "description": "Adventure activities including river rafting, trekking, camping, and paragliding for tourists and adventure enthusiasts.",
     "startDate": "2025-05-01",
@@ -120,5 +120,18 @@
     "location": "Pahalgam",
     "category": "Tourism",
     "showOnHomepage": false
+  },
+  {
+    "id": 13,
+    "title": "Jammu Marathon 2026",
+    "description": "Join the Jammu Marathon 2026! Registration closes on 31st January 2026.",
+    "startDate": "2026-03-29",
+    "endDate": "2026-03-29",
+    "location": "Jammu",
+    "category": "Event",
+    "image": "/pub/events/jammu_marathon_2026.jpeg",
+    "registrationUrl": "https://jammumarathon.jk.gov.in/",
+    "registrationDeadline": "2026-01-31",
+    "showOnHomepage": true
   }
 ]

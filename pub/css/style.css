@@ -1,3 +1,78 @@
+/* ==================== YOUTUBE FEED STYLES ==================== */
+.youtube-feed-section {
+  margin: 40px auto 0 auto;
+  max-width: 1200px;
+  padding: 30px 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+.youtube-feed-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+.youtube-video-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  text-align: center;
+}
+.youtube-video-card:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.13);
+}
+.youtube-video-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+.youtube-video-title {
+  padding: 14px 10px 16px 10px;
+  font-size: 1rem;
+  color: #222;
+  font-weight: 600;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.youtube-feed-loading,
+.youtube-feed-error {
+  grid-column: 1/-1;
+  text-align: center;
+  color: #888;
+  font-size: 1.1rem;
+  padding: 30px 0;
+}
+@media screen and (max-width: 1024px) {
+  .youtube-feed-section {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  .youtube-video-card img {
+    height: 140px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .youtube-feed-section {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 18px 8px;
+  }
+  .youtube-video-card img {
+    height: 120px;
+  }
+  .youtube-video-title {
+    font-size: 0.95rem;
+    padding: 10px 6px 12px 6px;
+  }
+}
 /**==================== VARIABLES ==================== */
 /* Sparkle and bounce for e-Services Portal link */
 .sparkle-bounce-link {

@@ -281,6 +281,8 @@
               memorable experiences in this paradise on earth.
             </p>
           </section>
+          <!-- YouTube Feed Section -->
+          <section id="youtube-feed-section" class="youtube-feed-section"></section>
         </section>
       </div>
     </div>
@@ -358,21 +360,19 @@
   <script src="pub/js/service-cards-loader.js?v=c78d813"></script>
   <script src="pub/js/events-manager.js?v=c78d813"></script>
   <script src="pub/js/video-modal.js?v=c78d813"></script>
+  <script src="pub/js/youtube-feed-loader.js?v=c78d813"></script>
   
   <script>
     // Initialize homepage notifications and events when DOM is ready
     document.addEventListener('DOMContentLoaded', async function() {
       await window.notificationsManager.initializeHomepage();
       await window.eventsManager.initializeHomepage();
-      
-      // Preserve skipComingSoon parameter in View All Events link
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('skipComingSoon') === 'true') {
-        const viewAllLink = document.getElementById('view-all-events-link');
-        if (viewAllLink) {
-          const currentHref = viewAllLink.getAttribute('href');
-          viewAllLink.setAttribute('href', currentHref + '?skipComingSoon=true');
-        }
+      // Initialize YouTube feed (replace channelId if needed)
+      if (window.youtubeFeedLoader) {
+        window.youtubeFeedLoader.initialize({
+          channelId: 'UCGZQ6XS3X6PIrZFBX2c_d_w', // JKTourismOfficial
+          maxResults: 4
+        });
       }
     });
   </script>

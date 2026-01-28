@@ -15,8 +15,8 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
-  <link rel="stylesheet" href="pub/css/theme.css?v=9c0838d" />
-  <link rel="stylesheet" href="pub/css/style.css?v=9c0838d" />
+  <link rel="stylesheet" href="pub/css/theme.css?v=eb77677" />
+  <link rel="stylesheet" href="pub/css/style.css?v=eb77677" />
   
   <!-- Preload first hero image for faster initial render -->
   <link rel="preload" as="image" href="pub/images/slider/photo_3.webp" type="image/webp" />
@@ -281,6 +281,10 @@
               memorable experiences in this paradise on earth.
             </p>
           </section>
+          <!-- YouTube Feed Section -->
+          <div class="youtube-feed-section-container">
+            <section id="youtube-feed-section" class="youtube-feed-section"></section>
+          </div>
         </section>
       </div>
     </div>
@@ -350,29 +354,27 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-  <script src="pub/js/theme-switcher.js?v=9c0838d"></script>
-  <script src="pub/js/header.js?v=9c0838d"></script>
-  <script src="pub/js/slider.js?v=9c0838d"></script>
-  <script src="pub/js/notifications-scroll.js?v=9c0838d"></script>
-  <script src="pub/js/notifications-manager.js?v=9c0838d"></script>
-  <script src="pub/js/service-cards-loader.js?v=9c0838d"></script>
-  <script src="pub/js/events-manager.js?v=9c0838d"></script>
-  <script src="pub/js/video-modal.js?v=9c0838d"></script>
+  <script src="pub/js/theme-switcher.js?v=eb77677"></script>
+  <script src="pub/js/header.js?v=eb77677"></script>
+  <script src="pub/js/slider.js?v=eb77677"></script>
+  <script src="pub/js/notifications-scroll.js?v=eb77677"></script>
+  <script src="pub/js/notifications-manager.js?v=eb77677"></script>
+  <script src="pub/js/service-cards-loader.js?v=eb77677"></script>
+  <script src="pub/js/events-manager.js?v=eb77677"></script>
+  <script src="pub/js/video-modal.js?v=eb77677"></script>
+  <script src="pub/js/youtube-feed-loader.js?v=eb77677"></script>
   
   <script>
     // Initialize homepage notifications and events when DOM is ready
     document.addEventListener('DOMContentLoaded', async function() {
       await window.notificationsManager.initializeHomepage();
       await window.eventsManager.initializeHomepage();
-      
-      // Preserve skipComingSoon parameter in View All Events link
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('skipComingSoon') === 'true') {
-        const viewAllLink = document.getElementById('view-all-events-link');
-        if (viewAllLink) {
-          const currentHref = viewAllLink.getAttribute('href');
-          viewAllLink.setAttribute('href', currentHref + '?skipComingSoon=true');
-        }
+      // Initialize YouTube feed (replace channelId if needed)
+      if (window.youtubeFeedLoader) {
+        window.youtubeFeedLoader.initialize({
+          channelId: 'UCGZQ6XS3X6PIrZFBX2c_d_w', // JKTourismOfficial
+          maxResults: 4
+        });
       }
     });
   </script>

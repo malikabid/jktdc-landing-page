@@ -44,11 +44,15 @@
         </div>
       `;
     }).join('');
-    // Add channel link below the videos
-    let channelLink = '';
-    if (channelId) {
-      channelLink = `
-        <div class="youtube-channel-link-bar" style="width:100%;background:#181f2a;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:14px 24px 14px 16px;border-radius:0 0 12px 12px;margin-top:18px;box-sizing:border-box;">
+    container.innerHTML = cardsHtml;
+    // Add channel link bar as sibling to section (inside .youtube-feed-section-container)
+    if (channelId && container.parentNode && container.parentNode.classList.contains('youtube-feed-section-container')) {
+      let bar = container.parentNode.querySelector('.youtube-channel-link-bar');
+      if (!bar) {
+        bar = document.createElement('div');
+        bar.className = 'youtube-channel-link-bar';
+        bar.style.cssText = 'width:100%;background:#181f2a;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:14px 24px 14px 16px;border-radius:0 0 12px 12px;margin-top:5px;box-sizing:border-box;';
+        bar.innerHTML = `
           <div style="display:flex;align-items:center;font-size:1rem;gap:8px;">
             <i class='fab fa-youtube' style='color:#ff0000;font-size:1.1rem;'></i>
             <span style="font-weight:500;">Viewing Official Playlist</span>
@@ -56,10 +60,10 @@
           <a href="https://www.youtube.com/channel/${channelId}" target="_blank" rel="noopener noreferrer" style="color:#fff;font-weight:500;font-size:1rem;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
             Visit Channel <i class="fas fa-arrow-up-right-from-square" style="font-size:0.95em;"></i>
           </a>
-        </div>
-      `;
+        `;
+        container.parentNode.appendChild(bar);
+      }
     }
-    container.innerHTML = cardsHtml + channelLink;
   }
 
   // Fallback: fetch latest videos from channel using search endpoint

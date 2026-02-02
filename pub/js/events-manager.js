@@ -2,18 +2,22 @@
 class EventsManager {
   constructor() {
     this.events = [];
-    this.dataUrl = '/pub/data/events.json';
+    // Use public API endpoint for events (no auth required)
+    this.dataUrl = '/admin/api/public/events';
   }
 
-  // Fetch events from JSON
+  // Fetch events from backend API
   async fetchEvents() {
     try {
       const response = await fetch(this.dataUrl);
       if (!response.ok) throw new Error('Failed to fetch events');
-      this.events = await response.json();
+      const data = await response.json();
+      // API returns { events: [...], ... }
+      this.events = Array.isArray(data.events) ? data.events : [];
       return this.events;
     } catch (error) {
       console.error('Error fetching events:', error);
+      this.events = [];
       return [];
     }
   }
@@ -93,10 +97,12 @@ class EventsManager {
   // Render event item HTML
   renderEventItem(event) {
     const dateParts = this.getDateParts(event.startDate);
-    
-    let videoHtml = '';
+
+    let mediaHtml = '';
+
+    // Video (YouTube or direct video file)
     if (event.videoUrl && event.thumbnail) {
-      videoHtml = `
+      mediaHtml = `
         <div class="video-thumbnail" data-video-url="${event.videoUrl}">
           <img src="${event.thumbnail}" alt="${event.title} Video" />
           <div class="play-overlay">
@@ -105,15 +111,38 @@ class EventsManager {
           <div class="video-label">Watch Video</div>
         </div>
       `;
-    }
-
-    let imageHtml = '';
-    if (event.image && !event.videoUrl) {
-      imageHtml = `
-        <div class="event-image">
-          <img src="${event.image}" alt="${event.title}" />
-        </div>
-      `;
+    } else if (event.file_path) {
+      // Determine file type by extension
+      const ext = event.file_path.split('.').pop().toLowerCase();
+      if (["jpg","jpeg","png","gif","webp","bmp"].includes(ext)) {
+        // Image file
+        mediaHtml = `
+          <div class="event-image">
+            <img src="${event.file_path}" alt="${event.title}" />
+          </div>
+        `;
+      } else if (["mp4","webm","ogg","mov","avi"].includes(ext)) {
+        // Video file
+        mediaHtml = `
+          <div class="event-video">
+            <video controls style="max-width:100%;border-radius:8px;">
+              <source src="${event.file_path}" type="video/${ext === 'mp4' ? 'mp4' : ext}">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        `;
+      } else if (["pdf","doc","docx"].includes(ext)) {
+        // Downloadable file (PDF, DOC, DOCX)
+        const icon = ext === 'pdf' ? 'fa-file-pdf' : 'fa-file-word';
+        const label = ext === 'pdf' ? 'Download PDF' : 'Download Document';
+        mediaHtml = `
+          <div class="event-download">
+            <a href="${event.file_path}" target="_blank" rel="noopener noreferrer" class="event-download-btn">
+              <i class="fas ${icon}"></i> ${label}
+            </a>
+          </div>
+        `;
+      }
     }
 
     let registrationHtml = '';
@@ -124,6 +153,16 @@ class EventsManager {
       registrationHtml = `
         <a href="${event.registrationUrl}" target="_blank" rel="noopener noreferrer" class="event-register-btn">
           <i class="fas fa-user-plus"></i> Register Now${deadlineText}
+        </a>
+      `;
+    }
+
+    // CTA button (call-to-action) - use same style as registration
+    let ctaHtml = '';
+    if (event.cta_text && event.cta_link) {
+      ctaHtml = `
+        <a href="${event.cta_link}" target="_blank" rel="noopener noreferrer" class="event-register-btn">
+          <i class="fas fa-external-link-alt"></i> ${event.cta_text}
         </a>
       `;
     }
@@ -139,10 +178,10 @@ class EventsManager {
           <p>${event.description}</p>
           ${event.location ? `<p class="event-location"><i class="fas fa-map-marker-alt"></i> ${event.location}</p>` : ''}
           ${registrationHtml}
+          ${ctaHtml}
         </div>
         <div class="event-media">
-        ${imageHtml}
-        ${videoHtml}
+          ${mediaHtml}
         </div>
       </div>
     `;

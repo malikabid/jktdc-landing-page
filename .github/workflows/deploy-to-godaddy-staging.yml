@@ -69,3 +69,4 @@ jobs:
             composer install --no-dev --optimize-autoloader --no-interaction
             vendor/bin/phinx migrate -e production
             vendor/bin/phinx seed:run -e production || echo "Phinx seed failed"
+            rm storage/cache/*

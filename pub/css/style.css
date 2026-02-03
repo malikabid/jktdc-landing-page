@@ -1,3 +1,97 @@
+.qr-card-headline {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--primary-color, #4b2e83);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.qr-card-label {
+  font-size: 0.98rem;
+  margin-top: 10px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .qr-card-headline {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+  .qr-card-label {
+    font-size: 0.92rem;
+    margin-top: 7px;
+  }
+}
+/* ==================== QR CARD OVERLAY ==================== */
+.qr-card-overlay {
+  position: absolute;
+  top: 50%;
+  right: 100px;
+  transform: translateY(-50%);
+  z-index: 30;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  pointer-events: none;
+}
+
+.qr-card {
+  background: var(--background, #fff);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.13);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+  max-width: 200px;
+  pointer-events: auto;
+  text-decoration: none;
+}
+
+.qr-card img {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.qr-card-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary-color, #4b2e83);
+  text-align: center;
+}
+
+@media screen and (max-width: 1024px) {
+  .qr-card-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: unset;
+    transform: translate(-50%, -50%);
+    width: auto;
+    margin: 0;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 30;
+  }
+  .qr-card {
+    pointer-events: auto;
+  }
+  .qr-card {
+    min-width: 90px;
+    max-width: 180px;
+  }
+  .qr-card img {
+    width: 90px;
+    height: 90px;
+  }
+  .qr-card-label {
+    font-size: 0.92rem;
+  }
+}
 /* ==================== YOUTUBE FEED STYLES ==================== */
 .youtube-feed-section-container {
   margin: 40px auto 0 auto;

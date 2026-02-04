@@ -23,19 +23,6 @@
     margin-top: 7px;
   }
 }
-/* ==================== QR CARD OVERLAY ==================== */
-.qr-card-overlay {
-  position: absolute;
-  top: 50%;
-  right: 100px;
-  transform: translateY(-50%);
-  z-index: 30;
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  pointer-events: none;
-}
-
 .qr-card {
   background: var(--background, #fff);
   border-radius: 18px;
@@ -48,6 +35,9 @@
   max-width: 200px;
   pointer-events: auto;
   text-decoration: none;
+  width: 100%;
+  max-width: 260px;
+  margin: 0 auto;
 }
 
 .qr-card img {
@@ -65,24 +55,9 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .qr-card-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    right: unset;
-    transform: translate(-50%, -50%);
-    width: auto;
-    margin: 0;
-    justify-content: center;
-    pointer-events: none;
-    z-index: 30;
-  }
-  .qr-card {
-    pointer-events: auto;
-  }
   .qr-card {
     min-width: 90px;
-    max-width: 180px;
+    max-width: 220px;
   }
   .qr-card img {
     width: 90px;
@@ -1846,7 +1821,27 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 680px;
+  height: 700px;
+}
+
+.notification-column.split-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-column.split-rows .notification-top {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-column.split-rows .notification-bottom {
+  padding: 20px;
+  border-top: 1px solid #f1f1f1;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .column-header {
@@ -2283,6 +2278,10 @@ body {
   .notification-column,
   .events-column {
     height: 400px;
+  }
+
+  .notification-column.split-rows {
+    height: auto;
   }
 
   .column-header h2 {

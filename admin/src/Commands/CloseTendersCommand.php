@@ -30,9 +30,9 @@ class CloseTendersCommand
             // Get today's date at midnight
             $today = date('Y-m-d');
             
-            // Find all tenders with closing date <= today that are not already closed/cancelled
+            // Find all tenders with closing date < today that are not already closed/cancelled
             $expiredTenders = Tender::whereIn('status', ['draft', 'active', 'extended'])
-                ->where('closing_date', '<=', $today)
+                ->where('closing_date', '<', $today)
                 ->get();
             
             if ($expiredTenders->isEmpty()) {

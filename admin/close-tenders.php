@@ -7,43 +7,22 @@
  * Usage: php close-tenders.php
  * 
  * Set up in crontab:
- * 0 0 * * * /bin/bash /path/to/close-tenders.sh
+ * 0 0 * * * php /path/to/close-tenders.php
  */
 
-require_once __DIR__ . '/vendor/autoload.php';
-
-// Load environment variables
-$dotenv = \Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-
-// Setup database connection
-use Illuminate\Database\Capsule\Manager as Capsule;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-
-$capsule = new Capsule;
-$capsule->addConnection([
-    'driver' => $_ENV['DB_CONNECTION'] ?? 'mysql',
-    'host' => $_ENV['DB_HOST'] ?? 'localhost',
-    'port' => $_ENV['DB_PORT'] ?? '3306',
-    'database' => $_ENV['DB_DATABASE'] ?? 'dotk_admin',
-    'username' => $_ENV['DB_USERNAME'] ?? 'root',
-    'password' => $_ENV['DB_PASSWORD'] ?? '',
-    'charset' => 'utf8mb4',
-    'collation' => 'utf8mb4_unicode_ci',
-    'prefix' => '',
-]);
-
-$capsule->setAsGlobal();
-$capsule->bootEloquent();
-
-// Load models
-require_once __DIR__ . '/src/Models/Tender.php';
-
-// Execute the command
 use App\Commands\CloseTendersCommand;
 
-$command = new CloseTendersCommand();
-$result = $command->execute();
-
-exit($result ? 0 : 1);
+try {
+    // Load autoloader
+    require_once __DIR__ . '/vendor/autoload.php';
+    
+    // Execute the command (handles database setup internally)
+    $command = new CloseTendersCommand();
+    $result = $command->execute();
+    
+    exit($result ? 0 : 1);
+    
+} catch (Exception $e) {
+    fwrite(STDERR, "Error: {$e->getMessage()}\n");
+    exit(1);
+}

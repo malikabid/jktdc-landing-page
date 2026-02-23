@@ -143,6 +143,7 @@ return function (App $app) {
     $app->group('/api/tenders', function ($group) {
         $group->get('', 'App\Controllers\TenderController:index');
         $group->get('/stats', 'App\Controllers\TenderController:stats');
+        $group->post('/auto-close', 'App\Controllers\TenderController:autoCloseTenders');
         $group->get('/{id}', 'App\Controllers\TenderController:show');
         $group->post('', 'App\Controllers\TenderController:store');
         $group->put('/{id}', 'App\Controllers\TenderController:update');

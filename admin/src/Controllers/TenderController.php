@@ -419,6 +419,66 @@ class TenderController
     }
     
     /**
+     * Auto-close expired tenders (Admin API)
+     * POST /admin/api/tenders/auto-close
+     */
+    public function autoCloseTenders(Request $request, Response $response): Response
+    {
+        try {
+            // Get today's date at midnight
+            $today = date('Y-m-d');
+            
+            // Find all tenders with closing date <= today that are not already closed/cancelled
+            $expiredTenders = Tender::whereIn('status', ['draft', 'active', 'extended'])
+                ->where('closing_date', '<=', $today)
+                ->get();
+            
+            if ($expiredTenders->isEmpty()) {
+                $response->getBody()->write(json_encode([
+                    'success' => true,
+                    'message' => 'No expired tenders found',
+                    'closed_count' => 0,
+                    'tenders' => []
+                ]));
+                return $response->withHeader('Content-Type', 'application/json');
+            }
+            
+            $closedTenders = [];
+            $closedCount = 0;
+            
+            foreach ($expiredTenders as $tender) {
+                $tender->status = Tender::STATUS_CLOSED;
+                $tender->save();
+                
+                $closedTenders[] = [
+                    'id' => $tender->id,
+                    'title' => $tender->title,
+                    'tender_number' => $tender->tender_number,
+                    'closing_date' => $tender->closing_date->format('Y-m-d'),
+                    'status' => Tender::STATUS_CLOSED,
+                ];
+                $closedCount++;
+            }
+            
+            $response->getBody()->write(json_encode([
+                'success' => true,
+                'message' => "{$closedCount} tender(s) closed successfully",
+                'closed_count' => $closedCount,
+                'tenders' => $closedTenders
+            ]));
+            
+            return $response->withHeader('Content-Type', 'application/json');
+            
+        } catch (\Exception $e) {
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'error' => 'Failed to auto-close tenders: ' . $e->getMessage()
+            ]));
+            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+        }
+    }
+    
+    /**
      * Public API - Get active tenders for frontend
      */
     public function publicIndex(Request $request, Response $response): Response

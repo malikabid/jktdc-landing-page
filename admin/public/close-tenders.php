@@ -69,7 +69,7 @@ try {
     
     // Find expired tenders
     $expiredTenders = Tender::whereIn('status', ['draft', 'active', 'extended'])
-        ->where('closing_date', '<=', $today)
+        ->where('closing_date', '<', $today)
         ->get();
     
     if ($expiredTenders->isEmpty()) {

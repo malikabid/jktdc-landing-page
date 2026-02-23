@@ -425,46 +425,14 @@ class TenderController
     public function autoCloseTenders(Request $request, Response $response): Response
     {
         try {
-            // Get today's date at midnight
-            $today = date('Y-m-d');
-            
-            // Find all tenders with closing date < today that are not already closed/cancelled
-            $expiredTenders = Tender::whereIn('status', ['draft', 'active', 'extended'])
-                ->where('closing_date', '<', $today)
-                ->get();
-            
-            if ($expiredTenders->isEmpty()) {
-                $response->getBody()->write(json_encode([
-                    'success' => true,
-                    'message' => 'No expired tenders found',
-                    'closed_count' => 0,
-                    'tenders' => []
-                ]));
-                return $response->withHeader('Content-Type', 'application/json');
-            }
-            
-            $closedTenders = [];
-            $closedCount = 0;
-            
-            foreach ($expiredTenders as $tender) {
-                $tender->status = Tender::STATUS_CLOSED;
-                $tender->save();
-                
-                $closedTenders[] = [
-                    'id' => $tender->id,
-                    'title' => $tender->title,
-                    'tender_number' => $tender->tender_number,
-                    'closing_date' => $tender->closing_date->format('Y-m-d'),
-                    'status' => Tender::STATUS_CLOSED,
-                ];
-                $closedCount++;
-            }
+            $command = new \App\Commands\CloseTendersCommand();
+            $result = $command->closeExpiredTenders();
             
             $response->getBody()->write(json_encode([
                 'success' => true,
-                'message' => "{$closedCount} tender(s) closed successfully",
-                'closed_count' => $closedCount,
-                'tenders' => $closedTenders
+                'message' => $result['count'] > 0 ? "{$result['count']} tender(s) closed successfully" : 'No expired tenders found',
+                'closed_count' => $result['count'],
+                'tenders' => $result['tenders']
             ]));
             
             return $response->withHeader('Content-Type', 'application/json');

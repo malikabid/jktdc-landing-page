@@ -1762,7 +1762,7 @@ body {
   text-decoration: none;
   color: var(--accent-color);
   font-weight: 600;
-  font-size: calc(1rem - 0.5vw);
+  /* font-size: calc(1rem - 0.5vw); */
   transition: all 0.3s ease;
   border-left: 4px solid transparent;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

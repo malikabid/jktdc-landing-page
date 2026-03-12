@@ -853,7 +853,8 @@ body {
 /* Responsive Slider */
 @media screen and (max-width: 768px) {
   .slide img {
-    max-height: 300px;
+    height: 340px;
+    max-height: 340px;
   }
 
   .slick-prev,
@@ -878,7 +879,8 @@ body {
 
 @media screen and (max-width: 480px) {
   .slide img {
-    max-height: 250px;
+    height: 320px;
+    max-height: 320px;
   }
 }
 
@@ -1657,15 +1659,44 @@ body {
   background: #4e8c3a;
   color: #fff;
   border-radius: 16px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.13);
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.32);
   padding: 18px;
-  margin-top: 18px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  position: relative;
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 220px;
+  z-index: 10;
+}
+
+@media (max-width: 767px) {
+  .quick-booking-card {
+    position: absolute;
+    left: 50%;
+    right: auto;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 55vw;
+    max-width: 200px;
+    padding: 10px;
+    gap: 6px;
+    border-radius: 10px;
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.32);
+  }
+  .quick-booking-title {
+    font-size: 0.85rem;
+  }
+  .quick-booking-subtitle {
+    font-size: 0.72rem;
+  }
+  .quick-booking-divider {
+    margin: 4px 0;
+  }
 }
 .quick-booking-title {
   font-size: 1.35rem;

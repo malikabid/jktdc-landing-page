@@ -1,6 +1,19 @@
-[
-  {
+[{
     "id": 1,
+    "title": "Rates for various Tourism Services at Pahalgam",
+    "notificationNo": "Est/407-A/DTK/14",
+    "description": "Rates for various Tourism Services at Pahalgam Tourism Kashmir and Tourism Development Authorities has been issued.",
+    "icon": "📄",
+    "showArrow": true,
+    "priority": "high",
+    "publishDate": "2026-04-29",
+    "expiryDate": "2026-12-31",
+    "category": "Official",
+    "fileUrl": "/pub/pdf/Pahalgam-Tourism-Ratelist.pdf",
+    "fileName": "Rates for various Tourism Services at Pahalgam"
+  },
+  {
+    "id": 2,
     "title": "Final Seniority List of Ministerial/Executive and Technical Staff 2026",
     "notificationNo": "Est/407-A/DTK/14",
     "description": "Final Seniority list of Ministerial/Executive and Technical staff of the Directorate of Tourism Kashmir and Tourism Development Authorities has been issued.",

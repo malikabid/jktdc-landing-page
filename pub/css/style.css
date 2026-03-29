@@ -1783,6 +1783,39 @@ body {
   font-size: 1.08rem;
 }
 
+/* Quick Booking Card Aside Styles (for sidebar) */
+aside .quick-booking-card {
+  background: #4e8c3a;
+  color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.32);
+  padding: 18px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  width: 220px;
+  margin: 20px auto 0;
+  right: unset;
+  top: unset;
+  transform: unset;
+  z-index: unset;
+}
+
+@media (max-width: 767px) {
+  aside .quick-booking-card {
+    /* width: 55vw; */
+    max-width: 200px;
+    padding: 10px;
+    gap: 6px;
+    border-radius: 10px;
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.32);
+    left: unset;
+  }
+}
+
 .related-link-item {
   display: flex;
   align-items: center;

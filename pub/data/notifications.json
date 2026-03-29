@@ -1,12 +1,11 @@
 [{
     "id": 1,
     "title": "Rates for various Tourism Services at Pahalgam",
-    "notificationNo": "Est/407-A/DTK/14",
     "description": "Rates for various Tourism Services at Pahalgam Tourism Kashmir and Tourism Development Authorities has been issued.",
     "icon": "📄",
     "showArrow": true,
     "priority": "high",
-    "publishDate": "2026-04-29",
+    "publishDate": "2026-03-29",
     "expiryDate": "2026-12-31",
     "category": "Official",
     "fileUrl": "/pub/pdf/Pahalgam-Tourism-Ratelist.pdf",

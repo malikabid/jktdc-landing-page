@@ -12,10 +12,6 @@ window.addEventListener('load', function() {
         let isPaused = false;
         let scrollSpeed = 1; // pixels per frame
         
-        // Clone all items to create seamless loop
-        const originalItems = container.innerHTML;
-        container.innerHTML = originalItems + originalItems;
-        
         // Set initial scroll position to 0
         container.scrollTop = 0;
         
@@ -24,11 +20,8 @@ window.addEventListener('load', function() {
                 // Scroll up by scrollSpeed pixels
                 container.scrollTop += scrollSpeed;
                 
-                // Get the height of half the content (original items)
-                const maxScroll = container.scrollHeight / 2;
-                
-                // When we've scrolled through the original items, reset to top
-                if (container.scrollTop >= maxScroll) {
+                // When we've scrolled to the end, reset to top
+                if (container.scrollTop >= container.scrollHeight - container.clientHeight) {
                     container.scrollTop = 0;
                 }
             }

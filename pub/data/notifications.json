@@ -10,7 +10,8 @@
     "expiryDate": "2026-12-31",
     "category": "Official",
     "fileUrl": "/pub/pdf/Pahalgam-Tourism-Ratelist.pdf",
-    "fileName": "Rates for various Tourism Services at Pahalgam"
+    "fileName": "Rates for various Tourism Services at Pahalgam",
+    "isActive": true
   },
    {
     "id": 2,
@@ -23,7 +24,8 @@
     "expiryDate": "2026-12-31",
     "category": "Official",
     "fileUrl": "/pub/pdf/Gulmarg-Tourism-Ratelist.pdf",
-    "fileName": "Rates for various Tourism Services at Gulmarg"
+    "fileName": "Rates for various Tourism Services at Gulmarg",
+    "isActive": true
   },
   {
     "id": 3,
@@ -37,6 +39,7 @@
     "expiryDate": "2026-12-31",
     "category": "Official",
     "fileUrl": "/pub/notifications/final_seniority_list_2026_1.pdf",
-    "fileName": "Final Seniority List 2026"
+    "fileName": "Final Seniority List 2026",
+    "isActive": false
   }
 ]

@@ -39,7 +39,7 @@ class NotificationsManager {
       const expiryDate = this.parseDate(notification.expiryDate);
       const isActive = today >= publishDate && today <= expiryDate;
       console.log(`Notification ${notification.id}: publish=${publishDate.toISOString()}, expiry=${expiryDate.toISOString()}, active=${isActive}`);
-      return isActive;
+      return isActive && notification.isActive;
     }).sort((a, b) => {
       // Sort by priority first, then by publish date (newest first)
       const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };

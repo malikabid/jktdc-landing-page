@@ -385,8 +385,8 @@
   <script src="pub/js/theme-switcher.js?v=965cb9f"></script>
   <script src="pub/js/header.js?v=965cb9f"></script>
   <script src="pub/js/slider.js?v=965cb9f"></script>
-  <script src="pub/js/notifications-scroll.js?v=965cb9f"></script>
-  <script src="pub/js/notifications-manager.js?v=965cb9f"></script>
+  <script src="pub/js/notifications-scroll.js?v=fcefc7d"></script>
+  <script src="pub/js/notifications-manager.js?v=fcefc7d"></script>
   <script src="pub/js/service-cards-loader.js?v=965cb9f"></script>
   <script src="pub/js/events-manager.js?v=965cb9f"></script>
   <script src="pub/js/video-modal.js?v=965cb9f"></script>
@@ -395,8 +395,20 @@
   <script>
     // Initialize homepage notifications and events when DOM is ready
     document.addEventListener('DOMContentLoaded', async function() {
-      await window.notificationsManager.initializeHomepage();
-      await window.eventsManager.initializeHomepage();
+      try {
+        console.log('Initializing notifications...');
+        await window.notificationsManager.initializeHomepage();
+        console.log('Notifications initialized successfully');
+      } catch (error) {
+        console.error('Error initializing notifications:', error);
+      }
+      
+      try {
+        await window.eventsManager.initializeHomepage();
+      } catch (error) {
+        console.error('Error initializing events:', error);
+      }
+      
       // Initialize YouTube feed (replace channelId if needed)
       if (window.youtubeFeedLoader) {
         window.youtubeFeedLoader.initialize({

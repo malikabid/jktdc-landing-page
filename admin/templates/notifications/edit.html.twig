@@ -1,0 +1,220 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Edit Notification - DOTK Admin{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-edit"></i> Edit Notification</h1>
+        <a href="/admin/notifications" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+
+    <div class="form-card">
+        <div id="loadingContainer" class="loading-container">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading notification details...</p>
+        </div>
+
+        <form id="notificationForm" style="display: none;">
+            <input type="hidden" id="notificationId" value="{{ notificationId }}">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Title <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notification Number</label>
+                    <input type="text" class="form-control" id="notification_no" name="notification_no" placeholder="e.g., Est/407-A/DTK/14">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" placeholder="Notification details and information"></textarea>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Priority <span class="required">*</span></label>
+                    <select class="form-control" id="priority" name="priority" required>
+                        <option value="">Select Priority</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-control" id="category" name="category">
+                        <option value="">Select Category</option>
+                        <option value="General">General</option>
+                        <option value="Official">Official</option>
+                        <option value="Announcement">Announcement</option>
+                        <option value="Update">Update</option>
+                        <option value="Alert">Alert</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Publish Date <span class="required">*</span></label>
+                    <input type="date" class="form-control" id="publish_date" name="publish_date" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Expiry Date</label>
+                    <input type="date" class="form-control" id="expiry_date" name="expiry_date">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Icon</label>
+                    <input type="text" class="form-control" id="icon" name="icon" placeholder="📄" value="📄">
+                    <small class="form-text">Use emoji or icon text (e.g., 📄, ⚠️, ℹ️)</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">File URL</label>
+                    <input type="url" class="form-control" id="file_url" name="file_url" placeholder="https://...">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">File Name</label>
+                    <input type="text" class="form-control" id="file_name" name="file_name" placeholder="e.g., document.pdf">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="show_arrow" name="show_arrow">
+                    <label for="show_arrow">Show arrow indicator</label>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="is_active" name="is_active">
+                    <label for="is_active">Active (visible to public)</label>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary" id="submitBtn">
+                    <i class="fas fa-save"></i> Update Notification
+                </button>
+                <a href="/admin/notifications" class="btn-secondary">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const notificationId = document.getElementById('notificationId').value;
+
+    loadNotificationData();
+
+    async function loadNotificationData() {
+        try {
+            const response = await fetch(`/admin/api/notifications/${notificationId}`, {
+                headers: { 'Authorization': `Bearer ${getToken()}` }
+            });
+
+            if (response.status === 401) {
+                localStorage.removeItem('dotk_admin_token');
+                window.location.href = '/admin/';
+                return;
+            }
+
+            if (!response.ok) {
+                showToast('Error', 'Failed to load notification details', 'error');
+                return;
+            }
+
+            const result = await response.json();
+            const notification = result.notification || result;
+
+            document.getElementById('title').value = notification.title || '';
+            document.getElementById('description').value = notification.description || '';
+            document.getElementById('notification_no').value = notification.notificationNo || '';
+            document.getElementById('priority').value = notification.priority || '';
+            document.getElementById('category').value = notification.category || '';
+            document.getElementById('publish_date').value = notification.publishDate || '';
+            document.getElementById('expiry_date').value = notification.expiryDate || '';
+            document.getElementById('icon').value = notification.icon || '📄';
+            document.getElementById('file_url').value = notification.fileUrl || '';
+            document.getElementById('file_name').value = notification.fileName || '';
+            document.getElementById('show_arrow').checked = notification.showArrow || false;
+            document.getElementById('is_active').checked = notification.isActive || false;
+
+            document.getElementById('loadingContainer').style.display = 'none';
+            document.getElementById('notificationForm').style.display = 'block';
+
+        } catch (error) {
+            console.error('Error:', error);
+            showToast('Error', 'Network error loading notification details', 'error');
+        }
+    }
+
+    document.getElementById('notificationForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+
+        const currentToken = getToken();
+        if (!currentToken) {
+            showToast('Session Expired', 'Please login again.', 'error');
+            setTimeout(() => { window.location.href = '/admin/'; }, 1500);
+            return;
+        }
+
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+
+        // Convert checkboxes to boolean
+        data.show_arrow = formData.has('show_arrow');
+        data.is_active = formData.has('is_active');
+
+        try {
+            const response = await fetch(`/admin/api/notifications/${notificationId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${currentToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.status === 401) {
+                localStorage.removeItem('dotk_admin_token');
+                window.location.href = '/admin/';
+                return;
+            }
+
+            if (!response.ok) {
+                const result = await response.json();
+                throw new Error(result.error || 'Failed to update notification');
+            }
+
+            showToast('Success', 'Notification updated successfully!', 'success');
+            setTimeout(() => { window.location.href = '/admin/notifications'; }, 1500);
+
+        } catch (error) {
+            console.error('Error saving notification:', error);
+            showToast('Error', error.message || 'Failed to save notification', 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Notification';
+        }
+    });
+</script>
+{% endblock %}

@@ -1,49 +1,122 @@
 # Notifications System Documentation
 
 ## Overview
-The notification section on the homepage is now dynamic, loading content from a JSON database file. This system is similar to the events management system and allows for easy updates without modifying HTML code.
+The notification system is now database-driven with automatic fallback to JSON files. Notifications are primarily loaded from the admin database API, with seamless fallback to the legacy JSON file if the database is unavailable. This ensures continuous operation even during maintenance or database issues.
+
+## Data Sources (Priority Order)
+
+### 1. Primary: Database API
+**Endpoint:** `/admin/api/public/notifications`
+
+The system first attempts to fetch notifications from the database via the admin API. This provides:
+- Real-time updates from admin panel
+- Dynamic content management
+- User-based access controls
+- Audit trails and versioning
+
+### 2. Fallback: JSON File
+**Location:** `pub/data/notifications.json`
+
+If the database API is unavailable, the system automatically falls back to the JSON file, ensuring the website remains functional.
 
 ## File Structure
 
-### 1. Database File
-**Location:** `pub/data/notifications.json`
+### Database Schema
+The notifications table includes:
 
-This JSON file contains all notifications with the following structure:
+```sql
+CREATE TABLE notifications (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(500),
+  description TEXT,
+  notification_no VARCHAR(100),
+  icon VARCHAR(10) DEFAULT '📄',
+  show_arrow BOOLEAN DEFAULT TRUE,
+  priority ENUM('low', 'medium', 'high', 'critical') DEFAULT 'medium',
+  publish_date DATE,
+  expiry_date DATE,
+  category VARCHAR(100) DEFAULT 'General',
+  file_url VARCHAR(500),
+  file_name VARCHAR(300),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+### JSON Fallback Structure
+**Location:** `pub/data/notifications.json`
 
 ```json
 {
   "id": 1,
   "title": "Notification title",
   "description": "Full notification text displayed to users",
-  "icon": "🔔",
+  "notificationNo": "REF/123/2024",
+  "icon": "📄",
   "showArrow": true,
   "priority": "high",
   "publishDate": "2024-12-01",
   "expiryDate": "2025-12-25",
-  "category": "Event"
+  "category": "Official",
+  "fileUrl": "/pub/pdf/document.pdf",
+  "fileName": "Document Name",
+  "isActive": true
 }
 ```
 
 **Field Descriptions:**
-- `id`: Unique identifier for the notification
-- `title`: Short title (used for reference, not displayed on homepage)
-- `description`: Full notification text displayed to users
-- `icon`: Emoji icon shown before the notification (default: 🔔)
-- `showArrow`: Boolean - whether to show arrow icon (👉) after bell icon
-- `priority`: Notification importance level
-  - `critical`: Red accent, urgent notices (e.g., safety advisories)
-  - `high`: Orange accent, important updates (e.g., events, deadlines)
-  - `medium`: Blue accent, general information
-  - `low`: Default styling, minor updates
-- `publishDate`: Date when notification becomes visible (format: YYYY-MM-DD)
-- `expiryDate`: Date when notification stops showing (format: YYYY-MM-DD)
-- `category`: Classification (e.g., "Event", "Advisory", "Service Update", "Tourism")
+- `id`: Unique identifier
+- `title`: Notification title
+- `description`: Full notification text
+- `notificationNo`: Official reference number
+- `icon`: Emoji icon (default: 📄)
+- `showArrow`: Show arrow indicator (👉)
+- `priority`: Importance level (low/medium/high/critical)
+- `publishDate`: Start date (YYYY-MM-DD)
+- `expiryDate`: End date (YYYY-MM-DD)
+- `category`: Classification
+- `fileUrl`: Download link
+- `fileName`: Display name for downloads
+- `isActive`: Visibility status
+
+## JavaScript Manager
+**Location:** `pub/js/notifications-manager.js`
+
+### Key Features:
+- **Dual Source Loading**: Database API → JSON fallback
+- **Error Handling**: Graceful degradation
+- **Caching**: Stores loaded notifications in memory
+- **Filtering**: Date range, priority, category filters
+- **Sorting**: Priority-based, then chronological
+- **Rendering**: Multiple display formats
+
+### Loading Logic:
+```javascript
+async fetchNotifications() {
+  try {
+    // Try database API first
+    const apiResponse = await fetch('/admin/api/public/notifications');
+    if (apiResponse.ok) {
+      const data = await apiResponse.json();
+      return data.notifications; // API returns {notifications: [...]}
+    }
+  } catch (error) {
+    console.warn('Database API failed, using JSON fallback');
+  }
+  
+  // Fallback to JSON
+  const jsonResponse = await fetch('/pub/data/notifications.json');
+  return await jsonResponse.json(); // JSON is direct array
+}
+```
 
 ### 2. JavaScript Manager
 **Location:** `pub/js/notifications-manager.js`
 
 This script handles:
-- Fetching notifications from JSON
+- **Primary**: Fetching notifications from database API
+- **Fallback**: Loading from JSON file if API fails
 - Filtering by date range (publish/expiry)
 - Sorting by priority and date
 - Rendering notifications in HTML
@@ -68,6 +141,31 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 ## How It Works
 
+### Data Loading Priority
+
+The notifications system uses a **database-first approach with JSON fallback**:
+
+1. **Primary**: Loads from database via `/admin/api/public/notifications` API
+   - Real-time data from admin panel
+   - Supports all features (attachments, categories, priorities)
+   - Automatic cache busting via versioned API
+
+2. **Fallback**: If API fails, loads from `pub/data/notifications.json`
+   - Static JSON file for emergency situations
+   - Limited features (no attachments, basic categories)
+   - No cache busting needed
+
+**Benefits:**
+- Database provides full functionality and real-time updates
+- JSON ensures website stays functional during database outages
+- Automatic fallback prevents broken notifications display
+- Console logs indicate which source is being used
+
+**Monitoring:**
+Check browser console for loading status:
+- `"Loading notifications from API"` = Database working
+- `"API failed, loading from JSON fallback"` = Database issue, using backup
+
 ### Homepage Display
 The homepage shows all **active notifications** (current date is between publishDate and expiryDate), sorted by:
 1. Priority (critical → high → medium → low)
@@ -86,13 +184,27 @@ Notifications are styled based on priority:
 - **Medium**: Blue left border, light blue background
 - **Default**: Orange left border, gray background
 
-## Adding New Notifications
+## Managing Notifications
+
+### Admin Panel (Primary Method)
+1. Log into the admin panel at `/admin`
+2. Navigate to **Notifications** section
+3. Click **"Add New Notification"**
+4. Fill in the form with:
+   - Title and description
+   - Priority level (low/medium/high/critical)
+   - Publish and expiry dates
+   - Category and optional file attachments
+5. Save - notifications appear immediately on the website
+
+### JSON Fallback (Emergency Only)
+If the admin panel is unavailable, you can temporarily update `pub/data/notifications.json`:
 
 1. Open `pub/data/notifications.json`
 2. Add a new object to the array with all required fields
 3. Set appropriate publish and expiry dates
 4. Choose priority level based on importance
-5. Save the file - changes appear immediately (no cache busting needed for JSON)
+5. Save the file - changes appear immediately
 
 **Example:**
 ```json
@@ -100,21 +212,27 @@ Notifications are styled based on priority:
   "id": 9,
   "title": "New tourist package",
   "description": "Special summer packages now available for family tours. Book before March 31 for 20% early bird discount.",
+  "notificationNo": "PKG/2025/001",
   "icon": "🔔",
   "showArrow": true,
   "priority": "high",
   "publishDate": "2025-01-15",
   "expiryDate": "2025-03-31",
-  "category": "Tourism"
+  "category": "Tourism",
+  "fileUrl": "/pub/pdf/packages.pdf",
+  "fileName": "Summer Packages 2025",
+  "isActive": true
 }
 ```
+
+**⚠️ Note:** JSON edits are temporary. Always use the admin panel for permanent changes.
 
 ## API Methods
 
 The `NotificationsManager` class provides several methods:
 
 ### Basic Methods
-- `fetchNotifications()`: Load notifications from JSON
+- `fetchNotifications()`: Load notifications from database API with JSON fallback
 - `getActiveNotifications()`: Get all current notifications
 - `renderNotifications(notifications, containerId)`: Display notifications in a container
 

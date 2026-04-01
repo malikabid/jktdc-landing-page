@@ -1,20 +1,55 @@
-// Notifications Manager - Fetch and filter notifications from JSON
+// Notifications Manager - Fetch and filter notifications from database API with JSON fallback
 class NotificationsManager {
   constructor() {
     this.notifications = [];
-    this.dataUrl = '/pub/data/notifications.json';
+    this.apiUrl = '/admin/api/public/notifications';
+    this.fallbackUrl = '/pub/data/notifications.json';
   }
 
-  // Fetch notifications from JSON
+  // Fetch notifications from database API, fallback to JSON
   async fetchNotifications() {
     try {
-      const response = await fetch(this.dataUrl);
-      if (!response.ok) throw new Error('Failed to fetch notifications');
-      this.notifications = await response.json();
-      return this.notifications;
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-      return [];
+      // First try to fetch from database API
+      console.log('Attempting to fetch notifications from database API...');
+      const apiResponse = await fetch(this.apiUrl);
+
+      if (apiResponse.ok) {
+        const apiData = await apiResponse.json();
+        if (apiData.notifications && Array.isArray(apiData.notifications)) {
+          this.notifications = apiData.notifications;
+          console.log(`Successfully loaded ${this.notifications.length} notifications from database API`);
+          return this.notifications;
+        } else {
+          console.warn('Database API returned invalid data structure, falling back to JSON');
+          throw new Error('Invalid API response structure');
+        }
+      } else {
+        console.warn(`Database API failed with status ${apiResponse.status}, falling back to JSON`);
+        throw new Error(`API failed: ${apiResponse.status}`);
+      }
+    } catch (apiError) {
+      console.warn('Database API fetch failed:', apiError.message);
+      console.log('Falling back to JSON file...');
+
+      try {
+        // Fallback to JSON file
+        const jsonResponse = await fetch(this.fallbackUrl);
+        if (!jsonResponse.ok) throw new Error('Failed to fetch JSON fallback');
+
+        const jsonData = await jsonResponse.json();
+        if (Array.isArray(jsonData)) {
+          this.notifications = jsonData;
+          console.log(`Successfully loaded ${this.notifications.length} notifications from JSON fallback`);
+          return this.notifications;
+        } else {
+          throw new Error('Invalid JSON fallback structure');
+        }
+      } catch (jsonError) {
+        console.error('Both database API and JSON fallback failed:', jsonError);
+        console.error('API Error:', apiError.message);
+        console.error('JSON Error:', jsonError.message);
+        return [];
+      }
     }
   }
 
@@ -149,9 +184,17 @@ class NotificationsManager {
 
   // Initialize homepage notifications (important notifications only)
   async initializeHomepage() {
-    await this.fetchNotifications();
-    const activeNotifications = this.getActiveNotifications();
-    this.renderNotifications(activeNotifications, 'notifications-scroll', false);
+    console.log('NotificationsManager: Starting homepage initialization');
+    try {
+      await this.fetchNotifications();
+      console.log('NotificationsManager: Fetch completed, notifications:', this.notifications.length);
+      const activeNotifications = this.getActiveNotifications();
+      console.log('NotificationsManager: Active notifications:', activeNotifications.length);
+      this.renderNotifications(activeNotifications, 'notifications-scroll', false);
+      console.log('NotificationsManager: Homepage initialization completed');
+    } catch (error) {
+      console.error('NotificationsManager: Error during homepage initialization:', error);
+    }
   }
 
   // Initialize notifications page (all categories)

@@ -123,6 +123,26 @@ return function (App $app) {
         ]);
     });
     
+    // Notifications management page
+    $app->get('/notifications', function (Request $request, Response $response) {
+        $view = $this->get('view');
+        return $view->render($response, 'notifications/index.html.twig');
+    });
+    
+    // Notifications create page
+    $app->get('/notifications/create', function (Request $request, Response $response) {
+        $view = $this->get('view');
+        return $view->render($response, 'notifications/create.html.twig');
+    });
+    
+    // Notifications edit page
+    $app->get('/notifications/{id}/edit', function (Request $request, Response $response, array $args) {
+        $view = $this->get('view');
+        return $view->render($response, 'notifications/edit.html.twig', [
+            'notificationId' => $args['id']
+        ]);
+    });
+    
     // Auth routes (public)
     $app->group('/api/auth', function ($group) {
         $group->post('/login', 'App\Controllers\AuthController:login');
@@ -162,7 +182,17 @@ return function (App $app) {
         $group->post('/upload', 'App\Controllers\EventController:uploadFile');
     })->add('App\Middleware\AdminMiddleware')->add('App\Middleware\AuthMiddleware');
     
+    // Notification management routes (Admin only)
+    $app->group('/api/notifications', function ($group) {
+        $group->get('', 'App\Controllers\NotificationController:index');
+        $group->get('/{id}', 'App\Controllers\NotificationController:show');
+        $group->post('', 'App\Controllers\NotificationController:store');
+        $group->put('/{id}', 'App\Controllers\NotificationController:update');
+        $group->delete('/{id}', 'App\Controllers\NotificationController:destroy');
+    })->add('App\Middleware\AdminMiddleware')->add('App\Middleware\AuthMiddleware');
+    
     // Public APIs (no auth required)
     $app->get('/api/public/events', 'App\Controllers\EventController:homepage');
     $app->get('/api/public/tenders', 'App\Controllers\TenderController:publicIndex');
+    $app->get('/api/public/notifications', 'App\Controllers\NotificationController:publicIndex');
 };

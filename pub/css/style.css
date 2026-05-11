@@ -2741,3 +2741,20 @@ aside .quick-booking-card {
     padding: 6px 10px;
   }
 }
+
+/* Display Helpers for Desk-Mobile and Tabview */
+.tabview-only {
+  display: none;
+}
+.desk-mobile {
+  display: inline;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .desk-mobile {
+    display: none;
+  }
+  .tabview-only {
+    display: inline;
+  }
+}

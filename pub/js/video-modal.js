@@ -1,3 +1,11 @@
+// Convert any YouTube URL (youtu.be, watch?v=, shorts) into an embeddable /embed/ URL.
+// Non-YouTube URLs (e.g. direct video files) are returned unchanged.
+function toEmbedUrl(url) {
+  if (!url) return url;
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/))([\w-]{11})/);
+  return match ? `https://www.youtube.com/embed/${match[1]}` : url;
+}
+
 // Video Modal Functionality
 function initializeVideoModal() {
   const modal = document.getElementById('videoModal');
@@ -22,9 +30,9 @@ function initializeVideoModal() {
     thumbnail.addEventListener('click', function(e) {
       e.preventDefault();
       console.log('Video thumbnail clicked!');
-      const videoUrl = this.getAttribute('data-video-url');
+      const videoUrl = toEmbedUrl(this.getAttribute('data-video-url'));
       console.log('Video URL:', videoUrl);
-      
+
       // Add autoplay parameter to YouTube URL
       const autoplayUrl = videoUrl + (videoUrl.includes('?') ? '&' : '?') + 'autoplay=1';
       

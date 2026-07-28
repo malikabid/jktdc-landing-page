@@ -1877,7 +1877,7 @@ body {
 
 /* Quick Booking Card Aside Styles (for sidebar) */
 aside .quick-booking-card {
-  display: none;
+  display: flex;
   background: #4e8c3a;
   color: #fff;
   border-radius: 16px;

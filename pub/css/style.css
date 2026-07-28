@@ -46,6 +46,23 @@
   margin-bottom: 10px;
 }
 
+.marathon-banner {
+  display: block;
+  width: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.13);
+  text-decoration: none;
+  line-height: 0;
+}
+
+.marathon-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
 .qr-card-label {
   font-size: 1rem;
   font-weight: 600;

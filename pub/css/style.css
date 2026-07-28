@@ -27,22 +27,21 @@
   background: var(--background, #fff);
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.13);
-  padding: 18px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 140px;
-  max-width: 200px;
+  min-width: 120px;
+  max-width: 180px;
   pointer-events: auto;
   text-decoration: none;
   width: 100%;
-  max-width: 260px;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .qr-card img {
-  width: 110px;
-  height: 110px;
+  width: 95px;
+  height: 95px;
   object-fit: contain;
   margin-bottom: 10px;
 }
@@ -2000,7 +1999,9 @@ aside .quick-booking-card {
   background: #fff;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .column-header {
@@ -2035,6 +2036,10 @@ aside .quick-booking-card {
 #events-scroll {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+#notifications-scroll {
+  max-height: 310px;
 }
 
 /* Notification Items */

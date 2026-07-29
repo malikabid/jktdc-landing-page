@@ -1,0 +1,35 @@
+#!/bin/bash
+#
+# Auto cache-busting (tracked hook).
+#
+# When a commit includes CSS/JS asset changes, stamp a fresh ?v= version into the
+# HTML files and add the updated HTML to the SAME commit — so the working tree
+# stays clean and the deployed HTML always points at the new asset version.
+#
+# Enable once per clone with:  git config core.hooksPath .githooks
+# (or run: bash scripts/setup-git-hooks.sh)
+
+root="$(git rev-parse --show-toplevel)"
+
+# Only act when CSS/JS files are part of this commit.
+staged_assets=$(git diff --cached --name-only --diff-filter=ACM \
+  | grep -E '^pub/(css|js)/.*\.(css|js)$' || true)
+[ -z "$staged_assets" ] && exit 0
+
+echo "🔄 CSS/JS in this commit — updating cache-buster versions..."
+bash "$root/scripts/update-versions.sh"
+
+# Stage every HTML file the stamp actually modified so it lands in this commit.
+changed_html=$(git ls-files '*.html' | while IFS= read -r f; do
+  git diff --quiet -- "$f" || echo "$f"
+done)
+
+if [ -n "$changed_html" ]; then
+  echo "$changed_html" | xargs git add
+  echo "✅ Stamped & staged into commit:"
+  echo "$changed_html" | sed 's/^/   /'
+else
+  echo "ℹ️  No HTML version changes needed"
+fi
+
+exit 0

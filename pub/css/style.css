@@ -742,6 +742,67 @@ body {
   overflow: visible;
 }
 
+/* Kashmir Marathon banner overlay on the hero slider */
+.hero-marathon-overlay {
+  position: absolute;
+  /* Clear the ~70px hero-next arrow zone on the right edge */
+  right: 84px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50%;
+  max-width: 800px;
+  z-index: 10;
+  display: block;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hero-marathon-overlay:hover {
+  transform: translateY(-50%) scale(1.02);
+  box-shadow: 0 10px 38px rgba(0, 0, 0, 0.45);
+}
+
+.hero-marathon-overlay img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media screen and (max-width: 1024px) {
+  .hero-marathon-overlay {
+    width: 70%;
+    /* Cap so the banner fits inside the 400px hero and leaves room for the
+       social icon row beneath it */
+    max-width: 480px;
+    right: auto;
+    left: 50%;
+    top: 6%;
+    transform: translateX(-50%);
+  }
+  .hero-marathon-overlay:hover {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-marathon-overlay {
+    width: 92%;
+    /* Cap width so the image height stays within the fixed 340px mobile hero
+       and leaves room for the social icon row below it */
+    max-width: 400px;
+    right: auto;
+    left: 50%;
+    top: 6%;
+    transform: translateX(-50%);
+    border-radius: 8px;
+  }
+  .hero-marathon-overlay:hover {
+    transform: translateX(-50%);
+  }
+}
+
 .slider-container {
   width: 100%;
 }
@@ -875,7 +936,7 @@ body {
 }
 .hero-social-bar {
   position: absolute;
-  left: 15px; /* Aligns exactly with content padding */
+  left: 84px; /* Clear the ~70px hero-prev arrow zone on the left edge */
   top: 50%;
   transform: translateY(-50%);
   display: flex;
@@ -929,26 +990,60 @@ body {
   transform: translateX(5px);
   filter: brightness(1.15);
 }
+/* Tablets & down: compact icon-only social buttons in a horizontal row
+   beneath the centered marathon overlay */
 @media (max-width: 1024px) {
   .hero-social-bar {
+    flex-direction: row;
     left: 50%;
-    transform: translate(-50%, -50%);
+    top: auto;
+    bottom: 14px;
+    transform: translateX(-50%);
+    width: auto;
+    gap: 16px;
+    justify-content: center;
     align-items: center;
-    width: 100%;
   }
   .hero-social-bar a {
-    padding: 10px 16px;
-    font-size: 14px;
-    min-width: 260px;
+    min-width: 0;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    gap: 0;
+    border-radius: 50%;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  .hero-social-bar a span {
+    display: none;
   }
   .hero-social-bar a i {
-    font-size: 16px;
+    font-size: 18px;
+  }
+  .hero-social-bar a:hover {
+    transform: none;
+    filter: brightness(1.15);
   }
   .hero-slider .quick-booking-card {
     display: none !important;
   }
   aside .quick-booking-card {
     display: flex !important;
+  }
+}
+
+/* Phones: slightly smaller icons / tighter spacing */
+@media (max-width: 767px) {
+  .hero-social-bar {
+    bottom: 12px;
+    gap: 14px;
+  }
+  .hero-social-bar a {
+    width: 42px;
+    height: 42px;
+  }
+  .hero-social-bar a i {
+    font-size: 16px;
   }
 }
 

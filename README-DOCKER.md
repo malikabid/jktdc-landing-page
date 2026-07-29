@@ -29,6 +29,20 @@ The docker-compose.yml configures the following services:
 
 ### First Time Setup
 
+0. **Enable Git hooks (one time per clone):**
+   ```bash
+   bash scripts/setup-git-hooks.sh
+   ```
+   This points `core.hooksPath` at the tracked `.githooks/` directory. After
+   this, whenever you commit changes to `pub/css` or `pub/js`, a pre-commit hook
+   automatically stamps a fresh `?v=` cache-buster into the HTML pages and
+   includes them in the same commit — no extra commit, no dirty working tree.
+
+   > Note: Git does not auto-enable repo hooks on clone (for security), so every
+   > teammate must run this once. The hook is **local only** — edits made
+   > directly in the GitHub web UI do not run it, so change CSS/JS from a local
+   > clone to keep asset versions in sync.
+
 1. **Start all services:**
    ```bash
    docker-compose up -d

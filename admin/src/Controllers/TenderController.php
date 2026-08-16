@@ -272,22 +272,8 @@ class TenderController
      */
     public function uploadDocument(Request $request, Response $response, array $args): Response
     {
-        // Debug log file
-        $debugLog = __DIR__ . '/../../../storage/logs/upload_debug.log';
-        $log = function($msg) use ($debugLog) {
-            file_put_contents($debugLog, date('c') . ' ' . $msg . "\n", FILE_APPEND);
-        };
-
-        $log('--- uploadDocument called ---');
-        $log('Session ID: ' . (session_id() ?: 'no session'));
-        $log('User ID: ' . ($request->getAttribute('user_id') ?? 'none'));
-        $log('Args: ' . json_encode($args));
-        $log('POST: ' . json_encode($request->getParsedBody()));
-        $log('FILES: ' . json_encode(array_keys($request->getUploadedFiles())));
-
         $tender = Tender::find($args['id']);
         if (!$tender) {
-            $log('Tender not found for id ' . $args['id']);
             $response->getBody()->write(json_encode(['error' => 'Tender not found']));
             return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
         }
@@ -296,7 +282,6 @@ class TenderController
         $data = $request->getParsedBody();
 
         if (empty($uploadedFiles['document'])) {
-            $log('No file uploaded');
             $response->getBody()->write(json_encode(['error' => 'No file uploaded']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
@@ -305,27 +290,28 @@ class TenderController
         $uploadedFile = $uploadedFiles['document'];
 
         if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
-            $log('File upload error: ' . $uploadedFile->getError());
             $response->getBody()->write(json_encode(['error' => 'File upload failed']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
 
-        // Validate file type
-        $allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-        $mimeType = $uploadedFile->getClientMediaType();
-        $log('File mime type: ' . $mimeType);
-        if (!in_array($mimeType, $allowedTypes)) {
-            $log('Invalid file type: ' . $mimeType);
+        // Validate the extension against a server-side allow-list. The client
+        // media type is attacker-controlled and must never decide what we write
+        // to disk - anything ending in .php under the docroot is executed.
+        $allowedExtensions = ['pdf', 'doc', 'docx'];
+        $extension = strtolower(pathinfo($uploadedFile->getClientFilename() ?? '', PATHINFO_EXTENSION));
+
+        if (!in_array($extension, $allowedExtensions, true)) {
             $response->getBody()->write(json_encode(['error' => 'Only PDF and Word documents are allowed']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
 
-        // Generate filename
-        $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+        // Generate filename. The random suffix prevents two uploads in the same
+        // second from colliding and overwriting each other.
         $filename = sprintf(
-            'tender_%d_%s.%s',
+            'tender_%d_%s_%s.%s',
             $tender->id,
             date('YmdHis'),
+            bin2hex(random_bytes(4)),
             $extension
         );
 
@@ -334,12 +320,20 @@ class TenderController
         $basePath = $container->get('settings')['app']['base_path'] ?? '';
         $uploadDir = rtrim($basePath, '/') . '/pub/tenders/';
         if (!is_dir($uploadDir)) {
-            $log('Upload dir does not exist, creating: ' . $uploadDir);
             mkdir($uploadDir, 0755, true);
         }
 
-        $log('Moving file to: ' . $uploadDir . $filename);
         $uploadedFile->moveTo($uploadDir . $filename);
+
+        // Confirm the real content type now that the file is on disk, and bin it
+        // if the bytes disagree with the extension we accepted
+        if (!$this->hasAllowedContent($uploadDir . $filename, $extension)) {
+            unlink($uploadDir . $filename);
+            $response->getBody()->write(json_encode([
+                'error' => 'File content does not match a PDF or Word document'
+            ]));
+            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
 
         // Create document record
         $documentName = $data['label'] ?? $data['name'] ?? $uploadedFile->getClientFilename();
@@ -353,7 +347,6 @@ class TenderController
             'sort_order' => $tender->documents()->count(),
         ]);
 
-        $log('Document created: ' . $document->id);
 
         $response->getBody()->write(json_encode([
             'success' => true,
@@ -367,7 +360,6 @@ class TenderController
             ],
         ]));
 
-        $log('Upload completed successfully');
         return $response->withStatus(201)->withHeader('Content-Type', 'application/json');
     }
     
@@ -401,6 +393,33 @@ class TenderController
         return $response->withHeader('Content-Type', 'application/json');
     }
     
+    /**
+     * Verify a stored file's real content type matches the extension we accepted
+     */
+    private function hasAllowedContent(string $path, string $extension): bool
+    {
+        if (!function_exists('finfo_open')) {
+            // Without fileinfo we cannot verify; the extension allow-list already
+            // guarantees the file is not executable, so let it through
+            return true;
+        }
+
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $detected = finfo_file($finfo, $path);
+        finfo_close($finfo);
+
+        $allowed = [
+            'pdf' => ['application/pdf'],
+            'doc' => ['application/msword', 'application/vnd.ms-office', 'application/x-ole-storage'],
+            'docx' => [
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/zip',
+            ],
+        ];
+
+        return in_array($detected, $allowed[$extension] ?? [], true);
+    }
+
     /**
      * Get tender statistics
      */

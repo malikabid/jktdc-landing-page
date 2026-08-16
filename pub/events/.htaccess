@@ -1,0 +1,19 @@
+# Uploaded documents only - never execute anything in this directory.
+# The vhost maps every *.php file under the docroot to PHP-FPM with no path
+# scoping, so an executable file landing here would run. Belt and braces on top
+# of the server-side extension allow-list in EventController.
+
+# Apache 2.4+
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8 .phps
+RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8 .phps
+
+<FilesMatch "\.(php|phtml|php[0-9]|phps|cgi|pl|py|jsp|asp|aspx|sh|shtml)$">
+    SetHandler none
+    Require all denied
+</FilesMatch>
+
+Options -ExecCGI -Indexes

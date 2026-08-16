@@ -20,19 +20,11 @@ return function (App $app) {
         return $response->withHeader('Content-Type', 'application/json');
     });
     
-    // PHP Info endpoint
-    $app->get('/info', function (Request $request, Response $response) {
-        $view = $this->get('view');
-        
-        ob_start();
-        phpinfo();
-        $phpinfo = ob_get_clean();
-        
-        return $view->render($response, 'info.html.twig', [
-            'phpinfo_output' => $phpinfo
-        ]);
-    });
-    
+    // NOTE: the /info route (public, unauthenticated phpinfo()) was removed on
+    // 16 Aug 2026. It exposed JWT_SECRET and the DB password to anyone, which
+    // let an attacker forge an admin token and reach the authenticated upload
+    // endpoints. Do not reinstate it without auth; use `php -i` on the server.
+
     // API base endpoint
     $app->get('/api', function (Request $request, Response $response) {
         $settings = $this->get('settings');

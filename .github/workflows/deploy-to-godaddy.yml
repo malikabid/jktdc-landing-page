@@ -49,6 +49,10 @@ jobs:
             **/README*.md
             **/update-versions.sh
             **/.github/**
+            **/docs/**
+            **/scripts/**
+            **/.githooks/**
+            **/render.yaml
             **/admin/tests/**
             **/admin/docker/**
             **/admin/Dockerfile

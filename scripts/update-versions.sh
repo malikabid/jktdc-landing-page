@@ -1,46 +1,26 @@
 #!/bin/bash
+#
+# Cache-buster stamper.
+#
+# Rewrites the ?v=... query string on every pub/css and pub/js asset link in all
+# tracked HTML files. The version is derived from the CURRENT (staged) content of
+# the CSS/JS assets, so it changes only when an asset actually changes and never
+# depends on the not-yet-created commit hash (which caused an off-by-one before).
+#
+# Used by the pre-commit hook (.githooks/pre-commit) and can also be run by hand.
 
-# Automated Cache-Busting Version Updater
-# This script automatically updates version numbers in HTML files based on Git commit hash
-# Run this script before deploying to production
+# Short, stable hash of all CSS/JS blob contents in the index (staged state).
+VERSION=$(git ls-files -s -- 'pub/css/*.css' 'pub/js/*.js' 2>/dev/null \
+  | git hash-object --stdin 2>/dev/null | cut -c1-8)
+[ -z "$VERSION" ] && VERSION="dev$(date +%s)"
 
-# Get short Git commit hash (7 characters)
-VERSION=$(git rev-parse --short=7 HEAD 2>/dev/null || echo "dev-$(date +%s)")
+echo "🔄 Stamping asset versions -> ?v=$VERSION"
 
-echo "🔄 Updating versions to: $VERSION"
+while IFS= read -r f; do
+  [ -f "$f" ] || continue
+  # Matches both "pub/css/style.css?v=..." and "/pub/css/style.css?v=..." (css & js)
+  sed -i.bak -E "s#((/)?pub/(css|js)/[^\"']+\.(css|js))\?v=[^\"']+#\1?v=$VERSION#g" "$f"
+  rm -f "$f.bak"
+done < <(git ls-files '*.html')
 
-# Files to update
-HTML_FILES=(
-  "index.html"
-  "coming-soon.html"
-  "organizational-chart.html"
-)
-
-# Update version parameters in HTML files
-for file in "${HTML_FILES[@]}"; do
-  if [ -f "$file" ]; then
-    echo "   Updating $file..."
-    
-    # Update CSS files
-    sed -i.bak -E "s|(pub/css/[^\"']+\.css)\?v=[^\"']+|\1?v=$VERSION|g" "$file"
-    
-    # Update JS files
-    sed -i.bak -E "s|(pub/js/[^\"']+\.js)\?v=[^\"']+|\1?v=$VERSION|g" "$file"
-    
-    # Remove backup files
-    rm -f "$file.bak"
-    
-    echo "   ✅ Updated $file"
-  else
-    echo "   ⚠️  Warning: $file not found"
-  fi
-done
-
-echo ""
-echo "✨ Version update complete!"
-echo "📌 New version: $VERSION"
-echo ""
-echo "Next steps:"
-echo "1. Review changes with: git diff"
-echo "2. Commit changes: git add . && git commit -m 'Update asset versions to $VERSION'"
-echo "3. Deploy: git push"
+echo "✅ Asset versions updated to $VERSION"

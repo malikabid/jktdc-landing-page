@@ -1,3 +1,17 @@
+// Convert any YouTube URL (youtu.be, watch?v=, shorts) into an embeddable /embed/ URL
+// with branding/related-video suppression parameters:
+//   rel=0             - limit related "more videos" to the same channel
+//   modestbranding=1  - reduce the YouTube logo in the control bar
+//   iv_load_policy=3  - hide video annotations
+//   playsinline=1     - play inline on mobile instead of fullscreen
+// Non-YouTube URLs (e.g. direct video files) are returned unchanged.
+function toEmbedUrl(url) {
+  if (!url) return url;
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/))([\w-]{11})/);
+  if (!match) return url;
+  return `https://www.youtube-nocookie.com/embed/${match[1]}?rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&color=white`;
+}
+
 // Video Modal Functionality
 function initializeVideoModal() {
   const modal = document.getElementById('videoModal');
@@ -22,9 +36,9 @@ function initializeVideoModal() {
     thumbnail.addEventListener('click', function(e) {
       e.preventDefault();
       console.log('Video thumbnail clicked!');
-      const videoUrl = this.getAttribute('data-video-url');
+      const videoUrl = toEmbedUrl(this.getAttribute('data-video-url'));
       console.log('Video URL:', videoUrl);
-      
+
       // Add autoplay parameter to YouTube URL
       const autoplayUrl = videoUrl + (videoUrl.includes('?') ? '&' : '?') + 'autoplay=1';
       

@@ -180,7 +180,8 @@
             document.getElementById('description').value = tender.description || '';
             document.getElementById('publish_date').value = tender.publish_date ? tender.publish_date.split('T')[0] : '';
             document.getElementById('closing_date').value = tender.closing_date ? tender.closing_date.split('T')[0] : '';
-            document.getElementById('estimated_value').value = tender.estimated_value || '';
+            // Convert paise to rupees for display
+            document.getElementById('estimated_value').value = tender.estimated_value ? (tender.estimated_value / 100) : '';
             document.getElementById('status').value = tender.status || 'draft';
             document.getElementById('department').value = tender.department || '';
             document.getElementById('contact_person').value = tender.contact_person || '';

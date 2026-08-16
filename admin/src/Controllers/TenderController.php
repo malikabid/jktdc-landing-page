@@ -419,6 +419,34 @@ class TenderController
     }
     
     /**
+     * Auto-close expired tenders (Admin API)
+     * POST /admin/api/tenders/auto-close
+     */
+    public function autoCloseTenders(Request $request, Response $response): Response
+    {
+        try {
+            $command = new \App\Commands\CloseTendersCommand();
+            $result = $command->closeExpiredTenders();
+            
+            $response->getBody()->write(json_encode([
+                'success' => true,
+                'message' => $result['count'] > 0 ? "{$result['count']} tender(s) closed successfully" : 'No expired tenders found',
+                'closed_count' => $result['count'],
+                'tenders' => $result['tenders']
+            ]));
+            
+            return $response->withHeader('Content-Type', 'application/json');
+            
+        } catch (\Exception $e) {
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'error' => 'Failed to auto-close tenders: ' . $e->getMessage()
+            ]));
+            return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
+        }
+    }
+    
+    /**
      * Public API - Get active tenders for frontend
      */
     public function publicIndex(Request $request, Response $response): Response

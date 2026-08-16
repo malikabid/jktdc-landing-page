@@ -198,6 +198,39 @@
         gap: 5px;
     }
     
+    /* Secondary Button */
+    .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: #6b7280;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-secondary:hover {
+        background: #4b5563;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn-secondary:active {
+        transform: translateY(0);
+    }
+    
+    .btn-secondary:disabled {
+        background: #d1d5db;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
     .btn-icon {
         width: 34px;
         height: 34px;
@@ -310,6 +343,9 @@
                 <a href="/admin/tenders/create" class="btn-primary">
                     <i class="fas fa-plus"></i> Add New Tender
                 </a>
+                <button id="closeTendersBtn" class="btn-secondary" style="display: none;" onclick="closeExpiredTenders()">
+                    <i class="fas fa-times-circle"></i> Close Expired
+                </button>
                 <a href="/admin/dashboard" class="btn-back">
                     <i class="fas fa-arrow-left"></i> Dashboard
                 </a>
@@ -387,13 +423,76 @@
     <script>
         let categories = [];
         let searchTimeout = null;
+        let userRole = null;
         
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             loadStats();
             loadTenders();
             loadCategories();
+            showAdminOnlyElements();
         });
+        
+        // Show admin-only elements
+        async function showAdminOnlyElements() {
+            try {
+                const response = await fetch('/admin/api/auth/me', {
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    userRole = data.user.role;
+                    
+                    // Show close tenders button for admins
+                    if (userRole === 'admin' || userRole === 'super_admin') {
+                        document.getElementById('closeTendersBtn').style.display = 'inline-flex';
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking user role:', error);
+            }
+        }
+        
+        // Close expired tenders
+        async function closeExpiredTenders() {
+            if (!confirm('This will close all expired tenders. Are you sure?')) {
+                return;
+            }
+            
+            const btn = document.getElementById('closeTendersBtn');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Closing...';
+            
+            try {
+                const response = await fetch('/admin/api/tenders/auto-close', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                });
+                
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.error || 'Failed to close tenders');
+                }
+                
+                const result = await response.json();
+                
+                // Show success message
+                showToast('success', 'Success', result.message);
+                
+                // Reload data
+                loadStats();
+                loadTenders();
+                
+            } catch (error) {
+                console.error('Error closing tenders:', error);
+                showToast('error', 'Error', error.message || 'Failed to close tenders');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
         
         // Load statistics
         async function loadStats() {
@@ -546,6 +645,32 @@
                 'cancelled': 'danger'
             };
             return classes[status] || 'secondary';
+        }
+        
+        // Toast notification
+        function showToast(type, title, message) {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            // Set icon and color based on type
+            const iconMap = {
+                'success': 'fa-check-circle',
+                'error': 'fa-exclamation-circle',
+                'warning': 'fa-exclamation-triangle',
+                'info': 'fa-info-circle'
+            };
+            
+            toastIcon.className = `fas ${iconMap[type] || 'fa-info-circle'}`;
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+            toast.className = `toast show toast-${type}`;
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 5000);
         }
     </script>
 {% endblock %}

@@ -49,6 +49,10 @@ jobs:
             **/README*.md
             **/update-versions.sh
             **/.github/**
+            **/docs/**
+            **/scripts/**
+            **/.githooks/**
+            **/render.yaml
             **/admin/tests/**
             **/admin/docker/**
             **/admin/Dockerfile
@@ -69,3 +73,4 @@ jobs:
             composer install --no-dev --optimize-autoloader --no-interaction
             vendor/bin/phinx migrate -e production
             vendor/bin/phinx seed:run -e production || echo "Phinx seed failed"
+            rm -rf storage/cache/*

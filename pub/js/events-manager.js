@@ -94,6 +94,13 @@ class EventsManager {
     };
   }
 
+  // Extract the YouTube video ID from any URL form (youtu.be, watch?v=, embed, shorts)
+  getYouTubeId(url) {
+    if (!url) return null;
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/))([\w-]{11})/);
+    return match ? match[1] : null;
+  }
+
   // Render event item HTML
   renderEventItem(event) {
     const dateParts = this.getDateParts(event.startDate);
@@ -101,10 +108,14 @@ class EventsManager {
     let mediaHtml = '';
 
     // Video (YouTube or direct video file)
-    if (event.videoUrl && event.thumbnail) {
+    if (event.videoUrl) {
+      const youtubeId = this.getYouTubeId(event.videoUrl);
+      // Prefer an explicit thumbnail; otherwise derive one from the YouTube video
+      const thumbnail = event.thumbnail
+        || (youtubeId ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg` : '');
       mediaHtml = `
         <div class="video-thumbnail" data-video-url="${event.videoUrl}">
-          <img src="${event.thumbnail}" alt="${event.title} Video" />
+          ${thumbnail ? `<img src="${thumbnail}" alt="${event.title} Video" />` : ''}
           <div class="play-overlay">
             <i class="fas fa-play-circle"></i>
           </div>

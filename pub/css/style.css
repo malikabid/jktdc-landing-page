@@ -1,3 +1,88 @@
+.qr-card-headline {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--primary-color, #4b2e83);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.qr-card-label {
+  font-size: 0.98rem;
+  margin-top: 10px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .qr-card-headline {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+  .qr-card-label {
+    font-size: 0.92rem;
+    margin-top: 7px;
+  }
+}
+.qr-card {
+  background: var(--background, #fff);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.13);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+  max-width: 180px;
+  pointer-events: auto;
+  text-decoration: none;
+  width: 100%;
+  margin: 0;
+}
+
+.qr-card img {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.marathon-banner {
+  display: block;
+  width: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.13);
+  text-decoration: none;
+  line-height: 0;
+}
+
+.marathon-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.qr-card-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary-color, #4b2e83);
+  text-align: center;
+}
+
+@media screen and (max-width: 1024px) {
+  .qr-card {
+    min-width: 90px;
+    max-width: 220px;
+  }
+  .qr-card img {
+    width: 90px;
+    height: 90px;
+  }
+  .qr-card-label {
+    font-size: 0.92rem;
+  }
+}
 /* ==================== YOUTUBE FEED STYLES ==================== */
 .youtube-feed-section-container {
   margin: 40px auto 0 auto;
@@ -657,6 +742,67 @@ body {
   overflow: visible;
 }
 
+/* Kashmir Marathon banner overlay on the hero slider */
+.hero-marathon-overlay {
+  position: absolute;
+  /* Clear the ~70px hero-next arrow zone on the right edge */
+  right: 84px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50%;
+  max-width: 800px;
+  z-index: 10;
+  display: block;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hero-marathon-overlay:hover {
+  transform: translateY(-50%) scale(1.02);
+  box-shadow: 0 10px 38px rgba(0, 0, 0, 0.45);
+}
+
+.hero-marathon-overlay img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media screen and (max-width: 1024px) {
+  .hero-marathon-overlay {
+    width: 70%;
+    /* Cap so the banner fits inside the 400px hero and leaves room for the
+       social icon row beneath it */
+    max-width: 480px;
+    right: auto;
+    left: 50%;
+    top: 6%;
+    transform: translateX(-50%);
+  }
+  .hero-marathon-overlay:hover {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-marathon-overlay {
+    width: 92%;
+    /* Cap width so the image height stays within the fixed 340px mobile hero
+       and leaves room for the social icon row below it */
+    max-width: 400px;
+    right: auto;
+    left: 50%;
+    top: 6%;
+    transform: translateX(-50%);
+    border-radius: 8px;
+  }
+  .hero-marathon-overlay:hover {
+    transform: translateX(-50%);
+  }
+}
+
 .slider-container {
   width: 100%;
 }
@@ -669,7 +815,7 @@ body {
 .slide img {
   width: 100%;
   height: 750px;
-  object-fit: cover;
+  /* object-fit: cover; */
   display: block;
   background: #f5f5f5;
 }
@@ -774,6 +920,133 @@ body {
   opacity: 1;
 }
 
+/* Hero Social Bar */
+.hero-social-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 20;
+}
+.hero-social-wrapper .content-container {
+  position: relative;
+  height: 100%;
+}
+.hero-social-bar {
+  position: absolute;
+  left: 84px; /* Clear the ~70px hero-prev arrow zone on the left edge */
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: auto;
+}
+.hero-social-bar a {
+  color: #ffffff;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  gap: 12px;
+  min-width: 260px;
+}
+.hero-social-bar a i {
+  font-size: 20px;
+}
+.hero-social-bar a.social-fb {
+  background: #1877F2;
+  border-color: #1877F2;
+}
+.hero-social-bar a.social-x {
+  background: #000000;
+  border-color: #000000;
+}
+.hero-social-bar a.social-ig {
+  background: linear-gradient(
+    45deg,
+    #f09433 0%,
+    #e6683c 25%,
+    #dc2743 50%,
+    #cc2366 75%,
+    #bc1888 100%
+  );
+  color: #fff;
+  border-color: transparent;
+}
+.hero-social-bar a.social-yt {
+  background: #FF0000;
+  border-color: #FF0000;
+}
+.hero-social-bar a:hover {
+  transform: translateX(5px);
+  filter: brightness(1.15);
+}
+/* Tablets & down: compact icon-only social buttons in a horizontal row
+   beneath the centered marathon overlay */
+@media (max-width: 1024px) {
+  .hero-social-bar {
+    flex-direction: row;
+    left: 50%;
+    top: auto;
+    bottom: 14px;
+    transform: translateX(-50%);
+    width: auto;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+  }
+  .hero-social-bar a {
+    min-width: 0;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    gap: 0;
+    border-radius: 50%;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  .hero-social-bar a span {
+    display: none;
+  }
+  .hero-social-bar a i {
+    font-size: 18px;
+  }
+  .hero-social-bar a:hover {
+    transform: none;
+    filter: brightness(1.15);
+  }
+  .hero-slider .quick-booking-card {
+    display: none !important;
+  }
+  aside .quick-booking-card {
+    display: flex !important;
+  }
+}
+
+/* Phones: slightly smaller icons / tighter spacing */
+@media (max-width: 767px) {
+  .hero-social-bar {
+    bottom: 12px;
+    gap: 14px;
+  }
+  .hero-social-bar a {
+    width: 42px;
+    height: 42px;
+  }
+  .hero-social-bar a i {
+    font-size: 16px;
+  }
+}
+
 /* Responsive Slider for 1024px */
 @media screen and (max-width: 1024px) {
   .slide img {
@@ -784,7 +1057,8 @@ body {
 /* Responsive Slider */
 @media screen and (max-width: 768px) {
   .slide img {
-    max-height: 300px;
+    height: 340px;
+    max-height: 340px;
   }
 
   .slick-prev,
@@ -809,7 +1083,8 @@ body {
 
 @media screen and (max-width: 480px) {
   .slide img {
-    max-height: 250px;
+    height: 320px;
+    max-height: 320px;
   }
 }
 
@@ -1588,15 +1863,44 @@ body {
   background: #4e8c3a;
   color: #fff;
   border-radius: 16px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.13);
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.32);
   padding: 18px;
-  margin-top: 18px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  position: relative;
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 220px;
+  z-index: 10;
+}
+
+@media (max-width: 767px) {
+  .quick-booking-card {
+    position: absolute;
+    left: 50%;
+    right: auto;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 55vw;
+    max-width: 200px;
+    padding: 10px;
+    gap: 6px;
+    border-radius: 10px;
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.32);
+  }
+  .quick-booking-title {
+    font-size: 0.85rem;
+  }
+  .quick-booking-subtitle {
+    font-size: 0.72rem;
+  }
+  .quick-booking-divider {
+    margin: 4px 0;
+  }
 }
 .quick-booking-title {
   font-size: 1.35rem;
@@ -1683,6 +1987,41 @@ body {
   font-size: 1.08rem;
 }
 
+/* Quick Booking Card Aside Styles (for sidebar) */
+aside .quick-booking-card {
+  display: flex;
+  background: #4e8c3a;
+  color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.32);
+  padding: 18px;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  width: 100%;
+  max-width: 220px;
+  box-sizing: border-box;
+  margin: 20px auto 0;
+  right: unset;
+  top: unset;
+  transform: unset;
+  z-index: unset;
+}
+
+@media (max-width: 767px) {
+  aside .quick-booking-card {
+    /* width: 55vw; */
+    max-width: 200px;
+    padding: 10px;
+    gap: 6px;
+    border-radius: 10px;
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.32);
+    left: unset;
+  }
+}
+
 .related-link-item {
   display: flex;
   align-items: center;
@@ -1693,7 +2032,7 @@ body {
   text-decoration: none;
   color: var(--accent-color);
   font-weight: 600;
-  font-size: calc(1rem - 0.5vw);
+  /* font-size: calc(1rem - 0.5vw); */
   transition: all 0.3s ease;
   border-left: 4px solid transparent;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -1752,7 +2091,29 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 680px;
+  height: 700px;
+}
+
+.notification-column.split-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-column.split-rows .notification-top {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-column.split-rows .notification-bottom {
+  padding: 20px;
+  border-top: 1px solid #f1f1f1;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .column-header {
@@ -1787,6 +2148,10 @@ body {
 #events-scroll {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+#notifications-scroll {
+  max-height: 310px;
 }
 
 /* Notification Items */
@@ -2191,6 +2556,10 @@ body {
     height: 400px;
   }
 
+  .notification-column.split-rows {
+    height: auto;
+  }
+
   .column-header h2 {
     font-size: 1.2rem;
   }
@@ -2487,5 +2856,22 @@ body {
   .video-label {
     font-size: 0.75rem;
     padding: 6px 10px;
+  }
+}
+
+/* Display Helpers for Desk-Mobile and Tabview */
+.tabview-only {
+  display: none;
+}
+.desk-mobile {
+  display: inline;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .desk-mobile {
+    display: none;
+  }
+  .tabview-only {
+    display: inline;
   }
 }

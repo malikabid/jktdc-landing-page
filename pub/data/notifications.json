@@ -1,6 +1,48 @@
 [
   {
+    "id": 10,
+    "title": "Departmental Promotion Committee (DPC) meeting on 11.04.2026 ",
+    "description": "It is hereby notified for the information of all concerned that the Departmental Promotion Committee (DPC) meeting on 11.04.2026 to considered the cases of eligible employees of various  categories  for  promotion/confirmation  in  accordance  with  the  applicable  rules and norms.",
+    "icon": "📄",
+    "showArrow": true,
+    "priority": "high",
+    "publishDate": "2026-05-19",
+    "expiryDate": "2026-12-31",
+    "category": "Official",
+    "fileUrl": "/pub/notifications/DPC_Notice.pdf",
+    "fileName": "Departmental Promotion Committee (DPC) meeting notice",
+    "isActive": true
+  },
+  {
     "id": 1,
+    "title": "Rates for various Tourism Services at Pahalgam",
+    "description": "Rates for various Tourism Services at Pahalgam Tourism Kashmir and Tourism Development Authorities has been issued.",
+    "icon": "📄",
+    "showArrow": true,
+    "priority": "high",
+    "publishDate": "2026-03-29",
+    "expiryDate": "2026-12-31",
+    "category": "Official",
+    "fileUrl": "/pub/pdf/Pahalgam-Tourism-Ratelist.pdf",
+    "fileName": "Rates for various Tourism Services at Pahalgam",
+    "isActive": true
+  },
+   {
+    "id": 2,
+    "title": "Rates for various Tourism Services at Gulmarg",
+    "description": "Rates for various Tourism Services at Gulmarg Tourism Kashmir and Tourism Development Authorities has been issued.",
+    "icon": "📄",
+    "showArrow": true,
+    "priority": "high",
+    "publishDate": "2026-03-29",
+    "expiryDate": "2026-12-31",
+    "category": "Official",
+    "fileUrl": "/pub/pdf/Gulmarg-Tourism-Ratelist.pdf",
+    "fileName": "Rates for various Tourism Services at Gulmarg",
+    "isActive": true
+  },
+  {
+    "id": 3,
     "title": "Final Seniority List of Ministerial/Executive and Technical Staff 2026",
     "notificationNo": "Est/407-A/DTK/14",
     "description": "Final Seniority list of Ministerial/Executive and Technical staff of the Directorate of Tourism Kashmir and Tourism Development Authorities has been issued.",
@@ -11,6 +53,7 @@
     "expiryDate": "2026-12-31",
     "category": "Official",
     "fileUrl": "/pub/notifications/final_seniority_list_2026_1.pdf",
-    "fileName": "Final Seniority List 2026"
+    "fileName": "Final Seniority List 2026",
+    "isActive": false
   }
 ]

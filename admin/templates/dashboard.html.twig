@@ -161,7 +161,7 @@
                 <div class="stat-icon">
                     <i class="fas fa-bell"></i>
                 </div>
-                <div class="stat-value">-</div>
+                <div class="stat-value" id="notificationsCount">-</div>
                 <div class="stat-label">Notifications</div>
             </div>
             
@@ -215,11 +215,11 @@
                 <button class="action-btn" onclick="location.href='/admin/tenders'">
                     <i class="fas fa-file-contract"></i> Manage Tenders
                 </button>
-                <button class="action-btn" onclick="alert('Coming soon!')">
+                <button class="action-btn" onclick="location.href='/admin/notifications'">
                     <i class="fas fa-bell"></i> Manage Notifications
                 </button>
             `;
-            
+
             // Load user count for super admin
             loadUserCount();
         } else if (user.role === 'admin') {
@@ -230,7 +230,7 @@
                 <button class="action-btn" onclick="location.href='/admin/tenders'">
                     <i class="fas fa-file-contract"></i> Manage Tenders
                 </button>
-                <button class="action-btn" onclick="alert('Coming soon!')">
+                <button class="action-btn" onclick="location.href='/admin/notifications'">
                     <i class="fas fa-bell"></i> Manage Notifications
                 </button>
             `;
@@ -242,7 +242,7 @@
                 <button class="action-btn" onclick="location.href='/admin/tenders'">
                     <i class="fas fa-file-contract"></i> View Tenders
                 </button>
-                <button class="action-btn" onclick="alert('Coming soon!')">
+                <button class="action-btn" onclick="location.href='/admin/notifications'">
                     <i class="fas fa-bell"></i> View Notifications
                 </button>
             `;
@@ -302,8 +302,27 @@
             }
         }
         
-        // Load tenders and events count on page load
+        // Load notifications count
+        async function loadNotificationsCount() {
+            try {
+                const response = await fetch('/admin/api/notifications', {
+                    headers: {
+                        'Authorization': `Bearer ${getToken()}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('notificationsCount').textContent = data.total || 0;
+                }
+            } catch (error) {
+                console.error('Error loading notifications count:', error);
+            }
+        }
+
+        // Load tenders, events and notifications count on page load
         loadTendersCount();
         loadEventsCount();
+        loadNotificationsCount();
     </script>
 {% endblock %}

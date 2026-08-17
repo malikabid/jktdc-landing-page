@@ -13,5 +13,8 @@ docker-compose.override.yml
 httpd-local.conf
 certs/
 admin/.env.local
+# Admin-uploaded documents; the hardening rules must stay tracked so they deploy
 pub/tenders/*
+!pub/tenders/.htaccess
 pub/events/*
+!pub/events/.htaccess

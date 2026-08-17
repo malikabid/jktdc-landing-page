@@ -18,3 +18,5 @@ pub/tenders/*
 !pub/tenders/.htaccess
 pub/events/*
 !pub/events/.htaccess
+pub/notifications/*
+!pub/notifications/.htaccess

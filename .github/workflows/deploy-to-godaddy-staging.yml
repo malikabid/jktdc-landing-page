@@ -60,6 +60,12 @@ jobs:
             **/admin/.env.docker
             **/admin/docker-compose.yml
             **/admin/vendor/**
+            **/tests/**
+            **/playwright.config.js
+            **/package.json
+            **/package-lock.json
+            **/playwright-report/**
+            **/test-results/**
 
       - name: Install Composer & Run Migrations/Seeds via SSH
         uses: appleboy/ssh-action@v1.0.3

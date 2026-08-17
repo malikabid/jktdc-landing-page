@@ -277,8 +277,24 @@ class NotificationController
         $uploadedFiles = $request->getUploadedFiles();
         $data = $request->getParsedBody();
 
+        // A request larger than post_max_size is discarded by PHP before it
+        // reaches us: no files, no body. Without this check that surfaces as a
+        // misleading "No file uploaded".
+        $postMax = $this->iniBytes('post_max_size');
+        $contentLength = (int)$request->getHeaderLine('Content-Length');
+        if (empty($uploadedFiles) && $postMax > 0 && $contentLength > $postMax) {
+            $response->getBody()->write(json_encode([
+                'error' => sprintf(
+                    'Upload too large: the request is %s but this server accepts at most %s per upload.',
+                    $this->formatBytes($contentLength),
+                    $this->formatBytes($postMax)
+                )
+            ]));
+            return $response->withStatus(413)->withHeader('Content-Type', 'application/json');
+        }
+
         if (empty($uploadedFiles['document'])) {
-            $response->getBody()->write(json_encode(['error' => 'No file uploaded']));
+            $response->getBody()->write(json_encode(['error' => 'No file was attached to the request.']));
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
 
@@ -286,8 +302,13 @@ class NotificationController
         $uploadedFile = $uploadedFiles['document'];
 
         if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
-            $response->getBody()->write(json_encode(['error' => 'File upload failed']));
-            return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            $error = $uploadedFile->getError();
+            $response->getBody()->write(json_encode([
+                'error' => $this->describeUploadError($error),
+                'upload_error_code' => $error,
+            ]));
+            $status = in_array($error, [UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE], true) ? 413 : 400;
+            return $response->withStatus($status)->withHeader('Content-Type', 'application/json');
         }
 
         // Validate the extension against a server-side allow-list. The client
@@ -332,8 +353,11 @@ class NotificationController
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
 
-        // Create document record
-        $documentName = $data['label'] ?? $data['name'] ?? $uploadedFile->getClientFilename();
+        // Create document record. Use ?: not ?? - a blank label is submitted as an
+        // empty string, which ?? would happily accept and store as a nameless doc.
+        $documentName = trim((string)($data['label'] ?? ''))
+            ?: trim((string)($data['name'] ?? ''))
+            ?: $uploadedFile->getClientFilename();
 
         $document = NotificationDocument::create([
             'notification_id' => $notification->id,
@@ -429,6 +453,60 @@ class NotificationController
         }
 
         return in_array(strtolower((string)$value), ['1', 'true', 'on', 'yes'], true);
+    }
+
+    /**
+     * Turn a PHP UPLOAD_ERR_* code into something a person can act on
+     */
+    private function describeUploadError(int $error): string
+    {
+        $limit = $this->formatBytes($this->iniBytes('upload_max_filesize'));
+
+        return match ($error) {
+            UPLOAD_ERR_INI_SIZE => "File is too large. This server accepts files up to {$limit}.",
+            UPLOAD_ERR_FORM_SIZE => 'File is larger than the limit set by the upload form.',
+            UPLOAD_ERR_PARTIAL => 'The file was only partially uploaded. Please try again.',
+            UPLOAD_ERR_NO_FILE => 'No file was selected.',
+            UPLOAD_ERR_NO_TMP_DIR => 'Server is missing its temporary upload folder. Contact the administrator.',
+            UPLOAD_ERR_CANT_WRITE => 'Server could not write the file to disk. Contact the administrator.',
+            UPLOAD_ERR_EXTENSION => 'A PHP extension blocked the upload. Contact the administrator.',
+            default => "File upload failed (error code {$error}).",
+        };
+    }
+
+    /**
+     * Resolve a php.ini shorthand size (e.g. "32M") to bytes
+     */
+    private function iniBytes(string $key): int
+    {
+        $value = trim((string)ini_get($key));
+        if ($value === '') {
+            return 0;
+        }
+
+        $unit = strtolower($value[strlen($value) - 1]);
+        $number = (int)$value;
+
+        return match ($unit) {
+            'g' => $number * 1024 * 1024 * 1024,
+            'm' => $number * 1024 * 1024,
+            'k' => $number * 1024,
+            default => (int)$value,
+        };
+    }
+
+    /**
+     * Human-readable byte size
+     */
+    private function formatBytes(int $bytes): string
+    {
+        $units = ['B', 'KB', 'MB', 'GB'];
+
+        for ($i = 0; $bytes > 1024 && $i < count($units) - 1; $i++) {
+            $bytes /= 1024;
+        }
+
+        return round($bytes, $i === 0 ? 0 : 1) . ' ' . $units[$i];
     }
 
     /**

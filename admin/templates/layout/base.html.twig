@@ -52,7 +52,91 @@
             <div class="toast-body" id="toastMessage"></div>
         </div>
     </div>
-    
+
+    <!-- Persistent error dialog. Unlike the toast it never auto-dismisses, so a
+         failure reason stays on screen until the user closes it. -->
+    <style>
+        .error-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .error-modal[hidden] { display: none; }
+        .error-modal__backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+        }
+        .error-modal__panel {
+            position: relative;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            max-width: 560px;
+            width: 100%;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .error-modal__header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 22px;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .error-modal__header i { font-size: 1.4rem; }
+        .error-modal__header h3 { margin: 0; font-size: 1.1rem; font-weight: 700; }
+        .error-modal__body {
+            padding: 20px 22px;
+            color: #1e293b;
+            line-height: 1.55;
+            overflow-y: auto;
+            white-space: pre-line;
+            word-break: break-word;
+        }
+        .error-modal__body ul { margin: 8px 0 0; padding-left: 20px; }
+        .error-modal__body li { margin-bottom: 6px; }
+        .error-modal__actions {
+            padding: 14px 22px 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .error-modal__close {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 8px;
+            background: #9333ea;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .error-modal__close:hover { background: #7e22ce; }
+    </style>
+    <div class="error-modal" id="errorModal" hidden>
+        <div class="error-modal__backdrop" data-error-close></div>
+        <div class="error-modal__panel" role="alertdialog" aria-modal="true"
+             aria-labelledby="errorModalTitle" aria-describedby="errorModalBody">
+            <div class="error-modal__header">
+                <i class="fas fa-exclamation-circle"></i>
+                <h3 id="errorModalTitle">Error</h3>
+            </div>
+            <div class="error-modal__body" id="errorModalBody"></div>
+            <div class="error-modal__actions">
+                <button type="button" class="error-modal__close" data-error-close>Close</button>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         const token = localStorage.getItem('dotk_admin_token');
         if (!token) window.location.href = '/admin/';
@@ -101,6 +185,63 @@
             setTimeout(() => { toast.classList.remove('show'); }, 5000);
         }
         
+        // Parse a JSON response without throwing when the body is not clean JSON.
+        // PHP notices emitted before the payload (e.g. a request over post_max_size)
+        // would otherwise make response.json() throw and hide the real error.
+        async function readJsonSafely(response) {
+            const text = await response.text();
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                const start = text.indexOf('{');
+                const end = text.lastIndexOf('}');
+                if (start !== -1 && end > start) {
+                    try {
+                        return JSON.parse(text.slice(start, end + 1));
+                    } catch (e2) { /* fall through */ }
+                }
+                return { error: text.trim().slice(0, 300) || `Unexpected response (HTTP ${response.status})` };
+            }
+        }
+
+        // Persistent error dialog. Stays until the user closes it - use this for
+        // failures the user must actually read and act on, rather than showToast,
+        // which disappears after 5 seconds.
+        // `message` may be a string or an array of strings (rendered as a list).
+        function showError(title, message) {
+            const modal = document.getElementById('errorModal');
+            const body = document.getElementById('errorModalBody');
+
+            document.getElementById('errorModalTitle').textContent = title || 'Error';
+
+            if (Array.isArray(message)) {
+                const list = document.createElement('ul');
+                message.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    list.appendChild(li);
+                });
+                body.replaceChildren(list);
+            } else {
+                body.textContent = message || 'Something went wrong.';
+            }
+
+            modal.hidden = false;
+            modal.querySelector('.error-modal__close').focus();
+        }
+
+        function hideError() {
+            document.getElementById('errorModal').hidden = true;
+        }
+
+        document.getElementById('errorModal').addEventListener('click', function (e) {
+            if (e.target.hasAttribute('data-error-close')) hideError();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && !document.getElementById('errorModal').hidden) hideError();
+        });
+
         function logout() {
             localStorage.removeItem('dotk_admin_token');
             window.location.href = '/admin/';

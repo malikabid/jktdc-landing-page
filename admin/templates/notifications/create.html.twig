@@ -149,6 +149,8 @@
 
 {% block scripts %}
 <script>
+    // Single source of truth for the advertised attachment limit (see help text)
+    const MAX_UPLOAD_MB = 10;
     let documentRowCount = 1;
     const maxDocuments = 5;
 
@@ -204,7 +206,7 @@
 
         const currentToken = getToken();
         if (!currentToken) {
-            showToast('Session Expired', 'Please login again.', 'error');
+            showError('Session expired', 'Your session has expired. Please log in again.');
             setTimeout(() => { window.location.href = '/admin/'; }, 1500);
             return;
         }
@@ -213,7 +215,7 @@
         const expiryDate = document.getElementById('expiry_date').value;
 
         if (expiryDate && expiryDate < publishDate) {
-            showToast('Invalid Dates', 'Expiry date cannot be before the publish date.', 'error');
+            showError('Invalid dates', 'The expiry date cannot be before the publish date.');
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Notification';
             return;
@@ -226,15 +228,15 @@
             if (input.files.length > 0) {
                 const file = input.files[0];
                 const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-                const maxSize = 10 * 1024 * 1024;
+                const maxSize = MAX_UPLOAD_MB * 1024 * 1024;
 
                 if (!allowedTypes.includes(file.type)) {
-                    showToast('Invalid File Type', `File "${file.name}" is not valid. Only PDF, DOC, DOCX allowed.`, 'error');
+                    showError('Invalid file type', `"${file.name}" is not an accepted file type. Only PDF, DOC and DOCX files can be attached.`);
                     hasValidationError = true;
                     break;
                 }
                 if (file.size > maxSize) {
-                    showToast('File Too Large', `File "${file.name}" exceeds 10MB limit.`, 'error');
+                    showError('File too large', `"${file.name}" is ${(file.size/1024/1024).toFixed(1)} MB. The maximum attachment size is ${MAX_UPLOAD_MB} MB.`);
                     hasValidationError = true;
                     break;
                 }
@@ -271,7 +273,7 @@
             });
 
             if (response.status === 401) {
-                showToast('Session Expired', 'Please login again.', 'error');
+                showError('Session expired', 'Your session has expired. Please log in again.');
                 localStorage.removeItem('dotk_admin_token');
                 setTimeout(() => { window.location.href = '/admin/'; }, 1500);
                 return;
@@ -288,10 +290,15 @@
                     const labelInput = row.querySelector('.doc-label');
                     const fileInput = row.querySelector('.doc-file');
 
-                    if (fileInput.files.length > 0 && labelInput.value.trim()) {
+                    // A file with no label used to be skipped silently, which looked
+                    // exactly like a failed upload. Fall back to the filename.
+                    if (fileInput.files.length > 0) {
+                        const file = fileInput.files[0];
+                        const label = labelInput.value.trim() || file.name;
+
                         const formData = new FormData();
-                        formData.append('label', labelInput.value.trim());
-                        formData.append('document', fileInput.files[0]);
+                        formData.append('label', label);
+                        formData.append('document', file);
 
                         try {
                             const uploadResponse = await fetch(`/admin/api/notifications/${notificationId}/documents`, {
@@ -301,37 +308,46 @@
                             });
 
                             if (uploadResponse.status === 401) {
-                                showToast('Session Expired', 'Please login again.', 'error');
+                                showError('Session expired', 'Your session has expired. Please log in again.');
                                 localStorage.removeItem('dotk_admin_token');
-                                setTimeout(() => { window.location.href = '/admin/'; }, 1500);
                                 return;
                             }
 
-                            const uploadResult = await uploadResponse.json();
-                            if (!uploadResult.success) {
-                                uploadErrors.push(labelInput.value + ': ' + (uploadResult.message || uploadResult.error || 'Upload failed'));
+                            const uploadResult = await readJsonSafely(uploadResponse);
+                            if (!uploadResponse.ok || !uploadResult.success) {
+                                uploadErrors.push(`${label} — ${uploadResult.error || uploadResult.message || `upload failed (HTTP ${uploadResponse.status})`}`);
                             }
                         } catch (err) {
-                            uploadErrors.push(labelInput.value + ': ' + err.message);
+                            uploadErrors.push(`${label} — ${err.message}`);
                         }
                     }
                 }
 
                 if (uploadErrors.length > 0) {
-                    showToast('Partial Success', 'Notification created but some documents failed: ' + uploadErrors.join(', '), 'warning');
-                } else {
-                    showToast('Success', 'Notification created successfully!', 'success');
+                    // The notification exists, so send the user to its edit page where
+                    // the attachments can be retried - but only once they have read why.
+                    showError(
+                        uploadErrors.length === 1 ? 'Document upload failed' : 'Some documents failed to upload',
+                        ['The notification was created, but these attachments did not upload. You can retry them from the edit page:', ...uploadErrors]
+                    );
+                    document.getElementById('errorModal').addEventListener('click', function handler(e) {
+                        if (e.target.hasAttribute('data-error-close')) {
+                            window.location.href = `/admin/notifications/${notificationId}/edit`;
+                        }
+                    });
+                    return;
                 }
 
+                showToast('Success', 'Notification created successfully!', 'success');
                 setTimeout(() => { window.location.href = '/admin/notifications'; }, 1500);
             } else {
-                showToast('Error', result.error || result.message || 'Failed to create notification', 'error');
+                showError('Could not create notification', result.error || result.message || 'The notification could not be created.');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Notification';
             }
         } catch (error) {
             console.error('Error:', error);
-            showToast('Error', 'Network error. Please try again.', 'error');
+            showError('Network error', 'Could not reach the server. The notification was not created. Please try again.');
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Notification';
         }

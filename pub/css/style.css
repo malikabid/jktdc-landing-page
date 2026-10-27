@@ -2152,9 +2152,9 @@ aside .quick-booking-card {
   scrollbar-width: none;
 }
 
-/* #notifications-scroll {
+#notifications-scroll {
   max-height: 310px;
-} */
+}
 
 /* Notification Items */
 .notification-item {

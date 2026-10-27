@@ -756,7 +756,9 @@ body {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .hero-marathon-overlay:hover {
@@ -963,8 +965,8 @@ body {
   font-size: 20px;
 }
 .hero-social-bar a.social-fb {
-  background: #1877F2;
-  border-color: #1877F2;
+  background: #1877f2;
+  border-color: #1877f2;
 }
 .hero-social-bar a.social-x {
   background: #000000;
@@ -983,8 +985,8 @@ body {
   border-color: transparent;
 }
 .hero-social-bar a.social-yt {
-  background: #FF0000;
-  border-color: #FF0000;
+  background: #ff0000;
+  border-color: #ff0000;
 }
 .hero-social-bar a:hover {
   transform: translateX(5px);
@@ -2150,9 +2152,9 @@ aside .quick-booking-card {
   scrollbar-width: none;
 }
 
-#notifications-scroll {
+/* #notifications-scroll {
   max-height: 310px;
-}
+} */
 
 /* Notification Items */
 .notification-item {

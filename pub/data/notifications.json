@@ -1,5 +1,35 @@
 [
   {
+    "id": 11,
+    "title": "Tentative Seniority List of Receptionists (Executive) 2026",
+    "notificationNo": "Circular No. 301-DTK of 2026",
+    "description": "Tentative seniority list of Receptionists (Executive) in the Directorate of Tourism, Kashmir as on 01/11/2026 has been issued for information of all concerned and for inviting objections, if any, within 21 days.",
+    "icon": "📄",
+    "showArrow": true,
+    "priority": "high",
+    "publishDate": "2026-11-11",
+    "expiryDate": "2026-12-31",
+    "category": "Official",
+    "fileUrl": "/pub/notifications/Tentative Seniority List of Receptionists (Executive)-2026-301.pdf",
+    "fileName": "Tentative Seniority List of Receptionists (Executive) 2026",
+    "isActive": true
+  },
+  {
+    "id": 12,
+    "title": "Tentative Seniority List of Receptionists (Executive) {PM's Special Package} 2026",
+    "notificationNo": "Circular No. 300-DTK of 2026",
+    "description": "Tentative seniority list of Receptionists (Executive) {appointed under Hon'ble PM's Special Package} in the Directorate of Tourism, Kashmir as on 01/11/2026 has been issued for information of all concerned and for inviting objections, if any, within 21 days.",
+    "icon": "📄",
+    "showArrow": true,
+    "priority": "high",
+    "publishDate": "2026-11-11",
+    "expiryDate": "2026-12-31",
+    "category": "Official",
+    "fileUrl": "/pub/notifications/Tentative Seniority List of Receptionists (Executive)-2026-300.pdf",
+    "fileName": "Tentative Seniority List of Receptionists (Executive) PM Package 2026",
+    "isActive": true
+  },
+  {
     "id": 10,
     "title": "Departmental Promotion Committee (DPC) meeting on 11.04.2026 ",
     "description": "It is hereby notified for the information of all concerned that the Departmental Promotion Committee (DPC) meeting on 11.04.2026 to considered the cases of eligible employees of various  categories  for  promotion/confirmation  in  accordance  with  the  applicable  rules and norms.",
@@ -7,7 +37,7 @@
     "showArrow": true,
     "priority": "high",
     "publishDate": "2026-05-19",
-    "expiryDate": "2026-12-31",
+    "expiryDate": "2026-11-10",
     "category": "Official",
     "fileUrl": "/pub/notifications/DPC_Notice.pdf",
     "fileName": "Departmental Promotion Committee (DPC) meeting notice",
@@ -27,7 +57,7 @@
     "fileName": "Rates for various Tourism Services at Pahalgam",
     "isActive": true
   },
-   {
+  {
     "id": 2,
     "title": "Rates for various Tourism Services at Gulmarg",
     "description": "Rates for various Tourism Services at Gulmarg Tourism Kashmir and Tourism Development Authorities has been issued.",

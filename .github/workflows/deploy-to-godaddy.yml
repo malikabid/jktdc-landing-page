@@ -66,6 +66,8 @@ jobs:
             **/package-lock.json
             **/playwright-report/**
             **/test-results/**
+            **/.env.production
+            **/temp_secret.txt
 
       - name: Install Composer & Run Migrations/Seeds via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -78,5 +80,12 @@ jobs:
             cd /home/nw9v11i4x4i5/public_html/admin
             composer install --no-dev --optimize-autoloader --no-interaction
             vendor/bin/phinx migrate -e production
-            vendor/bin/phinx seed:run -e production || echo "Phinx seed failed"
+            mkdir -p storage/logs
+            SEED_LOG=storage/logs/seed.log
+            if ! { echo "=== $(date '+%Y-%m-%d %H:%M:%S') seed run | commit ${{ github.sha }} | run ${{ github.run_id }} ==="; vendor/bin/phinx seed:run -e production; } >> "$SEED_LOG" 2>&1; then
+              echo "=== $(date '+%Y-%m-%d %H:%M:%S') SEED FAILED (exit logged above) ===" >> "$SEED_LOG"
+              echo "Seed failed. Full log: admin/storage/logs/seed.log. Last 40 lines:"
+              tail -n 40 "$SEED_LOG"
+              exit 1
+            fi
             rm -rf storage/cache/*

@@ -7,46 +7,35 @@ use Phinx\Seed\AbstractSeed;
 /**
  * Seeds notifications from the legacy pub/data/notifications.json.
  *
- * Idempotent: a notification is matched on (title, publish_date) and skipped if
- * it already exists. Deploys run `phinx seed:run` on every push, so this must be
- * safe to re-run.
+ * Duplicate protection, in two layers:
+ *  1. One-time import: if the notifications table already has rows, the legacy
+ *     import has run (or the admin has taken over), so the seeder does nothing.
+ *  2. Per-record guard: a notification is matched on (title, publish_date) and
+ *     skipped if present. Each record and its document are written in one
+ *     transaction, so a failed record never leaves a notification without its file.
+ *
+ * Deploys run `phinx seed:run` on every push, so this must be safe to re-run.
+ * A missing or unreadable JSON file throws, so the failure reaches the seed log.
  */
 class NotificationsSeeder extends AbstractSeed
 {
     public function run(): void
     {
-        // Read existing notifications from JSON file
-        // Try multiple paths
-        $paths = [
-            '/tmp/notifications.json',
-            // Docker: pub/data is bind-mounted under the web root
-            '/var/www/html/pub/data/notifications.json',
-            // Production: pub/ is a sibling of admin/
-            dirname(__DIR__, 3) . '/pub/data/notifications.json',
-        ];
-
-        $jsonPath = null;
-        foreach ($paths as $path) {
-            if (file_exists($path)) {
-                $jsonPath = $path;
-                break;
-            }
-        }
-
-        if (!$jsonPath) {
-            echo "notifications.json not found in any of the expected paths\n";
+        $existingCount = (int) $this->fetchRow('SELECT COUNT(*) AS c FROM notifications')['c'];
+        if ($existingCount > 0) {
+            echo "notifications table already has {$existingCount} rows; legacy import skipped\n";
             return;
         }
 
+        $jsonPath = $this->locateJsonFile();
         $jsonContent = file_get_contents($jsonPath);
         $notifications = json_decode($jsonContent, true);
 
-        if (!$notifications) {
-            echo "No notifications found in JSON file\n";
-            return;
+        if (!is_array($notifications)) {
+            throw new RuntimeException("notifications.json is not a valid JSON array: {$jsonPath}");
         }
 
-        echo "Found " . count($notifications) . " notifications to import\n";
+        echo "Found " . count($notifications) . " notifications to import from {$jsonPath}\n";
 
         $imported = 0;
         $skipped = 0;
@@ -61,7 +50,6 @@ class NotificationsSeeder extends AbstractSeed
                 continue;
             }
 
-            // Idempotency guard - skip anything already imported
             $existing = $this->fetchRow(sprintf(
                 "SELECT id FROM notifications WHERE title = %s AND publish_date = %s LIMIT 1",
                 $this->quote($title),
@@ -74,39 +62,13 @@ class NotificationsSeeder extends AbstractSeed
                 continue;
             }
 
-            // isActive maps onto the status enum
-            $status = ($notification['isActive'] ?? true)
-                ? 'published'
-                : 'archived';
-
-            $this->insert('notifications', [
-                'title' => $title,
-                'notification_number' => $notification['notificationNo'] ?? null,
-                'description' => $notification['description'] ?? '',
-                'icon' => $notification['icon'] ?? '📄',
-                'show_arrow' => ($notification['showArrow'] ?? true) ? 1 : 0,
-                'priority' => $notification['priority'] ?? 'medium',
-                'publish_date' => $publishDate,
-                'expiry_date' => $notification['expiryDate'] ?? null,
-                'category' => $notification['category'] ?? 'Official',
-                'status' => $status,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
-
-            $notificationId = $this->getAdapter()->getConnection()->lastInsertId();
-
-            // The legacy format carries at most one file per notification
-            if (!empty($notification['fileUrl'])) {
-                $this->insert('notification_documents', [
-                    'notification_id' => $notificationId,
-                    'name' => $notification['fileName'] ?? basename($notification['fileUrl']),
-                    'file_path' => $notification['fileUrl'],
-                    'file_type' => pathinfo($notification['fileUrl'], PATHINFO_EXTENSION) ?: 'pdf',
-                    'sort_order' => 0,
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
+            $this->getAdapter()->beginTransaction();
+            try {
+                $this->importOne($notification, $title, $publishDate);
+                $this->getAdapter()->commitTransaction();
+            } catch (Throwable $e) {
+                $this->getAdapter()->rollbackTransaction();
+                throw new RuntimeException("Failed to import \"{$title}\": " . $e->getMessage(), 0, $e);
             }
 
             echo "Imported: {$title}\n";
@@ -114,6 +76,70 @@ class NotificationsSeeder extends AbstractSeed
         }
 
         echo "Import completed! {$imported} imported, {$skipped} skipped.\n";
+    }
+
+    /**
+     * Insert one notification and its legacy document (if any).
+     */
+    private function importOne(array $notification, string $title, string $publishDate): void
+    {
+        // isActive maps onto the status enum
+        $status = ($notification['isActive'] ?? true)
+            ? 'published'
+            : 'archived';
+
+        $this->insert('notifications', [
+            'title' => $title,
+            'notification_number' => $notification['notificationNo'] ?? null,
+            'description' => $notification['description'] ?? '',
+            'icon' => $notification['icon'] ?? '📄',
+            'show_arrow' => ($notification['showArrow'] ?? true) ? 1 : 0,
+            'priority' => $notification['priority'] ?? 'medium',
+            'publish_date' => $publishDate,
+            'expiry_date' => $notification['expiryDate'] ?? null,
+            'category' => $notification['category'] ?? 'Official',
+            'status' => $status,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        $notificationId = $this->getAdapter()->getConnection()->lastInsertId();
+
+        // The legacy format carries at most one file per notification
+        if (!empty($notification['fileUrl'])) {
+            $this->insert('notification_documents', [
+                'notification_id' => $notificationId,
+                'name' => $notification['fileName'] ?? basename($notification['fileUrl']),
+                'file_path' => $notification['fileUrl'],
+                'file_type' => pathinfo($notification['fileUrl'], PATHINFO_EXTENSION) ?: 'pdf',
+                'sort_order' => 0,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+        }
+    }
+
+    /**
+     * Find pub/data/notifications.json. Throws if it cannot be found.
+     */
+    private function locateJsonFile(): string
+    {
+        $paths = [
+            // Docker: pub/data is bind-mounted under the web root
+            '/var/www/html/pub/data/notifications.json',
+            // Production and staging: pub/ is a sibling of admin/
+            dirname(__DIR__, 3) . '/pub/data/notifications.json',
+        ];
+
+        foreach ($paths as $path) {
+            if (is_readable($path)) {
+                return $path;
+            }
+        }
+
+        throw new RuntimeException(
+            'notifications.json not readable at any expected path: ' . implode(', ', $paths)
+        );
     }
 
     /**

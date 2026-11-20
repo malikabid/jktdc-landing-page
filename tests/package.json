@@ -1,0 +1,18 @@
+{
+  "name": "dotk-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "End-to-end tests for the DOTK site and admin panel",
+  "scripts": {
+    "test": "playwright test",
+    "test:local": "BASE_URL=https://kashmirtourismofficial.test playwright test",
+    "test:staging": "BASE_URL=https://staging.kashmirtourismofficial.com playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report",
+    "install:browsers": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}

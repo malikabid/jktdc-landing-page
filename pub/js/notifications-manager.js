@@ -1,20 +1,35 @@
-// Notifications Manager - Fetch and filter notifications from JSON
+// Notifications Manager - Fetch and filter notifications from the admin API
 class NotificationsManager {
   constructor() {
     this.notifications = [];
-    this.dataUrl = '/pub/data/notifications.json';
+    this.apiUrl = '/admin/api/public/notifications';
+    this.fallbackUrl = '/pub/data/notifications.json';
   }
 
-  // Fetch notifications from JSON
+  // Fetch notifications from the API, falling back to the static JSON file
   async fetchNotifications() {
     try {
-      const response = await fetch(this.dataUrl);
+      const response = await fetch(this.apiUrl);
+      if (!response.ok) throw new Error(`API responded ${response.status}`);
+      this.notifications = await response.json();
+      return this.notifications;
+    } catch (error) {
+      console.warn('Notifications API unavailable, falling back to JSON:', error);
+      return this.fetchFallbackNotifications();
+    }
+  }
+
+  // Static JSON fallback - same payload shape as the API
+  async fetchFallbackNotifications() {
+    try {
+      const response = await fetch(this.fallbackUrl);
       if (!response.ok) throw new Error('Failed to fetch notifications');
       this.notifications = await response.json();
       return this.notifications;
     } catch (error) {
       console.error('Error fetching notifications:', error);
-      return [];
+      this.notifications = [];
+      return this.notifications;
     }
   }
 
@@ -31,15 +46,19 @@ class NotificationsManager {
   }
 
   // Filter active notifications (today is between publish and expiry date)
+  // The API already applies this filter; it still matters for the JSON fallback.
   getActiveNotifications() {
     const today = this.getToday();
-    console.log('Today:', today.toISOString());
-    const active = this.notifications.filter(notification => {
+    return this.notifications.filter(notification => {
       const publishDate = this.parseDate(notification.publishDate);
-      const expiryDate = this.parseDate(notification.expiryDate);
-      const isActive = today >= publishDate && today <= expiryDate;
-      console.log(`Notification ${notification.id}: publish=${publishDate.toISOString()}, expiry=${expiryDate.toISOString()}, active=${isActive}`);
-      return isActive && notification.isActive;
+      if (today < publishDate) return false;
+
+      // An absent expiry date means the notification never expires
+      if (notification.expiryDate) {
+        if (today > this.parseDate(notification.expiryDate)) return false;
+      }
+
+      return notification.isActive !== false;
     }).sort((a, b) => {
       // Sort by priority first, then by publish date (newest first)
       const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
@@ -47,8 +66,6 @@ class NotificationsManager {
       if (priorityDiff !== 0) return priorityDiff;
       return this.parseDate(b.publishDate) - this.parseDate(a.publishDate);
     });
-    console.log('Total active notifications:', active.length);
-    return active;
   }
 
   // Filter notifications by priority
@@ -159,7 +176,6 @@ class NotificationsManager {
     await this.fetchNotifications();
     
     const allNotifications = this.getActiveNotifications();
-    console.log('Active notifications:', allNotifications.length, allNotifications);
     this.renderNotifications(allNotifications, 'all-notifications', true);
   }
 }

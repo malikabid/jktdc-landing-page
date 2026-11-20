@@ -16,3 +16,6 @@ admin/.env.local
 pub/tenders/*
 pub/events/*
 tests
+# Admin-uploaded notification documents; the hardening rules stay tracked
+pub/notifications/*
+!pub/notifications/.htaccess

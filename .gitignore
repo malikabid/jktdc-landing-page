@@ -19,3 +19,4 @@ pub/tenders/*
 pub/events/*
 !pub/events/.htaccess
 tests
+admin/temp_secret.txt

@@ -5,29 +5,35 @@ declare(strict_types=1);
 use Phinx\Seed\AbstractSeed;
 
 /**
- * Seeds notifications from the legacy pub/data/notifications.json.
+ * Imports the legacy pub/data/notifications.json into the notifications table.
  *
- * Duplicate protection, in two layers:
- *  1. One-time import: if the notifications table already has rows, the legacy
- *     import has run (or the admin has taken over), so the seeder does nothing.
- *  2. Per-record guard: a notification is matched on (title, publish_date) and
- *     skipped if present. Each record and its document are written in one
- *     transaction, so a failed record never leaves a notification without its file.
+ * Idempotent, in two layers:
+ *  1. Per-record guard: a notification is matched on (title, publish_date) and
+ *     skipped if present, so re-runs and new records never duplicate rows. Each
+ *     record and its document are written in one transaction, so a failed record
+ *     never leaves a notification without its file.
+ *  2. Missing JSON: once the file has been imported and renamed to .backup, the
+ *     seeder finds nothing to import and exits quietly, provided the table has rows.
+ *     A missing file with an empty table throws, so a fresh database fails loudly.
  *
  * Deploys run `phinx seed:run` on every push, so this must be safe to re-run.
- * A missing or unreadable JSON file throws, so the failure reaches the seed log.
  */
 class NotificationsSeeder extends AbstractSeed
 {
     public function run(): void
     {
-        $existingCount = (int) $this->fetchRow('SELECT COUNT(*) AS c FROM notifications')['c'];
-        if ($existingCount > 0) {
-            echo "notifications table already has {$existingCount} rows; legacy import skipped\n";
-            return;
+        $jsonPath = $this->locateJsonFile();
+        if ($jsonPath === null) {
+            $existingCount = $this->countNotifications();
+            if ($existingCount > 0) {
+                echo "legacy JSON not found; nothing to import ({$existingCount} notifications in DB)\n";
+                return;
+            }
+            throw new RuntimeException(
+                'notifications.json not readable at any expected path and the notifications table is empty'
+            );
         }
 
-        $jsonPath = $this->locateJsonFile();
         $jsonContent = file_get_contents($jsonPath);
         $notifications = json_decode($jsonContent, true);
 
@@ -120,9 +126,9 @@ class NotificationsSeeder extends AbstractSeed
     }
 
     /**
-     * Find pub/data/notifications.json. Throws if it cannot be found.
+     * Find pub/data/notifications.json. Returns null if it is not present at any expected path.
      */
-    private function locateJsonFile(): string
+    private function locateJsonFile(): ?string
     {
         $paths = [
             // Docker: pub/data is bind-mounted under the web root
@@ -137,9 +143,12 @@ class NotificationsSeeder extends AbstractSeed
             }
         }
 
-        throw new RuntimeException(
-            'notifications.json not readable at any expected path: ' . implode(', ', $paths)
-        );
+        return null;
+    }
+
+    private function countNotifications(): int
+    {
+        return (int) $this->fetchRow('SELECT COUNT(*) AS c FROM notifications')['c'];
     }
 
     /**

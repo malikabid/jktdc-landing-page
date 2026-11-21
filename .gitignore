@@ -20,3 +20,6 @@ pub/events/*
 !pub/events/.htaccess
 tests
 admin/temp_secret.txt
+# Admin-uploaded notification documents; the hardening rules stay tracked
+pub/notifications/*
+!pub/notifications/.htaccess

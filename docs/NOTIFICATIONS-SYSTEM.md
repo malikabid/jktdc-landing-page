@@ -6,7 +6,7 @@ The notification section on the homepage is now dynamic, loading content from a 
 ## File Structure
 
 ### 1. Database File
-**Location:** `pub/data/notifications.json`
+**Source of truth:** the `notifications` table in the database, managed from the admin panel. `pub/data/notifications.json.backup` is an archive of the legacy dataset and is not read by the application.
 
 This JSON file contains all notifications with the following structure:
 
@@ -88,11 +88,11 @@ Notifications are styled based on priority:
 
 ## Adding New Notifications
 
-1. Open `pub/data/notifications.json`
-2. Add a new object to the array with all required fields
-3. Set appropriate publish and expiry dates
-4. Choose priority level based on importance
-5. Save the file - changes appear immediately (no cache busting needed for JSON)
+1. Sign in to the admin panel and open Notifications
+2. Create the notification with a title, description, publish date and optional expiry date
+3. Attach a PDF if needed (uploads are checked server-side)
+4. Choose a priority level based on importance
+5. Publish; it appears on the public page within its publish and expiry window
 
 **Example:**
 ```json

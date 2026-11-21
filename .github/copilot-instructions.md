@@ -81,10 +81,13 @@ pub/
 
 **Automated deployment to GoDaddy** via FTP documented in [DEPLOYMENT.md](../DEPLOYMENT.md):
 
-- GitHub Actions automatically deploys on push to `main` branch
+- Production (GoDaddy): GitHub Actions deploys on push to `main` ([.github/workflows/deploy-to-godaddy.yml](workflows/deploy-to-godaddy.yml))
+- Staging (GoDaddy): GitHub Actions deploys on push to `staging` ([.github/workflows/deploy-to-godaddy-staging.yml](workflows/deploy-to-godaddy-staging.yml))
+- Each deploy runs `phinx migrate`, then `phinx seed:run`. Seed output is appended to `admin/storage/logs/seed.log`; a failed seed is logged there and does not fail the job
+- `admin/.env` holds per-server DB credentials. It is git-ignored and managed by hand on each server
+- `main` is the final word: where `staging` and `main` conflict, keep `main`'s version
 - FTP credentials stored as GitHub Secrets (never in code)
 - Only changed files uploaded for faster deployments
-- Workflow: [.github/workflows/deploy-to-godaddy.yml](workflows/deploy-to-godaddy.yml)
 
 **Legacy Render hosting**: Configuration exists in [render.yaml](../render.yaml) if needed for alternative deployment
 

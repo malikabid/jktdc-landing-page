@@ -8,6 +8,14 @@ class EventsSeeder extends AbstractSeed
 {
     public function run(): void
     {
+        // One-time import: once the table has rows, the legacy import has run.
+        // Deploys run every seeder on each push, so this prevents duplicates.
+        $existing = (int) $this->fetchRow('SELECT COUNT(*) AS c FROM events')['c'];
+        if ($existing > 0) {
+            echo "events table already has {$existing} rows; legacy import skipped\n";
+            return;
+        }
+
         // Read existing events from JSON file
         // Try multiple paths
         $paths = [

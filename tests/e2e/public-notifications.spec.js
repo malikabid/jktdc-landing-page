@@ -103,8 +103,11 @@ test.describe('Public notifications page', () => {
     }
   });
 
-  test('falls back to the static JSON when the API is unavailable', async ({ page }) => {
-    // Force the API to fail so the fallback path is exercised
+  test('shows an empty list, without page errors, when the API is unavailable', async ({ page }) => {
+    // The database is the only source now; there is no static fallback.
+    const pageErrors = [];
+    page.on('pageerror', (err) => pageErrors.push(err.message));
+
     await page.route('**/admin/api/public/notifications', (route) =>
       route.fulfill({ status: 500, body: 'boom' })
     );
@@ -113,15 +116,14 @@ test.describe('Public notifications page', () => {
     const container = page.locator('#all-notifications');
     await expect(container).toBeVisible();
 
-    // The fallback fetch is async - wait for it to render rather than sampling
-    // immediately, otherwise this races the page's own initialisation.
-    await expect(container.locator('.notification-item').first()).toBeVisible();
-
     await expect
       .poll(
-        () => page.evaluate(() => window.notificationsManager?.notifications?.length ?? 0),
-        { message: 'fallback produced no notifications' }
+        () => page.evaluate(() => window.notificationsManager?.notifications?.length ?? -1),
+        { message: 'manager did not settle after the API failed' }
       )
-      .toBeGreaterThan(0);
+      .toBe(0);
+
+    await expect(container.locator('.notification-item')).toHaveCount(0);
+    expect(pageErrors, 'uncaught page errors').toEqual([]);
   });
 });

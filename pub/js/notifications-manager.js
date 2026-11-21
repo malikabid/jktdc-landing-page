@@ -3,27 +3,13 @@ class NotificationsManager {
   constructor() {
     this.notifications = [];
     this.apiUrl = '/admin/api/public/notifications';
-    this.fallbackUrl = '/pub/data/notifications.json';
   }
 
-  // Fetch notifications from the API, falling back to the static JSON file
+  // Fetch notifications from the API. The database is the only source.
   async fetchNotifications() {
     try {
       const response = await fetch(this.apiUrl);
       if (!response.ok) throw new Error(`API responded ${response.status}`);
-      this.notifications = await response.json();
-      return this.notifications;
-    } catch (error) {
-      console.warn('Notifications API unavailable, falling back to JSON:', error);
-      return this.fetchFallbackNotifications();
-    }
-  }
-
-  // Static JSON fallback - same payload shape as the API
-  async fetchFallbackNotifications() {
-    try {
-      const response = await fetch(this.fallbackUrl);
-      if (!response.ok) throw new Error('Failed to fetch notifications');
       this.notifications = await response.json();
       return this.notifications;
     } catch (error) {
@@ -46,7 +32,7 @@ class NotificationsManager {
   }
 
   // Filter active notifications (today is between publish and expiry date)
-  // The API already applies this filter; it still matters for the JSON fallback.
+  // The API already applies this filter; the client-side check is a safety net.
   getActiveNotifications() {
     const today = this.getToday();
     return this.notifications.filter(notification => {

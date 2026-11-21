@@ -62,6 +62,13 @@ class NotificationsSeeder extends AbstractSeed
                 $this->quote($publishDate)
             ));
 
+            $fileUrl = $notification['fileUrl'] ?? null;
+            if (!empty($fileUrl) && !$this->isAllowedFileUrl($fileUrl)) {
+                echo "Skipped (fileUrl not allowed): {$title}\n";
+                $skipped++;
+                continue;
+            }
+
             if ($existing) {
                 echo "Skipped (already exists): {$title}\n";
                 $skipped++;
@@ -144,6 +151,16 @@ class NotificationsSeeder extends AbstractSeed
         }
 
         return null;
+    }
+
+    /**
+     * Legacy documents live under pub/notifications/ or pub/pdf/, one file per directory level.
+     */
+    private function isAllowedFileUrl(string $url): bool
+    {
+        return (bool) preg_match('#^/pub/(notifications|pdf)/[^/]+$#', $url)
+            && strpos($url, '..') === false
+            && strpos($url, '\\') === false;
     }
 
     private function countNotifications(): int

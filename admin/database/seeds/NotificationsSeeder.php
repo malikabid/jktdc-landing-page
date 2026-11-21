@@ -7,14 +7,15 @@ use Phinx\Seed\AbstractSeed;
 /**
  * Imports the legacy pub/data/notifications.json into the notifications table.
  *
- * Idempotent, in two layers:
- *  1. Per-record guard: a notification is matched on (title, publish_date) and
- *     skipped if present, so re-runs and new records never duplicate rows. Each
- *     record and its document are written in one transaction, so a failed record
- *     never leaves a notification without its file.
- *  2. Missing JSON: once the file has been imported and renamed to .backup, the
- *     seeder finds nothing to import and exits quietly, provided the table has rows.
- *     A missing file with an empty table throws, so a fresh database fails loudly.
+ * Idempotent, in three layers:
+ *  1. Completion marker: once an import has finished, a row in legacy_imports
+ *     stops the seeder for good. Records an admin later edits or deletes are never
+ *     re-created from the JSON.
+ *  2. Per-record guard: before the marker exists, a notification is matched on
+ *     (title, publish_date) and skipped if present. Each record and its document
+ *     are written in one transaction.
+ *  3. Missing JSON: the seeder exits quietly if the table already has rows. A
+ *     missing file with an empty table throws, so a fresh database fails loudly.
  *
  * Deploys run `phinx seed:run` on every push, so this must be safe to re-run.
  */
@@ -22,6 +23,11 @@ class NotificationsSeeder extends AbstractSeed
 {
     public function run(): void
     {
+        if ($this->isMarkedImported()) {
+            echo "legacy notifications import already completed; skipped\n";
+            return;
+        }
+
         $jsonPath = $this->locateJsonFile();
         if ($jsonPath === null) {
             $existingCount = $this->countNotifications();
@@ -88,7 +94,19 @@ class NotificationsSeeder extends AbstractSeed
             $imported++;
         }
 
+        $this->markImported();
+
         echo "Import completed! {$imported} imported, {$skipped} skipped.\n";
+    }
+
+    private function isMarkedImported(): bool
+    {
+        return $this->fetchRow("SELECT name FROM legacy_imports WHERE name = 'notifications' LIMIT 1") !== false;
+    }
+
+    private function markImported(): void
+    {
+        $this->execute("INSERT IGNORE INTO legacy_imports (name) VALUES ('notifications')");
     }
 
     /**
